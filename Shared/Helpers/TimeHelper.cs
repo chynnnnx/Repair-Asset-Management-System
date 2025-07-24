@@ -56,36 +56,6 @@ namespace Shared.Helpers
            
             return TimeZoneInfo.ConvertTimeToUtc(dateTime, PhilippineTimeZone);
         }
-
-        public static string FormatPH(DateTime dateTime, string format = "yyyy-MM-dd hh:mm:ss tt")
-        {
-            return UtcToPH(dateTime).ToString(format);
-        }
-
-        public static string FormatDuration(DateTime start, DateTime? end = null)
-        {
-            var phStart = UtcToPH(start);
-            DateTime phEnd;
-            if (end.HasValue)
-            {
-                phEnd = UtcToPH(end.Value);
-            }
-            else
-            {
-                phEnd = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, PhilippineTimeZone);
-            }
-            var diff = phEnd - phStart;
-            if (diff.TotalMinutes < 1)
-                return "Just now";
-
-            var hours = (int)diff.TotalHours;
-            var minutes = diff.Minutes;
-
-            var parts = new List<string>();
-            if (hours > 0) parts.Add($"{hours} hour{(hours > 1 ? "s" : "")}");
-            if (minutes > 0) parts.Add($"{minutes} minute{(minutes > 1 ? "s" : "")}");
-
-            return string.Join(", ", parts);
-        }
+      
     }
 }
