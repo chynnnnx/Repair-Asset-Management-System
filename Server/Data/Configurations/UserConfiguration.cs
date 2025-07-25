@@ -29,9 +29,7 @@ namespace projServer.Data.Configurations
             builder.Property(s => s.Role)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder.Property(u => u.ProfilePicture)
-                 .IsRequired()
-                 .HasColumnType("varbinary(max)");
+          
 
         }
     }
