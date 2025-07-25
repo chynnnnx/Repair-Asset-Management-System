@@ -7,8 +7,7 @@ namespace projServer.Data
     {
         public DbSet<UserEntity> Users => Set<UserEntity>();
         public DbSet<RoomEntity> Rooms => Set<RoomEntity>();
-        public DbSet<DeviceEntity> PC => Set<DeviceEntity>();
-        public DbSet<PCUsageEntity> PCUsage => Set<PCUsageEntity>();
+        public DbSet<DeviceEntity> Devices => Set<DeviceEntity>();
         public DbSet<DeviceLogEntity> DeviceLogs => Set<DeviceLogEntity>();
         public DbSet<RepairRequestEntity> RepairRequests => Set<RepairRequestEntity>();
 
@@ -17,7 +16,6 @@ namespace projServer.Data
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new DeviceConfiguration());
-            modelBuilder.ApplyConfiguration(new PCUsageConfiguration());
             modelBuilder.ApplyConfiguration(new DeviceLogConfiguration());
             modelBuilder.ApplyConfiguration(new RepairRequestConfiguration());
         }
