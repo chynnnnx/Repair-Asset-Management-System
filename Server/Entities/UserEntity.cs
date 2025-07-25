@@ -11,11 +11,9 @@ namespace projServer.Entities
         public string MiddleName { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
-        public byte[] ProfilePicture { get; set; } = null!;
 
-        public ICollection<PCUsageEntity> PCUsages { get; set; } = new List<PCUsageEntity>();
         public ICollection<RepairRequestEntity> RepairRequestsReported { get; set; } = new List<RepairRequestEntity>();
 
 
