@@ -13,7 +13,6 @@ namespace projServer.Mapping
        //Users
             CreateMap<RegisterUserDTO, UserEntity>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-                .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture ?? Array.Empty<byte>()));
 
             CreateMap<UserDTO, UserEntity>()
                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
