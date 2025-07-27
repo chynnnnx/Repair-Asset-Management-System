@@ -16,9 +16,7 @@ namespace projServer.Mapping
 
             CreateMap<UserDTO, UserEntity>()
                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-            CreateMap<UserEntity, UserDTO>()
-                .ForMember(dest => dest.ProfilePicture, opt => opt.MapFrom(src => src.ProfilePicture ?? Array.Empty<byte>()));
-
+          
             //Rooms
             CreateMap<RoomEntity, RoomDTO>().ReverseMap();
 
