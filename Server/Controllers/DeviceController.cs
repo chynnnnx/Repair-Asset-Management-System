@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-    using projServer.Services.Interfaces;
-    using Shared.DTOs;
+using projServer.Services.Interfaces;
+using Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.Security.Claims;
