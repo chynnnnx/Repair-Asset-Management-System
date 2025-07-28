@@ -1,0 +1,48 @@
+﻿@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+@using Microsoft.AspNetCore.Components.Authorization;
+@using MudBlazor
+
+@if (_checkingAuth)
+{
+    <MudPaper Class="pa-4 text-center">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+        <p>Checking access...</p>
+    </MudPaper>
+}
+else if (_canRender)
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public string RequiredRole { get; set; } = string.Empty;
+    [Parameter] public string RedirectTo { get; set; } = "/notauthorized";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool _canRender = false;
+    private bool _checkingAuth = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity?.IsAuthenticated ?? true)
+        {
+            Navigation.NavigateTo("/", true);
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(RequiredRole) && !user.IsInRole(RequiredRole))
+        {
+            Navigation.NavigateTo(RedirectTo, true);
+            return;
+        }
+
+        _canRender = true;
+        _checkingAuth = false;
+        StateHasChanged();
+    }
+}
