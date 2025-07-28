@@ -67,7 +67,7 @@ namespace Client.Services.Implementations
                 return true;
 
             var error = await response.Content.ReadAsStringAsync();
-            throw new Exception(error); // throw actual server error
+            throw new Exception(error);
         }
       
 
