@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using projServer.Entities;
 using projServer.Repositories.Interfaces;
@@ -53,47 +53,50 @@ namespace projServer.Services.Implementations
             }
         }
 
-        public   async Task AddRepairRequest(RepairRequestDTO repairRequestDTO)
+        public async Task<bool> AddRepairRequest(RepairRequestDTO repairRequestDTO)
         {
             try
             {
                 var reqEntity = _mapper.Map<RepairRequestEntity>(repairRequestDTO);
-                await  _repairRequestRepo.AddAsync(reqEntity);
+                await _repairRequestRepo.AddAsync(reqEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to add Repair Request: {ex.GetBaseException().Message}");
-                throw;
+                return false;
             }
         }
 
-        public  async Task  UpdateRepairRequest(RepairRequestDTO repairRequestDTO)
+
+        public async Task<bool> UpdateRepairRequest(RepairRequestDTO repairRequestDTO)
         {
             try
             {
                 var reqEntity = _mapper.Map<RepairRequestEntity>(repairRequestDTO);
                 await _repairRequestRepo.UpdateAsync(reqEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to update Repair Request: {ex.GetBaseException().Message}");
-                throw;
+                return false;
             }
         }
-        public async Task DeleteRepairRequest(int id)
+        public async Task<bool> DeleteRepairRequest(int id)
         {
             try
             {
                 var existing = await _repairRequestRepo.GetByIdAsync(id);
-                if (existing == null)
-                    throw new KeyNotFoundException($"Repair Request with ID {id} not found.");
-
+                if (existing == null) { return false; }
+                  
                 await _repairRequestRepo.DeleteAsync(id);
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to delete Repair Request with ID {id}: {ex.GetBaseException().Message}");
-                throw;
+                _logger.LogError(ex, $"Failed to delete Request with ID {id}: {ex.GetBaseException().Message}");
+                return false;
             }
         }
         public async Task<IEnumerable<RepairRequestDTO>> GetFixedAndReplacedByMonth(int month, int year)
