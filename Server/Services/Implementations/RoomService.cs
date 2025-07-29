@@ -1,4 +1,4 @@
-﻿using Shared.DTOs;
+using Shared.DTOs;
 using projServer.Repositories.Interfaces;
 using projServer.Mapping;
 using AutoMapper;
@@ -19,20 +19,23 @@ namespace projServer.Services.Implementations
             _mapper = mapper;
             _logger = logger;
         }
-        public async Task AddRoomAsync(RoomDTO roomDto)
+        public async Task<bool> AddRoomAsync(RoomDTO roomDto)
         {
             try
             {
                 roomDto.RoomName = roomDto.RoomName.Trim();
                 var roomEntity = _mapper.Map<RoomEntity>(roomDto);
                 await _roomRepo.AddAsync(roomEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to add room: {RoomName}", roomDto.RoomName);
-                throw;
+                return false;
             }
         }
+
+
         public async Task<List<RoomDTO>> GetAllRoomsAsync()
         { 
             var roomEntities = await _roomRepo.GetValuesAsync();
@@ -53,32 +56,40 @@ namespace projServer.Services.Implementations
             }
         }
 
-        public async Task UpdateRoomAsync(RoomDTO roomDto)
+        public async Task<bool> UpdateRoomAsync(RoomDTO roomDto)
         {
             try
             {
-                var roomEntity = _mapper.Map<RoomEntity>(roomDto);
-                await _roomRepo.UpdateAsync(roomEntity);
+                var existing = await _roomRepo.GetByIdAsync(roomDto.RoomId);
+                if (existing == null) { return false; }
+
+                var updatedEntity = _mapper.Map<RoomEntity>(roomDto);
+                await _roomRepo.UpdateAsync(updatedEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to update room: {RoomName}", roomDto.RoomName);
-                throw;
+                return false;
             }
         }
-        public async Task DeleteRoomAsync(int id)
+        
+        public async Task<bool> DeleteRoomAsync(int id)
         {
             try
             {
+                var existing = await _roomRepo.GetByIdAsync(id);
+                if (existing == null) { return false; }
+
                 await _roomRepo.DeleteAsync(id);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to delete room with ID {RoomId}", id);
-                throw;
+                return false;
             }
         }
-
 
     }
 }
