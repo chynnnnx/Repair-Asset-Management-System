@@ -11,8 +11,7 @@ namespace projServer.DependencyInjection
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IDeviceService, DeviceService>();
-           services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IPCUsageService, PCUsageService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IDeviceLogService, DeviceLogService>();
             services.AddHttpContextAccessor();
             services.AddScoped<IRepairRequestService, RepairRequestService>();
