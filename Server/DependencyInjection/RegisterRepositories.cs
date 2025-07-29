@@ -13,9 +13,7 @@ namespace projServer.DependencyInjection
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDeviceRepository, DeviceRepository>();
-           services.AddScoped<IBaseRepository<PCUsageEntity>, BaseRepository<PCUsageEntity>>();
             services.AddScoped<IBaseRepository<RoomEntity>, BaseRepository<RoomEntity>>();
-            services.AddScoped<IPCUsageRepository, PCUsageRepository>();
             services.AddScoped<IBaseRepository<DeviceLogEntity>, BaseRepository<DeviceLogEntity>>();
             services.AddScoped<IDeviceLogRepository, DeviceLogRepository>();
             services.AddScoped<IRepairRequestRepository, RepairRequestRepository>();
