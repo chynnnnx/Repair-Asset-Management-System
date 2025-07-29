@@ -10,6 +10,8 @@ namespace projServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
+
     public class DeviceLogController : ControllerBase
     {
         private readonly IDeviceLogService _logService;
