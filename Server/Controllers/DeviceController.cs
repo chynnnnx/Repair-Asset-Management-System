@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using projServer.Services.Interfaces;
 using Shared.DTOs;
@@ -13,7 +13,7 @@ namespace projServer.Controllers
 
     public class DeviceController : ControllerBase
         {
-            private readonly IDeviceService _deviceService;
+        private readonly IDeviceService _deviceService;
         private readonly IMapper _mapper;
         public DeviceController(IDeviceService deviceService, IMapper mapper)
         {
@@ -21,6 +21,7 @@ namespace projServer.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddDevice([FromBody] DeviceDTO deviceDto)
         {
@@ -41,6 +42,7 @@ namespace projServer.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet]
         public async Task<ActionResult<List<DeviceDTO>>> GetAllDevice()
         {
@@ -48,7 +50,7 @@ namespace projServer.Controllers
             return Ok(deviceDtos);
         }
 
-    
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateDevice ([FromBody] DeviceDTO deviceDto)
         {
@@ -63,12 +65,13 @@ namespace projServer.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDevice(int id)
         {
             try
             {
-                await _deviceService.DeleteDevice(id);
+                await _deviceService.DeleteDeviceAsync(id);
                 return Ok(new { message = "Device deleted successfully!" });
             }
             catch (Exception ex)
