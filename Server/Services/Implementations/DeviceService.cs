@@ -42,24 +42,26 @@ namespace projServer.Services.Implementations
             return (userId, nameClaim ?? "Unknown");
         }
 
-        public async Task AddDeviceAsync(DeviceDTO deviceDto)
-        {
-            try
-            {
-                var deviceEntity = _mapper.Map<DeviceEntity>(deviceDto);
-                await _device.AddAsync(deviceEntity);
+     public async Task<bool> AddDeviceAsync(DeviceDTO deviceDto)
+     {
+         try
+         {
+             var deviceEntity = _mapper.Map<DeviceEntity>(deviceDto);
+             await _device.AddAsync(deviceEntity);
 
-                var (userId, fullName) = GetCurrentUser();
-                var log = DeviceLogHelper.Create(deviceEntity.DeviceID, userId, "Add", fullName);
+             var (userId, fullName) = GetCurrentUser();
+             var log = DeviceLogHelper.Create(deviceEntity.DeviceID, userId, "Add", fullName);
+             await _log.AddAsync(log);
 
-                await _log.AddAsync(log);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Failed to add Device ({deviceDto.Tag}): {ex.GetBaseException().Message}");
-                throw;
-            }
-        }
+             return true;
+         }
+         catch (Exception ex)
+         {
+             _logger.LogError(ex, $"Failed to add Device ({deviceDto.Tag}): {ex.GetBaseException().Message}");
+             return false;
+         }
+     }
+
 
         public async Task<List<DeviceDTO>> GetAllDeviceAsync()
         {
