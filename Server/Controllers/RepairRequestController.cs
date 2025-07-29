@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using projServer.Services.Interfaces;
 using Shared.DTOs;
@@ -15,40 +16,46 @@ namespace projServer.Controllers
             _repairRequestService = repairRequestService;
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> AddRepairRequest([FromBody] RepairRequestDTO repairRequestDTO)
         {
             if (repairRequestDTO == null)
-                return BadRequest();
+                return BadRequest("RepairRequestDTO cannot be null");
 
-            await _repairRequestService.AddRepairRequest(repairRequestDTO);
-            return Ok(new { message = "added successfully" });
+            var success = await _repairRequestService.AddRepairRequest(repairRequestDTO);
+            if (success)
+                return Ok(new { message = "Added successfully" });
 
+            return StatusCode(500, new { message = "Failed to add repair request" });
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateRepairRequest([FromBody] RepairRequestDTO repairRequestDTO)
         {
             if (repairRequestDTO == null)
-                return BadRequest();
+                return BadRequest("RepairRequestDTO cannot be null");
 
-            await _repairRequestService.UpdateRepairRequest(repairRequestDTO);
-            return Ok(new { message = "updated successfully" });
+            var success = await _repairRequestService.UpdateRepairRequest(repairRequestDTO);
+            if (success)
+                return Ok(new { message = "Updated successfully" });
+
+            return NotFound(new { message = "Repair request not found" });
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRepairRequest(int id)
         {
-            try
-            {
-                await _repairRequestService.DeleteRepairRequest(id);
-                return Ok(new { message = "deleted successfully" });
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
+            var success = await _repairRequestService.DeleteRepairRequest(id);
+            if (success)
+                return Ok(new { message = "Deleted successfully" });
+
+            return NotFound(new { message = $"No request found with ID {id}" });
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetAllRequestsWithDeviceAsync()
         {
@@ -56,6 +63,7 @@ namespace projServer.Controllers
             return Ok(requests);
 
         }
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetRequestsByUserId(int userId)
         {
@@ -66,6 +74,8 @@ namespace projServer.Controllers
 
             return Ok(requests);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("summary")]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetFixedAndReplacedSummary([FromQuery] int month, [FromQuery] int year)
         {
@@ -77,6 +87,7 @@ namespace projServer.Controllers
             return Ok(summary);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("export/pdf")]
         public async Task<IActionResult> ExportPdf([FromQuery] int month, [FromQuery] int year)
         {
@@ -85,6 +96,7 @@ namespace projServer.Controllers
             return File(file, "application/pdf", filename);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("export/excel")]
         public async Task<IActionResult> ExportExcel([FromQuery] int month, [FromQuery] int year)
         {
