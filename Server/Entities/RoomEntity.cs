@@ -8,6 +8,6 @@ namespace projServer.Entities
         public int RoomId { get; set; }
         public string RoomName { get; set; } = string.Empty;
         public ICollection<DeviceEntity> PCs { get; set; } = new List<DeviceEntity>();
-        public ICollection<PCUsageEntity> PCUsages { get; set; } = new List<PCUsageEntity>();
+    
     }
 }
