@@ -100,27 +100,28 @@ namespace projServer.Services.Implementations
         }
 
 
-        public async Task DeleteDevice(int id)
+     public async Task<bool> DeleteDeviceAsync(int id)
         {
             try
             {
                 var existing = await _device.GetByIdAsync(id);
                 if (existing == null)
-                    throw new Exception($"Device with ID {id} not found.");
-
+                {
+                    return false;
+                }
                 var (userId, fullName) = GetCurrentUser();
                 var log = DeviceLogHelper.CreateDeleted(existing.DeviceID, userId, fullName);
                 await _log.AddAsync(log);
 
                 await _device.DeleteAsync(id);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to delete Device (ID: {id}): {ex.GetBaseException().Message}");
-                throw;
+                return false;
             }
         }
-
 
 
     }
