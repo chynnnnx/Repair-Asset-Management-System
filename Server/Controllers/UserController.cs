@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.Auth;
 using projServer.Services.Interfaces;
@@ -9,10 +9,10 @@ namespace projServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IUserService _authService;
-        public UserController(IUserService authService) 
+        public AuthController(IUserService authService) 
         {
             _authService = authService;
         }
@@ -32,6 +32,7 @@ namespace projServer.Controllers
             return Ok(result);
         }
 
+ 
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginDTO loginDTO)
         {
@@ -48,36 +49,57 @@ namespace projServer.Controllers
 
             return Ok(result); 
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("users")]
         public async Task<ActionResult<UserDTO>> GetAllUsers()
         {
-            var rooms = await _authService.GetAllUsers();
-            return Ok(rooms);
+            var user = await _authService.GetAllUsers();
+            return Ok(user);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task <IActionResult> AddUsers([FromBody] RegisterUserDTO userDTO)
+        public async Task<IActionResult> AddUsers([FromBody] RegisterUserDTO userDTO)
         {
             if (userDTO == null)
                 return BadRequest("Invalid user data.");
-            await _authService.AddUserAsync(userDTO);
-            return Ok();
+
+            bool success = await _authService.AddUserAsync(userDTO);
+            if (!success)
+                return Conflict("User already exists or failed to add user.");
+
+            return Ok(new { message = "User added successfully!" });
         }
+
+        [Authorize(Roles = "Admin,User")]
         [HttpPut]
-        public async Task <IActionResult>UpdateUserInfo ([FromBody]UserDTO userDTO)
+        public async Task<IActionResult> UpdateUserInfo([FromBody] UserDTO userDTO)
         {
             if (userDTO == null)
                 return BadRequest();
-            await _authService.UpdateUserInfo(userDTO);
+
+            bool updated = await _authService.UpdateUserInfo(userDTO);
+            if (!updated)
+                return NotFound("User not found or update failed.");
+
             return Ok(new { message = "User information updated successfully!" });
+
         }
 
-        [HttpDelete]
-        [Route("{userId}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
             if (userId <= 0)
                 return BadRequest("Invalid user ID.");
-            await _authService.DeleteUser(userId);
+
+            bool deleted = await _authService.DeleteUser(userId);
+            if (!deleted)
+                return NotFound("User not found or delete failed.");
+
             return Ok(new { message = "User deleted successfully!" });
         }
-}}
+
+    }
+}
