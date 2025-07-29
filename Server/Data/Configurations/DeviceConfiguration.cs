@@ -9,23 +9,21 @@ namespace projServer.Data.Configurations
         public void Configure(EntityTypeBuilder<DeviceEntity> builder)
         {
           
-            builder.ToTable("PCs");
+            builder.ToTable("Devices");
 
-            builder.HasKey(pc => pc.DeviceID);
+            builder.HasKey(devices => devices.DeviceID);
 
-            builder.Property(pc => pc.Tag)
+            builder.Property(devices => devices.Tag)
                    .IsRequired()
                    .HasMaxLength(100);
-            builder.Property(pc => pc.Status)
+            builder.Property(devices => devices.Status)
                 .IsRequired()
                 .HasConversion<string>(); 
-
-            builder.HasOne(pc => pc.Room)
-                   .WithMany(r => r.PCs)   
-                   .HasForeignKey(pc => pc.RoomId)
+            builder.HasOne(devices => devices.Room)
+                   .WithMany(r => r.Devices)   
+                   .HasForeignKey(devices => devices.RoomId)
                    .OnDelete(DeleteBehavior.Cascade); 
-          
-            builder.Property(pc => pc.DeviceID)
+            builder.Property(devices => devices.DeviceID)
                    .ValueGeneratedOnAdd();
         }
     }
