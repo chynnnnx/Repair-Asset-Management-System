@@ -7,6 +7,6 @@ namespace projServer.Services.Interfaces
         Task AddDeviceAsync(DeviceDTO deviceDto);
         Task<List<DeviceDTO>> GetAllDeviceAsync();
         Task<bool> UpdateDeviceAsync(DeviceDTO deviceDto);
-        Task DeleteDevice(int id);
+        Task<bool> DeleteDeviceAsync(int id);
     }
 }
