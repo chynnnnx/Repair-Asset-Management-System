@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using projServer.Services.Interfaces;
@@ -21,10 +21,13 @@ namespace projServer.Controllers
         public async Task<IActionResult> AddRoom([FromBody] RoomDTO roomDto)
         {
             if (roomDto == null)
-                return BadRequest();
+                return BadRequest("Room data is required.");
 
-            await _roomService.AddRoomAsync(roomDto);
-            return Ok(new { message = "Room added successfully!" });
+            var success = await _roomService.AddRoomAsync(roomDto);
+            if (success)
+                return Ok(new { message = "Room added successfully" });
+
+            return StatusCode(500, new { message = "Failed to add room." });
         }
 
         [Authorize(Roles = "User,Admin")]
@@ -41,7 +44,8 @@ namespace projServer.Controllers
         {
             var room = await _roomService.GetRoomByIdAsync(id);
             if (room == null)
-                return NotFound();
+                return NotFound(new { message = $"Room with ID {id} not found." });
+
             return Ok(room);
         }
 
@@ -50,18 +54,25 @@ namespace projServer.Controllers
         public async Task<IActionResult> UpdateRoom([FromBody] RoomDTO roomDto)
         {
             if (roomDto == null)
-                return BadRequest();
+                return BadRequest("Room data is required.");
 
-            await _roomService.UpdateRoomAsync(roomDto);
-            return Ok(new { message = "Room updated successfully!" });
+            var success = await _roomService.UpdateRoomAsync(roomDto);
+            if (success)
+                return Ok(new { message = "updated successfully" });
+
+            return NotFound(new { message = " Update failed." });
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
-            await _roomService.DeleteRoomAsync(id);
-            return Ok(new { message = "Room deleted successfully!" });
+            var success = await _roomService.DeleteRoomAsync(id);
+            if (success)
+                return Ok(new { message = "Room deleted successfully" });
+
+            return NotFound(new { message = $"Room with ID {id} not found or delete failed." });
         }
     }
+
 }
