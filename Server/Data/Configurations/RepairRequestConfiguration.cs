@@ -15,14 +15,14 @@ namespace projServer.Data.Configurations
                    .IsRequired();
 
             builder.HasOne(r => r.Device)
-          .WithMany(d => d.RepairRequests) 
-          .HasForeignKey(r => r.DeviceId)
-          .OnDelete(DeleteBehavior.Cascade);
+                  .WithMany(d => d.RepairRequests) 
+                  .HasForeignKey(r => r.DeviceId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.ReportedByUser)
-              .WithMany(u => u.RepairRequestsReported)
-               .HasForeignKey(x => x.ReportedByUserId)
-               .OnDelete(DeleteBehavior.Cascade);
+                  .WithMany(u => u.RepairRequestsReported)
+                  .HasForeignKey(x => x.ReportedByUserId)
+                  .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
