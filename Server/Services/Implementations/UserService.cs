@@ -1,4 +1,3 @@
-﻿
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -6,7 +5,6 @@ using Shared.DTOs;
 using projServer.Entities;
 using projServer.Repositories.Interfaces;
 using projServer.Services.Interfaces;
-
 using Shared.DTOs.Auth;
 using Shared.Enums;
 
@@ -96,46 +94,62 @@ namespace projServer.Services.Implementations
                 throw;
             }
         }
-        public async Task AddUserAsync(RegisterUserDTO userDTO)
+        public async Task<bool> AddUserAsync(RegisterUserDTO userDTO)
         {
             try
             {
+                var existingUser = await _userRepository.GetByEmailAsync(userDTO.Email);
+                if (existingUser != null)
+                    return false;
+
                 var userEntity = _mapper.Map<UserEntity>(userDTO);
                 userEntity.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDTO.PasswordHash);
                 await _userRepository.AddAsync(userEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to add user: {Email}", userDTO.Email);
-                throw;
+                return false;
             }
         }
 
-        public async Task UpdateUserInfo (UserDTO userDTO)
+        public async Task<bool> UpdateUserInfo(UserDTO userDTO)
         {
             try
             {
+                var existingUser = await _userRepository.GetByIdAsync(userDTO.UserID);
+                if (existingUser == null)
+                    return false;
+
                 var userEntity = _mapper.Map<UserEntity>(userDTO);
                 await _userRepository.UpdateAsync(userEntity);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to update user info: {Email}", userDTO.Email);
-                throw;
+                return false;
             }
         }
 
-        public async Task DeleteUser(int userId)
+        public async Task<bool> DeleteUser(int userId)
         {
             try
             {
+                var existingUser = await _userRepository.GetByIdAsync(userId);
+                if (existingUser == null)
+                    return false;
+
                 await _userRepository.DeleteAsync(userId);
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to delete user with ID: {UserId}", userId);
-                throw;
+                return false;
             }
         }
+
     }
 }
