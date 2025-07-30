@@ -1,0 +1,185 @@
+﻿@inherits AddEditUserDialogBase
+
+<link href="css/components/admin/UserDialogs.css" rel="stylesheet" />
+
+
+<MudDialog MaxWidth="MaxWidth.Medium" DisableMaxHeight="true" Style="overflow: visible;">
+    <TitleContent>
+        <div class="user-dialog-header">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Size="Size.Medium" Class="mr-3" />
+            <MudText Typo="Typo.h6" Class="font-weight-semibold">
+                @(IsEditMode ? "Edit User" : "Update User Information")
+            </MudText>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        <MudContainer>
+            <MudForm @ref="form" Model="user">
+                <MudStack Spacing="4">
+
+                    <MudPaper Elevation="1" Class="pa-4 user-section-paper">
+                        <MudStack Spacing="3">
+                            <div class="user-section-header">
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-2 icon-primary" />
+                                <MudText Typo="Typo.subtitle1" Class="font-weight-semibold text-primary">
+                                    Personal Information
+                                </MudText>
+                            </div>
+
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="First Name"
+                                                  @bind-Value="user.FirstName"
+                                                  Required="true"
+                                                  For="@(() => user.FirstName)"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Dense"
+                                                  Class="primary-field" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Last Name"
+                                                  @bind-Value="user.LastName"
+                                                  Required="true"
+                                                  For="@(() => user.LastName)"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Dense"
+                                                  Class="primary-field" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Middle Name"
+                                                  @bind-Value="user.MiddleName"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Dense"
+                                                  Class="primary-field" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudSelect Label="Gender"
+                                               @bind-Value="user.Gender"
+                                               Required="true"
+                                               Variant="Variant.Outlined"
+                                               Margin="Margin.Dense"
+                                               AnchorOrigin="Origin.BottomCenter"
+                                               Class="primary-field">
+                                        <MudSelectItem Value="@("Male")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Male" Size="Size.Small" Class="mr-2" Color="Color.Info" />
+                                                Male
+                                            </div>
+                                        </MudSelectItem>
+                                        <MudSelectItem Value="@("Female")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Female" Size="Size.Small" Class="mr-2" Color="Color.Secondary" />
+                                                Female
+                                            </div>
+                                        </MudSelectItem>
+                                        <MudSelectItem Value="@("Other")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-2" Color="Color.Default" />
+                                                Other
+                                            </div>
+                                        </MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            </MudGrid>
+                        </MudStack>
+                    </MudPaper>
+
+                    <MudPaper Elevation="1" Class="pa-4 user-section-paper">
+                        <MudStack Spacing="3">
+                            <div class="user-section-header">
+                                <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Size="Size.Small" Class="mr-2 icon-primary" />
+                                <MudText Typo="Typo.subtitle1" Class="font-weight-semibold text-primary">
+                                    Account Details
+                                </MudText>
+                            </div>
+
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12">
+                                    <MudTextField Label="Email Address"
+                                                  @bind-Value="user.Email"
+                                                  Required="true"
+                                                  For="@(() => user.Email)"
+                                                  Variant="Variant.Outlined"
+                                                  Margin="Margin.Dense"
+                                                  InputType="InputType.Email"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.Email"
+                                                  Class="primary-field" />
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudSelect T="UserRole"
+                                               Label="User Role"
+                                               @bind-Value="user.Role"
+                                               Required="true"
+                                               Variant="Variant.Outlined"
+                                               Margin="Margin.Dense"
+                                               Class="primary-field">
+                                        <MudSelectItem Value="@UserRole.Admin">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Class="mr-2" Color="Color.Error" />
+                                                <MudText Typo="Typo.body1">Administrator</MudText>
+                                            </div>
+                                        </MudSelectItem>
+                                        <MudSelectItem Value="@UserRole.User">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-2" Color="Color.Info" />
+                                                <MudText Typo="Typo.body1">Standard User</MudText>
+                                            </div>
+                                        </MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            </MudGrid>
+                        </MudStack>
+                    </MudPaper>
+
+                </MudStack>
+
+            
+                <DialogActions>
+                    <div class="update-actions">
+                        <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="w-full">
+                            <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                                <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" Class="mr-1" />
+                                @DateTime.Now.ToString("MMM dd, yyyy - HH:mm")
+                            </MudText>
+
+                            <MudStack Row Spacing="2">
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Default"
+                                           Size="Size.Small"
+                                           OnClick="Cancel"
+                                           StartIcon="@Icons.Material.Filled.Close"
+                                           Class="text-none">
+                                    Cancel
+                                </MudButton>
+
+                                <MudButton Variant="Variant.Filled"
+                                           Size="Size.Small"
+                                           OnClick="Submit"
+                                           Disabled="@loading"
+                                           StartIcon="@(loading ? Icons.Material.Filled.Loop : Icons.Material.Filled.Save)"
+                                           Class="text-none btn-primary">
+                                    @if (loading)
+                                    {
+                                        <MudProgressCircular Size="Size.Small"
+                                                             Indeterminate="true"
+                                                             Class="mr-2 text-white" />
+                                        <span>@(IsEditMode ? "Updating..." : "Updating...")</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@(IsEditMode ? "Update User" : "Update User")</span>
+                                    }
+                                </MudButton>
+                            </MudStack>
+                        </MudStack>
+                    </div>
+                </DialogActions>
+
+            </MudForm>
+        </MudContainer>
+    </DialogContent>
+
+</MudDialog>
+

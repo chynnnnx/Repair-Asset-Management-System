@@ -1,0 +1,49 @@
+﻿@typeparam TItem
+
+<MudCard Elevation="4" Style="border-radius: 16px;">
+    <MudCardHeader Style="background: #F4F4F4; border-radius: 16px 16px 0 0;">
+        <CardHeaderContent>
+            <MudGrid AlignItems="Center" Justify="Justify.SpaceBetween">
+                <MudItem xs="12" md="6">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #00415a;">
+                        @if (!string.IsNullOrWhiteSpace(Icon))
+                        {
+                            <MudIcon Icon="@Icon" Class="mr-2" Style="color: #00415a;" />
+                        }
+                        @Title
+                    </MudText>
+                </MudItem>
+
+                @if (Toolbar is not null)
+                {
+                    <MudItem xs="12" md="6" Class="d-flex justify-end">
+                        @Toolbar
+                    </MudItem>
+                }
+            </MudGrid>
+        </CardHeaderContent>
+    </MudCardHeader>
+
+    <MudCardContent Class="pa-0">
+        
+            <SearchableDataGrid TItem="TItem"
+                                Items="Items"
+                                SearchSelector="SearchSelector"
+                                SelectedItemsChanged="SelectedItemsChanged">
+                <Columns>
+                    @Columns
+                </Columns>
+            </SearchableDataGrid>
+     
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public List<TItem> Items { get; set; } = new();
+    [Parameter] public Func<TItem, string> SearchSelector { get; set; } = _ => "";
+    [Parameter] public EventCallback<HashSet<TItem>> SelectedItemsChanged { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+    [Parameter] public RenderFragment? Columns { get; set; }
+}

@@ -1,0 +1,152 @@
+﻿@page "/report-summary"
+@inherits ReportSummaryBase
+
+<link href="css/components/admin/ReportManagement.css" rel="stylesheet" />
+
+<RoleGuard RequiredRole="Admin">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+
+        <MudPaper Class="pa-6 mb-6 summary-paper" Elevation="1">
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudDatePicker Label="Select Report Month"
+                                   Date="_month"
+                                   DateChanged="OnDateChanged"
+                                   OpenTo="OpenTo.Month"
+                                   FixYear="@DateTime.Today.Year"
+                                   FixDay="@DateTime.Today.Day"
+                                   DateFormat="MMMM yyyy"
+                                   Color="Color.Info"
+                                   Variant="Variant.Outlined"
+                                   HelperText="Choose month to generate report"
+                                   Class="rounded-input"
+                                   StartAdornment="@Icons.Material.Filled.CalendarMonth" />
+                </MudItem>
+                <MudItem xs="12" md="6" Class="d-flex align-end justify-end">
+                    <MudButtonGroup Variant="Variant.Outlined" Color="Color.Secondary" Class="export-button-group">
+                        <MudButton OnClick="DownloadPdf"
+                                   StartIcon="@Icons.Material.Filled.PictureAsPdf"
+                                   Class="button-rounded-left text-transform-none">
+                            Export PDF
+                        </MudButton>
+                        <MudButton OnClick="DownloadExcel"
+                                   StartIcon="@Icons.Material.Filled.TableChart"
+                                   Class="button-rounded-right text-transform-none">
+                            Export Excel
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        <MudPaper Class="pa-6 summary-paper" Elevation="2">
+            <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+                <div>
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">
+                        <MudIcon Icon="@Icons.Material.Filled.ViewList" Class="mr-2" />
+                        Fixed & Replaced Reports
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Detailed breakdown of repair activities
+                    </MudText>
+                </div>
+                @if (Reports.Any())
+                {
+                    <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircle"
+                             Color="Color.Success"
+                             Size="Size.Medium"
+                             Class="record-count-chip">
+                        @Reports.Count Records Found
+                    </MudChip>
+                }
+            </MudStack>
+
+            @if (Reports.Any())
+            {
+                <MudDataGrid T="RepairRequestDTO"
+                             Items="Reports"
+                             Dense="false"
+                             Hover="true"
+                             Bordered="false"
+                             Striped="true"
+                             Elevation="0"
+                             Class="data-grid-container">
+                    <Columns>
+                        <PropertyColumn T="RepairRequestDTO" TProperty="int"
+                                        Property="x => x.RepairId"
+                                        Title="ID"
+                                        HeaderStyle="header-style">
+                            <CellTemplate>
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Variant="Variant.Text"
+                                         Class="repair-id-chip">
+                                    #@context.Item.RepairId
+                                </MudChip>
+                            </CellTemplate>
+                        </PropertyColumn>
+
+                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                                        Property="x => x.DeviceTag"
+                                        Title="Device"
+                                        HeaderStyle="header-style;" />
+
+                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                                        Property="x => x.RoomName"
+                                        Title="Location"
+                                        HeaderStyle="header-style" />
+
+                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                                        Property="x => x.ReportedDatePH"
+                                        Title="Reported"
+                                        HeaderStyle="header-style" />
+
+                        <TemplateColumn T="RepairRequestDTO" Title="Status" HeaderStyle="header-style">
+                            <CellTemplate Context="cellContext">
+                                <MudChip T="string"
+                                         Size="Size.Medium"
+                                         Color="@GetStatusColor(cellContext.Item.Status)"
+                                         Icon="@(cellContext.Item.Status == RepairStatus.Fixed ? Icons.Material.Filled.Build : Icons.Material.Filled.SwapHoriz)"
+                                         Class="status-indicator-chip">
+                                    @GetStatusLabel(cellContext.Item.Status)
+                                </MudChip>
+                            </CellTemplate>
+                        </TemplateColumn>
+
+                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                                        Property="x => x.ResolvedDatePH"
+                                        Title="Resolved"
+                                        HeaderStyle="header-style" />
+
+                        <TemplateColumn T="RepairRequestDTO" Title="Remarks" HeaderStyle="header-style">
+                            <CellTemplate Context="cellContext">
+                                <MudText Typo="Typo.body2" Class="remarks-truncated">
+                                    @(string.IsNullOrEmpty(cellContext.Item.Remarks) ? "—" : cellContext.Item.Remarks)
+                                </MudText>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+
+                    <PagerContent>
+                        <MudDataGridPager T="RepairRequestDTO"
+                                          PageSizeOptions="new int[]{10, 25, 50,100}"
+                                          InfoFormat="{first_item}-{last_item} of {all_items}"
+                                          Class="pager-content" />
+                    </PagerContent>
+                </MudDataGrid>
+            }
+            else
+            {
+                <MudPaper Class="pa-8 text-center no-results-container" Elevation="0">
+                    <MudIcon Icon="@Icons.Material.Filled.SearchOff" Size="Size.Large" Color="Color.Secondary" Class="mb-4" />
+                    <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mb-2">No Reports Found</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        No repair reports were found for the selected month. Try selecting a different month.
+                    </MudText>
+                </MudPaper>
+            }
+        </MudPaper>
+
+        <div class="spacer-100"></div>
+    </MudContainer>
+</RoleGuard>

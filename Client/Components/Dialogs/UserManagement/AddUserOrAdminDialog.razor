@@ -1,0 +1,156 @@
+﻿@inherits AddEditUserDialogBase
+
+
+<link href="css/components/admin/UserDialogs.css" rel="stylesheet" />
+<MudDialog>
+    <TitleContent>
+        <div class="dialog-title">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Size="Size.Medium" Class="mr-3" />
+            <MudText Typo="Typo.h6" Class="dialog-title-text">
+                Add New User to RAMS
+            </MudText>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        <MudContainer Class="dialog-content-container">
+            <MudForm @ref="_form" Model="newUser">
+                <MudStack Spacing="4">
+
+                    <MudPaper Elevation="1" Class="form-section">
+                        <MudStack Spacing="3">
+                            <div class="section-header">
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="section-icon" />
+                                <MudText Typo="Typo.subtitle1" Class="section-title">Personal Information</MudText>
+                            </div>
+
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="First Name" @bind-Value="newUser.FirstName" Required="true" For="@(() => newUser.FirstName)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="input-primary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Badge" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Last Name" @bind-Value="newUser.LastName" Required="true" For="@(() => newUser.LastName)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="input-primary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Badge" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Middle Name" @bind-Value="newUser.MiddleName" Required="true" For="@(() => newUser.MiddleName)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="input-primary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Badge" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudSelect Label="Gender" @bind-Value="newUser.Gender" Required="true" For="@(() => newUser.Gender)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="input-primary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Wc">
+                                        <MudSelectItem Value="@("Male")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Male" Size="Size.Small" Class="mr-2" Color="Color.Info" />
+                                                Male
+                                            </div>
+                                        </MudSelectItem>
+                                        <MudSelectItem Value="@("Female")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Female" Size="Size.Small" Class="mr-2" Color="Color.Secondary" />
+                                                Female
+                                            </div>
+                                        </MudSelectItem>
+                                        <MudSelectItem Value="@("Other")">
+                                            <div class="d-flex align-center">
+                                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-2" Color="Color.Default" />
+                                                Other
+                                            </div>
+                                        </MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            </MudGrid>
+                        </MudStack>
+                    </MudPaper>
+
+                    <MudPaper Elevation="1" Class="form-section">
+                        <MudStack Spacing="3">
+                            <div class="section-header">
+                                <MudIcon Icon="@Icons.Material.Filled.Security" Size="Size.Small" Class="section-icon" />
+                                <MudText Typo="Typo.subtitle1" Class="section-title">Account Security</MudText>
+                            </div>
+
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12">
+                                    <MudTextField Label="Email Address" @bind-Value="newUser.Email" Required="true" For="@(() => newUser.Email)" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Email" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" Class="input-primary" HelperText="This will be used for login and notifications" />
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudTextField Label="Password" @bind-Value="newUser.PasswordHash" Required="true" For="@(() => newUser.PasswordHash)" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="@passwordInputType" Adornment="Adornment.End" AdornmentIcon="@passwordIcon" OnAdornmentClick="TogglePasswordVisibility" AdornmentAriaLabel="Show Password" Class="input-primary" HelperText="Minimum 8 characters with letters and numbers" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudStack>
+                    </MudPaper>
+
+                    <MudPaper Elevation="1" Class="form-section">
+                        <MudStack Spacing="3">
+                            <div class="section-header">
+                                <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Small" Class="section-icon" />
+                                <MudText Typo="Typo.subtitle1" Class="section-title">System Access</MudText>
+                            </div>
+
+                            <MudSelect @bind-Value="newUser.Role" Label="User Role" Required="true" For="@(() => newUser.Role)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="input-primary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Shield" HelperText="Select the appropriate access level for this user">
+                                <MudSelectItem Value="UserRole.Admin">
+                                    <div class="d-flex align-center">
+                                        <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Class="mr-3" Color="Color.Error" />
+                                        <div>
+                                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Administrator</MudText>
+                                   
+                                        </div>
+                                    </div>
+                                </MudSelectItem>
+                                <MudSelectItem Value="UserRole.User">
+                                    <div class="d-flex align-center">
+                                        <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3" Color="Color.Info" />
+                                        <div>
+                                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Standard User</MudText>
+                                     
+                                        </div>
+                                    </div>
+                                </MudSelectItem>
+                            </MudSelect>
+                        </MudStack>
+                    </MudPaper>
+                    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="security-alert">
+                        <div class="d-flex align-start">
+                            <MudIcon Icon="@Icons.Material.Filled.Security" Size="Size.Small" Class="mr-2 mt-1 section-icon" />
+                            <div>
+                                <MudText Typo="Typo.body2" Style="font-weight: 500; margin-bottom: 4px;">Security Guidelines</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                                    • User will receive an invitation email with login instructions<br />
+                                    • Password should be strong and unique<br />
+                                    • Account will be active immediately after creation
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudAlert>
+                </MudStack>
+                 <DialogActions>
+             <div class="dialog-actions-footer">
+            <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="full-width">
+                <div class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" Class="mr-1" Color="Color.Tertiary" />
+                    <MudText Typo="Typo.caption" Color="Color.Tertiary">@DateTime.Now.ToString("MMM dd, yyyy - HH:mm")</MudText>
+                </div>
+
+                <MudStack Row Spacing="2">
+                    <MudButton Variant="Variant.Text" Color="Color.Default" OnClick="Cancel" StartIcon="@Icons.Material.Filled.Close" Class="btn-cancel" Disabled="@isLoading">
+                        Cancel
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" OnClick="AddUser" Disabled="@isLoading" StartIcon="@(isLoading ? Icons.Material.Filled.Loop : Icons.Material.Filled.PersonAdd)" Class="btn-submit">
+                        @if (isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2 spinner-white" />
+                            <span>Creating User...</span>
+                        }
+                        else
+                        {
+                            <span>Create User Account</span>
+                        }
+                    </MudButton>
+                </MudStack>
+            </MudStack>
+        </div>
+    </DialogActions>
+            </MudForm>
+        </MudContainer>
+    </DialogContent>
+
+   
+</MudDialog>

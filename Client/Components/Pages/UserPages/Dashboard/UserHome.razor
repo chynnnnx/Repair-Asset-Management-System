@@ -1,0 +1,188 @@
+﻿@page "/userhome"
+@inherits UserHomeBase
+
+<link href="css/components/user/UserHome.css" rel="stylesheet" />
+<RoleGuard RequiredRole="User" />
+
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4 px-4">
+    <MudText Typo="Typo.h3" Class="dashboard-title">
+        Dashboard
+    </MudText>
+
+    @if (isLoading)
+    {
+        <MudGrid Spacing="3">
+            @for (int i = 0; i < 4; i++)
+            {
+                <MudItem xs="12" sm="6" md="3" xl="2">
+                    <MudCard Class="card-loading">
+                        <MudCardContent>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="80px" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid Spacing="3">
+            <MudItem xs="12" sm="6" lg="3" xl="2">
+                <MudCard class="card border-primary">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <div>
+                                <MudIcon Icon="@Icons.Material.Filled.Build" class="icon-primary" />
+                            </div>
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-primary text-bold">
+                                    @myRepairRequests
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    My Requests
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" lg="3" xl="2">
+                <MudCard class="card border-warning">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <div>
+                                <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" class="icon-warning" />
+                            </div>
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-warning text-bold">
+                                    @myPendingRequests
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    Pending
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" lg="3" xl="2">
+                <MudCard class="card border-info">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <div>
+                                <MudIcon Icon="@Icons.Material.Filled.MeetingRoom" class="icon-info" />
+                            </div>
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-info text-bold">
+                                    @totalRooms
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    Available Rooms
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" lg="3" xl="2">
+                <MudCard class="card border-success">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <div>
+                                <MudIcon Icon="@Icons.Material.Filled.Laptop" class="icon-success" />
+                            </div>
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-success text-bold">
+                                    @totalDevices
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    All Devices
+                                </MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" lg="3" xl="2" Class="d-none d-xl-flex">
+                <MudCard Class="card border-purple">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="icon-purple" />
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-bold text-purple">
+                                    @(userRepairRequests?.Count(r => r.Status.ToString() == "Fixed") ?? 0)
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">Completed</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" lg="3" xl="2" Class="d-none d-xl-flex">
+                <MudCard Class="card border-grey">
+                    <MudCardContent>
+                        <div class="card-content">
+                            <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="icon-grey" />
+                            <div class="card-text-right">
+                                <MudText Typo="Typo.h4" Class="text-bold text-grey">@($"{DateTime.Now.Hour}h")</MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">Current Time</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+
+        <MudText Typo="Typo.h5" Class="section-title">
+            System Information
+        </MudText>
+
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="6" lg="4">
+                <MudCard Class="info-card">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="card-heading">Request Status Guide</MudText>
+                        <div class="chip-row">
+                            <MudChip T="string" Size="Size.Small" Class="chip chip-pending">Pending</MudChip>
+                            <MudText Typo="Typo.body2">Request submitted, awaiting review</MudText>
+                        </div>
+                        <div class="chip-row">
+                            <MudChip T="string" Size="Size.Small" Class="chip chip-inprogress">In Progress</MudChip>
+                            <MudText Typo="Typo.body2">Technician is working on the issue</MudText>
+                        </div>
+                        <div class="chip-row">
+                            <MudChip T="string" Size="Size.Small" Class="chip chip-fixed">Fixed</MudChip>
+                            <MudText Typo="Typo.body2">Issue has been resolved</MudText>
+                        </div>
+                        <div class="chip-row">
+                            <MudChip T="string" Size="Size.Small" Class="chip chip-replaced">Replaced</MudChip>
+                            <MudText Typo="Typo.body2">Device has been replaced</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" md="6" lg="4">
+                <MudCard Class="info-card">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="card-heading">Need Help?</MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">
+                            If you're experiencing issues with any device, don't hesitate to submit a repair request.
+                        </MudText>
+                        <MudText Typo="Typo.body2" Class="mb-2">
+                            Our technical team typically responds within 24 hours.
+                        </MudText>
+                        <MudText Typo="Typo.caption" Class="text-muted">
+                            Last system update: @DateTime.Now.ToString("MMM dd, yyyy")
+                        </MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>

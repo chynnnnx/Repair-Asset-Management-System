@@ -1,0 +1,117 @@
+﻿@page "/report-submitted"
+@inherits ReportRepairRequestBase
+
+<link href="css/components/user/ReportRepairManagement.css" rel="stylesheet" />
+
+<RoleGuard RequiredRole="User"/>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4 submitted-container">
+    <MudGrid>
+        <MudItem xs="12">
+            <DataCard TItem="RepairRequestDTO"
+                      Title=@($"Submitted Repair Reports ({request.Count} reports)")
+                      Icon="@Icons.Material.Filled.Assignment"
+                      Items="request"
+                      SearchSelector="@((request) => $"{request.DeviceTag} {request.RoomName}")">
+                <Columns>
+                    <PropertyColumn T="RepairRequestDTO" TProperty="int" Property="x => x.RepairId" Title="Repair ID">
+                        <CellTemplate>
+                            <MudChip T="string"
+                                     Size="Size.Small"
+                                     Variant="Variant.Text"
+                                     Class="repair-id-chip">
+                                #@context.Item.RepairId
+                            </MudChip>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="RepairRequestDTO" TProperty="string" Property="x => x.DeviceTag" Title="Device Name">
+                        <CellTemplate>
+                            <div class="cell-layout">
+                                <MudIcon Icon="@Icons.Material.Filled.DeviceHub"
+                                         Size="Size.Small"
+                                         Class="icon-small" />
+                                <MudText Typo="Typo.caption"
+                                         Class="cell-text max-width-120"
+                                         Title="@context.Item.DeviceTag">
+                                    @context.Item.DeviceTag
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="RepairRequestDTO" TProperty="string" Property="x => x.RoomName" Title="Room Name">
+                        <CellTemplate>
+                            <div class="cell-layout">
+                                <MudIcon Icon="@Icons.Material.Filled.Room"
+                                         Size="Size.Small"
+                                         Class="icon-small" />
+                                <MudText Typo="Typo.caption"
+                                         Class="cell-text max-width-100"
+                                         Title="@context.Item.RoomName">
+                                    @context.Item.RoomName
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="RepairRequestDTO" TProperty="string" Property="x => x.ReportedDatePH" Title="Date Reported">
+                        <CellTemplate>
+                            <div class="cell-layout">
+                                <MudIcon Icon="@Icons.Material.Filled.CalendarToday"
+                                         Size="Size.Small"
+                                         Class="icon-small" />
+                                <MudText Typo="Typo.caption" Class="cell-text">
+                                    @context.Item.ReportedDatePH
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <TemplateColumn T="RepairRequestDTO" Title="Status">
+                        <CellTemplate Context="cellContext">
+                            <div class="cell-layout">
+                                <MudIcon Icon="@GetStatusIcon(cellContext.Item.Status)"
+                                         Size="Size.Small"
+                                         Class="icon-small" />
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Color="@GetStatusColor(cellContext.Item.Status)"
+                                         Class="status-chip">
+                                    @GetStatusLabel(cellContext.Item.Status)
+                                </MudChip>
+                            </div>
+                        </CellTemplate>
+                    </TemplateColumn>
+
+                    <PropertyColumn T="RepairRequestDTO" TProperty="string" Property="x => x.ResolvedDatePH" Title="Resolved Date">
+                        <CellTemplate>
+                            <div class="cell-layout">
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                         Size="Size.Small"
+                                         Class="icon-small" />
+                                <MudText Typo="Typo.caption" Class="cell-text">
+                                    @(string.IsNullOrEmpty(context.Item.ResolvedDatePH) ? "-" : context.Item.ResolvedDatePH)
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="RepairRequestDTO" TProperty="string" Property="x => x.Remarks" Title="Remarks">
+                        <CellTemplate>
+                            <div class="cell-layout">
+                                <MudIcon Icon="@Icons.Material.Filled.Comment"
+                                         Size="Size.Small"
+                                         Class="icon-remarks" />
+                                <MudText Typo="Typo.caption"
+                                         Class="cell-text max-width-150"
+                                         Title="@context.Item.Remarks">
+                                    @(string.IsNullOrEmpty(context.Item.Remarks) ? "-" : context.Item.Remarks)
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+                </Columns>
+            </DataCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

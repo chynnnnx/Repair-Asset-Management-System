@@ -1,0 +1,87 @@
+﻿@page "/manage-users"
+@inherits ManageUserBase
+
+<RoleGuard RequiredRole="Admin">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+        <MudGrid>
+            <MudItem xs="12">
+                <DataCard TItem="UserDTO"
+                          Title=@($"Users List ({users.Count} users)")
+                          Icon="@Icons.Material.Filled.People"
+                          Items="users"
+                          SearchSelector="user => user.Role.ToString()"
+                          SelectedItemsChanged="OnSelectionChanged">
+
+                    <Toolbar>
+                        <MudStack Row Spacing="2">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Success"
+                                       StartIcon="@Icons.Material.Filled.PersonAdd"
+                                       OnClick="OpenAddUserDialog"
+                                       Size="Size.Small">
+                                Add Admin / User
+                            </MudButton>
+                            <MudButton Disabled="!selectedUser.Any()"
+                                       OnClick="DeleteSelectedUsers"
+                                       Color="Color.Error"
+                                       Variant="Variant.Filled"
+                                       StartIcon="@Icons.Material.Filled.Delete"
+                                       Size="Size.Small">
+                                Delete Selected (@selectedUser.Count)
+                            </MudButton>
+                        </MudStack>
+                    </Toolbar>
+
+                    <Columns>
+                        <SelectColumn T="UserDTO" />
+                        <PropertyColumn T="UserDTO" TProperty="int" Property="x => x.UserID" Title="User ID">
+                            <CellTemplate>
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Variant="Variant.Text"
+                                         Style="color: #00415a; background-color: #F4F4F4;">
+                                    #@context.Item.UserID
+                                </MudChip>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.FirstName" Title="First Name">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.Person"
+                                             Size="Size.Small"
+                                             Class="mr-2"
+                                             Style="color: #00415a;" />
+                                    <MudText>@context.Item.FirstName</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.LastName" Title="Last Name" />
+                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.MiddleName" Title="Middle Name" />
+                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.Gender" Title="Gender" />
+                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.Email" Title="Email" />
+                        <TemplateColumn T="UserDTO" Title="Role">
+                            <CellTemplate Context="cellContext">
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Color="@GetRoleColor(cellContext.Item.Role)"
+                                         Style="border-radius: 8px; font-weight: 500;">
+                                    @GetRoleLabel(cellContext.Item.Role)
+                                </MudChip>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn T="UserDTO" Title="Edit">
+                            <CellTemplate Context="cellContext">
+                                <MudButton OnClick="@(() => Update(cellContext.Item))"
+                                           Size="Size.Small"
+                                           Variant="Variant.Filled"
+                                           Style="background-color: #00415a; color: white;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Edit" Size="Size.Small" />
+                                </MudButton>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </DataCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</RoleGuard>

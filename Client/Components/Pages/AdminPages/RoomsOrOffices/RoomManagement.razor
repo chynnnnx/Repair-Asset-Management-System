@@ -1,0 +1,97 @@
+﻿@page "/add-room"
+@inherits RoomManagementBase
+
+<link href="css/components/admin/RoomManagement.css" rel="stylesheet" />
+<RoleGuard RequiredRole="Admin">
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pa-6">
+        <MudGrid Spacing="4">
+            <MudItem xs="12" md="3">
+                <MudCard Elevation="4" Class="add-room-card">
+                    <MudCardHeader Class="add-room-card-header">
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6" Class="add-room-title">
+                                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2 add-room-icon" Size="Size.Small" />
+                                Add New Room
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent Class="pa-2">
+                        <MudTextField @bind-Value="roomName"
+                                      Label="Room Name"
+                                      Variant="Variant.Outlined"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.MeetingRoom"
+                                      Class="mb-3 room-input"
+                                      Size="Size.Small" />
+                    </MudCardContent>
+                    <MudCardActions Class="pa-2">
+                        <MudButton OnClick="AddRoom"
+                                   Variant="Variant.Filled"
+                                   FullWidth="true"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Size="Size.Small"
+                                   Class="add-room-button">
+                            Add Room
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" md="9">
+                <DataCard TItem="RoomDTO"
+                          Title=@($"Room List ({rooms.Count} rooms)")
+                          Icon="@Icons.Material.Filled.List"
+                          Items="rooms"
+                          SearchSelector="room => room.RoomName ?? string.Empty"
+                          SelectedItemsChanged="OnSelectionChanged">
+                    <Toolbar>
+                        <MudButton Disabled="!selectedRooms.Any()"
+                                   OnClick="DeleteSelectedRooms"
+                                   Color="Color.Error"
+                                   Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Filled.Delete"
+                                   Size="Size.Small">
+                            Delete Selected (@selectedRooms.Count)
+                        </MudButton>
+                    </Toolbar>
+
+                    <Columns>
+                        <SelectColumn T="RoomDTO" />
+                        <PropertyColumn T="RoomDTO" TProperty="int" Property="x => x.RoomId" Title="Room ID">
+                            <CellTemplate>
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Variant="Variant.Text"
+                                         Class="room-chip">
+                                    #@context.Item.RoomId
+                                </MudChip>
+                            </CellTemplate>
+                        </PropertyColumn>
+
+                        <PropertyColumn T="RoomDTO" TProperty="string" Property="x => x.RoomName" Title="Room Name">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.MeetingRoom"
+                                             Size="Size.Small"
+                                             Class="mr-2 room-icon" />
+                                    <MudText>@context.Item.RoomName</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+
+                        <TemplateColumn T="RoomDTO" Title="Edit">
+                            <CellTemplate Context="cellContext">
+                                <MudButton OnClick="@(() => Update(cellContext.Item))"
+                                           Size="Size.Small"
+                                           Variant="Variant.Filled"
+                                           Class="edit-room-button">
+                                    <MudIcon Icon="@Icons.Material.Filled.Edit" Size="Size.Small" />
+                                </MudButton>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </DataCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</RoleGuard>

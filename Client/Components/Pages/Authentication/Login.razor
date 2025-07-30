@@ -1,0 +1,66 @@
+﻿@page "/"
+@layout EmptyLayout
+@inherits SharedLoginBase
+
+<link href="css/site.css" rel="stylesheet" />
+
+<div class="login-background">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <MudPaper Class="glassmorphic-box" Elevation="0">
+        <div class="glass-inner-wrapper">
+            <div class="welcome-icon">
+                <MudIcon Icon="@Icons.Material.Filled.AccountCircle" />
+            </div>
+            <MudText Typo="Typo.h4" Class="login-title">Welcome Back</MudText>
+
+            <MudTextField Label="Email"
+                          @bind-Value="_email"
+                          Variant="Variant.Filled"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Email"
+                          Class="custom-textfield mb-4"
+                          FullWidth="true" />
+
+            <MudTextField @bind-Value="_password"
+                          Label="Password"
+                          Variant="Variant.Filled"
+                          InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                          OnAdornmentClick="@TogglePasswordVisibility"
+                          FullWidth="true"
+                          Class="custom-textfield mb-4" />
+
+            @if (!string.IsNullOrEmpty(_error))
+            {
+                <MudAlert Severity="Severity.Error" Dense="true" Class="custom-alert">@_error</MudAlert>
+            }
+
+            <MudButton OnClick="LoginAccount"
+                       Color="Color.Primary"
+                       Variant="Variant.Filled"
+                       FullWidth="true"
+                       Class="custom-button">
+                Sign In
+            </MudButton>
+
+            <MudText Class="register-text" Typo="Typo.body2">
+                Don't have an account?
+                <MudLink Href="/register-account" Class="register-link ml-1">Register here</MudLink>
+            </MudText>
+
+            @if (isLoading)
+            {
+                <div class="loading-overlay">
+                    <LoadingSpinner />
+                </div>
+            }
+        </div>
+    </MudPaper>
+</div>
+

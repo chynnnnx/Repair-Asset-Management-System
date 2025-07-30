@@ -1,0 +1,54 @@
+﻿
+<AuthorizeView Roles="Admin">
+    <MudNavLink Href="/adminhome" Icon="@Icons.Material.Filled.SpaceDashboard" IconColor="Color.Dark"
+                Style="margin-bottom: 4px;">
+        Dashboard
+    </MudNavLink>
+
+    <MudNavGroup Title="Manage Assets" Icon="@Icons.Material.Filled.Business" IconColor="Color.Dark"
+                 Expanded="false" Style="margin-bottom: 4px;">
+        <MudNavLink Href="/add-room" Icon="@Icons.Material.Filled.AddBusiness" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Add Room</MudNavLink>
+        <MudNavLink Href="/add-device" Icon="@Icons.Material.Filled.AddCircleOutline" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Add Devices</MudNavLink>
+    </MudNavGroup>
+
+   
+        <MudNavLink Href="/manage-users" Icon="@Icons.Material.Filled.AdminPanelSettings" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Manage Users</MudNavLink>
+
+
+    <MudNavLink Href="/devicelogs" Icon="@Icons.Material.Filled.BarChart" IconColor="Color.Dark"
+                Style="margin-bottom: 4px;">
+        Device Logs
+    </MudNavLink>
+
+    <MudNavLink Href="/report-management" Icon="@Icons.Material.Filled.Folder" IconColor="Color.Dark"
+                Style="margin-bottom: 4px;">
+    Report Repair Management
+    </MudNavLink>
+
+    <MudNavLink Href="/report-summary" Icon="@Icons.Material.Filled.CreateNewFolder" IconColor="Color.Dark"
+                Style="margin-bottom: 4px;">
+      Repair Management Summary
+    </MudNavLink>
+</AuthorizeView>
+
+
+<AuthorizeView Roles="User">
+    <MudNavLink Href="/userhome" Icon="@Icons.Material.Filled.SpaceDashboard" IconColor="Color.Dark"
+                Style="margin-bottom: 4px;">
+        Dashboard
+    </MudNavLink>
+
+        <MudNavLink Href="/rooms" Icon="@Icons.Material.Filled.Business" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Rooms</MudNavLink>
+        <MudNavLink Href="/devices" Icon="@Icons.Material.Filled.Computer" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Devices</MudNavLink>
+    
+        <MudNavLink Href="/report-repair" Icon="@Icons.Material.Filled.NoteAdd" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Add Report Form</MudNavLink>
+        <MudNavLink Href="/report-submitted" Icon="@Icons.Material.Filled.Folder" IconColor="Color.Default"
+                    Style="padding: 5px 24px;">Report Record</MudNavLink>
+  
+</AuthorizeView>

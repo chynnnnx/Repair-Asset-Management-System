@@ -1,0 +1,67 @@
+﻿@page "/devices"
+@inherits AssetsBase
+
+
+<RoleGuard RequiredRole="User">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+        <MudGrid>
+            <MudItem xs="12">
+                <DataCard TItem="DeviceDTO"
+                          Title=@($"Available Devices/Equipments ({device.Count} devices)")
+                          Icon="@Icons.Material.Filled.Devices"
+                          Items="device"
+                          SearchSelector="@((device) => $"{device.Tag} {device.RoomName}")">
+                    <Columns>
+                        <PropertyColumn T="DeviceDTO" TProperty="int" Property="x => x.DeviceID" Title="Device ID">
+                            <CellTemplate>
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Variant="Variant.Text"
+                                         Style="color: #00415a; background-color: #F4F4F4;">
+                                    #@context.Item.DeviceID
+                                </MudChip>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn T="DeviceDTO" TProperty="string" Property="x => x.Tag" Title="Device Name">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.DeviceHub"
+                                             Size="Size.Small"
+                                             Class="mr-2"
+                                             Style="color: #00415a;" />
+                                    <MudText>@context.Item.Tag</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <TemplateColumn T="DeviceDTO" Title="Status">
+                            <CellTemplate Context="cellContext">
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@GetStatusIcon(cellContext.Item.Status)"
+                                             Size="Size.Small"
+                                             Class="mr-2"
+                                             Style="color: #00415a;" />
+                                    <MudChip T="string"
+                                             Size="Size.Small"
+                                             Color="@GetStatusColor(cellContext.Item.Status)">
+                                        @GetStatusLabel(cellContext.Item.Status)
+                                    </MudChip>
+                                </div>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <PropertyColumn T="DeviceDTO" TProperty="string" Property="x => x.RoomName" Title="Room Name">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@Icons.Material.Filled.Room"
+                                             Size="Size.Small"
+                                             Class="mr-2"
+                                             Style="color: #00415a;" />
+                                    <MudText>@context.Item.RoomName</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+                    </Columns>
+                </DataCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</RoleGuard>

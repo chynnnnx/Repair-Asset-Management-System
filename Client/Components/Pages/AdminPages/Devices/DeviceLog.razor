@@ -1,0 +1,95 @@
+﻿@page "/devicelogs"
+@inject IDeviceLogService DeviceLogService
+
+<link href="css/components/admin/DeviceManagement.css" rel="stylesheet" />
+
+<RoleGuard RequiredRole="Admin"/>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+    <MudGrid>
+        <MudItem xs="12">
+            <DataCard TItem="DeviceLogDTO"
+                      Title=@($"Device Logs ({logs.Count} logs)")
+                      Icon="@Icons.Material.Filled.History"
+                      Items="logs"
+                      SearchSelector="log => log.Note ?? string.Empty">
+                <Columns>
+                    <PropertyColumn T="DeviceLogDTO" TProperty="int" Property="x => x.LogId" Title="Log ID">
+                        <CellTemplate>
+                            <MudChip T="string"
+                                     Size="Size.Small"
+                                     Variant="Variant.Text"
+                                     Class="log-chip">
+                                #@context.Item.LogId
+                            </MudChip>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="DeviceLogDTO" TProperty="int" Property="x => x.DeviceID" Title="Device ID">
+                        <CellTemplate>
+                            <div class="log-cell">
+                                <MudIcon Icon="@Icons.Material.Filled.Devices"
+                                         Size="Size.Small"
+                                         Class="log-icon" />
+                                <MudText Typo="Typo.caption" Class="log-text">
+                                    @context.Item.DeviceID
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="DeviceLogDTO" TProperty="string" Property="x => x.ActionByName" Title="Action By">
+                        <CellTemplate>
+                            <div class="log-cell">
+                                <MudIcon Icon="@Icons.Material.Filled.Person"
+                                         Size="Size.Small"
+                                         Class="log-icon" />
+                                <MudText Typo="Typo.caption"
+                                         Class="log-text log-ellipsis"
+                                         Title="@context.Item.ActionByName">
+                                    @context.Item.ActionByName
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <PropertyColumn T="DeviceLogDTO" TProperty="string" Property="x => x.Note" Title="Note">
+                        <CellTemplate>
+                            <div class="log-cell">
+                                <MudIcon Icon="@Icons.Material.Filled.Notes"
+                                         Size="Size.Small"
+                                         Class="log-icon" />
+                                <MudText Typo="Typo.caption"
+                                         Class="log-text log-ellipsis-wide"
+                                         Title="@context.Item.Note">
+                                    @context.Item.Note
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+
+                    <TemplateColumn T="DeviceLogDTO" Title="Logged At">
+                        <CellTemplate Context="cellContext">
+                            <div class="log-cell">
+                                <MudIcon Icon="@Icons.Material.Filled.Schedule"
+                                         Size="Size.Small"
+                                         Class="log-icon" />
+                                <MudText Typo="Typo.caption" Class="log-text">
+                                    @cellContext.Item.DateLoggedPH
+                                </MudText>
+                            </div>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </DataCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private List<DeviceLogDTO> logs = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        logs = await DeviceLogService.GetAllLogs();
+    }
+}

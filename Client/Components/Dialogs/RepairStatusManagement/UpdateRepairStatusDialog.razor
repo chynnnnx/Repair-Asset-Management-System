@@ -1,0 +1,153 @@
+﻿@inherits UpdateRepairStatusBase
+
+<MudDialog Style="min-width: 500px;">
+    <TitleContent>
+        <div style="display: flex; align-items: center; padding: 16px 24px; background-color: #F4F4F4; color: #00415a; margin: -24px -24px 0 -24px;">
+            <MudIcon Icon="@Icons.Material.Filled.TaskAlt" Size="Size.Medium" Class="mr-3" />
+            <MudText Typo="Typo.h6" Style="font-weight: 600;">
+                Resolve Repair Request
+            </MudText>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        <div style="padding: 24px 0 16px 0;">
+            <MudStack Spacing="4">
+            
+                <MudPaper Elevation="1" Class="pa-4" Style="border-left: 4px solid #00415a; background-color: #fafafa;">
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                 Size="Size.Small"
+                                 Class="mr-2"
+                                 Style="color: #00415a;" />
+                        <MudText Typo="Typo.subtitle1"
+                                 Style="font-weight: 600; color: #00415a;">
+                            Resolution Status
+                        </MudText>
+                    </div>
+
+                    <MudToggleGroup @bind-Value="Report.Status"
+                                    T="RepairStatus"
+                                    MultiSelection="false"
+                                    Rounded="true"
+                                    Style="width: 100%;"
+                                    SelectionMode="SelectionMode.SingleSelection">
+                        <MudToggleItem Value="RepairStatus.Fixed"
+                                       Text="Fixed"
+                                       Icon="@Icons.Material.Filled.Build"
+                                       Style="flex: 1; background-color: white; border: 2px solid #e0e0e0; color: #666;"
+                                       SelectedStyle="background-color: #4caf50; color: white; border-color: #4caf50;" />
+                        <MudToggleItem Value="RepairStatus.Replaced"
+                                       Text="Replaced"
+                                       Icon="@Icons.Material.Filled.SwapHoriz"
+                                       Style="flex: 1; background-color: white; border: 2px solid #e0e0e0; color: #666;"
+                                       SelectedStyle="background-color: #ff9800; color: white; border-color: #ff9800;" />
+                    </MudToggleGroup>
+
+                    <MudText Typo="Typo.caption" Color="Color.Tertiary" Class="mt-2">
+                        Select how the repair was completed
+                    </MudText>
+                </MudPaper>
+
+               
+                <MudPaper Elevation="1" Class="pa-4" Style="border-left: 4px solid #00415a; background-color: #fafafa;">
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Description"
+                                 Size="Size.Small"
+                                 Class="mr-2"
+                                 Style="color: #00415a;" />
+                        <MudText Typo="Typo.subtitle1"
+                                 Style="font-weight: 600; color: #00415a;">
+                            Resolution Details
+                        </MudText>
+                    </div>
+
+                    <MudStack Spacing="3">
+                        <MudTextField @bind-Value="Report.Remarks"
+                                      Label="Resolution Remarks"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Lines="3"
+                                      MaxLines="5"
+                                      Style="--mud-palette-primary: #00415a;"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Notes"
+                                      HelperText="Describe what was done to resolve the issue"
+                                      Placeholder="e.g., Replaced faulty component, adjusted settings, performed maintenance..." />
+
+                        <MudDatePicker @bind-Date="displayResolvedDate"
+                                       Label="Resolution Date & Time"
+                                       Variant="Variant.Outlined"
+                                       Margin="Margin.Dense"
+                                       DateFormat="MMM dd, yyyy"
+                                       Time="true"
+                                       AmPm="true"
+                                       EnablePicker="true"
+                                       MinuteInterval="1"
+                                       Style="--mud-palette-primary: #00415a;"
+                                       Adornment="Adornment.Start"
+                                       AdornmentIcon="@Icons.Material.Filled.Schedule"
+                                       HelperText="When was this repair completed?" />
+                    </MudStack>
+                </MudPaper>
+                <MudAlert Severity="@GetSummarySeverity()"
+                          Variant="Variant.Outlined"
+                          Style="border-color: #00415a; background-color: rgba(0, 65, 90, 0.05);">
+                    <div class="d-flex align-start">
+                        <MudIcon Icon="@GetSummaryIcon()" Size="Size.Small" Class="mr-2 mt-1" Style="color: #00415a;" />
+                        <div>
+                            <MudText Typo="Typo.body2" Style="font-weight: 500; margin-bottom: 4px;">
+                                @GetSummaryTitle()
+                            </MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                                @GetSummaryMessage()
+                            </MudText>
+                        </div>
+                    </div>
+                </MudAlert>
+            </MudStack>
+        </div>
+    </DialogContent>
+
+    <DialogActions>
+        <div style="background-color: #f5f5f5; margin: 0 -24px -24px -24px; padding: 16px 24px; border-top: 1px solid #e0e0e0;">
+            <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="full-width">
+                <div class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Material.Filled.Assignment" Size="Size.Small" Class="mr-1" Color="Color.Tertiary" />
+                    <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                        Request ID: #@Report.RepairId
+                    </MudText>
+                </div>
+
+                <MudStack Row Spacing="2">
+                    <MudButton Variant="Variant.Text"
+                               Color="Color.Default"
+                               OnClick="Cancel"
+                               StartIcon="@Icons.Material.Filled.Close"
+                               Style="text-transform: none;"
+                               Disabled="@isLoading">
+                        Cancel
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               OnClick="Submit"
+                               Disabled="@(isLoading || !IsFormValid())"
+                               StartIcon="@(isLoading ? Icons.Material.Filled.Loop : Icons.Material.Filled.TaskAlt)"
+                               Style="background-color: #00415a; color: #F0F0F0; text-transform: none;">
+                        @if (isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small"
+                                                 Indeterminate="true"
+                                                 Class="mr-2"
+                                                 Style="color: #F0F0F0;" />
+                            <span>Resolving...</span>
+                        }
+                        else
+                        {
+                            <span>Mark as Resolved</span>
+                        }
+                    </MudButton>
+                </MudStack>
+            </MudStack>
+        </div>
+    </DialogActions>
+</MudDialog>

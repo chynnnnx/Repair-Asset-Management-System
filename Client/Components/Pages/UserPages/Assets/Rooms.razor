@@ -1,0 +1,39 @@
+﻿@page "/rooms"
+@inherits AssetsBase
+
+<RoleGuard RequiredRole="User" />
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+    <MudGrid>
+        <MudItem xs="12">
+            <DataCard TItem="RoomDTO"
+                      Title=@($"Available Rooms ({rooms.Count} rooms)")
+                      Icon="@Icons.Material.Filled.Room"
+                      Items="rooms"
+                      SearchSelector="room => room.RoomName">
+                <Columns>
+                    <PropertyColumn T="RoomDTO" TProperty="int" Property="x => x.RoomId" Title="Room ID">
+                        <CellTemplate>
+                            <MudChip T="string"
+                                     Size="Size.Small"
+                                     Variant="Variant.Text"
+                                     Style="color: #00415a; background-color: #F4F4F4;">
+                                #@context.Item.RoomId
+                            </MudChip>
+                        </CellTemplate>
+                    </PropertyColumn>
+                    <PropertyColumn T="RoomDTO" TProperty="string" Property="x => x.RoomName" Title="Room Name">
+                        <CellTemplate>
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@Icons.Material.Filled.MeetingRoom"
+                                         Size="Size.Small"
+                                         Class="mr-2"
+                                         Style="color: #00415a;" />
+                                <MudText>@context.Item.RoomName</MudText>
+                            </div>
+                        </CellTemplate>
+                    </PropertyColumn>
+                </Columns>
+            </DataCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

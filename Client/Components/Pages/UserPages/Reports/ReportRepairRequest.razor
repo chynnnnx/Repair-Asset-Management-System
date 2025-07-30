@@ -1,0 +1,134 @@
+﻿@page "/report-repair"
+@inherits ReportRepairRequestBase
+
+
+<link href="css/components/user/ReportRepairManagement.css" rel="stylesheet" />
+<RoleGuard RequiredRole="User" />
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-4 report-container">
+    <MudGrid Style="min-height: 100vh;" Justify="Justify.Center" AlignItems="Center.Center">
+        <MudItem xs="12">
+            <MudCard Elevation="12" Class="pa-0 report-card">
+                <MudCardHeader Class="report-header">
+                    <CardHeaderContent>
+                        <div class="d-flex align-center justify-center text-center">
+                            <MudPaper Elevation="8" Class="icon-bubble">
+                                <MudIcon Icon="@Icons.Material.Filled.Build" Size="Size.Large" Class="icon-primary" />
+                            </MudPaper>
+                            <div>
+                                <MudText Typo="Typo.h4" Class="header-title">
+                                    Equipment Repair Request
+                                </MudText>
+                                <MudText Typo="Typo.h6" Class="header-subtitle">
+                                    Submit a comprehensive maintenance request for equipment issues or malfunctions
+                                </MudText>
+                            </div>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+
+                <MudCardContent Class="pa-6">
+                    <MudForm @ref="_form" Validated="OnValidSubmit">
+                        <MudGrid Spacing="4">
+
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.h6" Class="section-header">
+                                    Equipment Selection
+                                </MudText>
+                                <MudPaper Elevation="2" Class="input-paper">
+                                    <MudSelect T="int"
+                                               Label="Select Equipment"
+                                               Value="_repairRequest.DeviceId"
+                                               ValueChanged="OnDeviceChanged"
+                                               Required="true"
+                                               RequiredError="Equipment selection is required"
+                                               Variant="Variant.Filled"
+                                               Adornment="Adornment.Start"
+                                               AdornmentIcon="@Icons.Material.Filled.Devices"
+                                               AdornmentColor="Color.Primary"
+                                               Class="pa-2 filled-input">
+                                        @foreach (var device in _devices)
+                                        {
+                                            <MudSelectItem Value="@device.DeviceID">
+                                                <div class="d-flex align-center ">
+                                                 
+                                                    <MudText Style="font-weight: 500;">@device.Tag</MudText>
+                                                </div>
+                                            </MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudPaper>
+                            </MudItem>
+
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.h6" Class="section-header">
+                                    Location Details
+                                </MudText>
+                                <MudPaper Elevation="2" Class="input-paper">
+                                    <MudTextField Label="Room Location"
+                                                  Value="_selectedRoom"
+                                                  ReadOnly="true"
+                                                  Variant="Variant.Filled"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.Room"
+                                                  AdornmentColor="Color.Info"
+                                                  Class="pa-2 filled-input" />
+                                </MudPaper>
+                            </MudItem>
+
+                            <MudItem xs="12" md="4">
+                                <MudText Typo="Typo.h6" Class="section-header">
+                                    Issue Description
+                                </MudText>
+                                <MudPaper Elevation="2" Class="input-paper">
+                                    <MudTextField @bind-Value="_repairRequest.IssueDescription"
+                                                  Label="Problem Description"
+                                                  Placeholder="Describe the issue, symptoms, when it started, and any error messages..."
+                                                  Lines="4"
+                                                  Required="true"
+                                                  RequiredError="Problem description is required"
+                                                  Variant="Variant.Filled"
+                                                  Counter="300"
+                                                  MaxLength="300"
+                                                  Adornment="Adornment.Start"
+                                                  AdornmentIcon="@Icons.Material.Filled.Description"
+                                                  AdornmentColor="Color.Warning"
+                                             />
+                                </MudPaper>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudAlert Severity="Severity.Info" Elevation="3" Class="info-alert">
+                                    <div class="d-flex align-center">
+                                        <MudPaper Elevation="4" Class="alert-icon-wrapper">
+                                            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Medium" Style="color: white;" />
+                                        </MudPaper>
+                                        <div>
+                                            <MudText Typo="Typo.subtitle1" Class="alert-title">
+                                                Request Processing Information
+                                            </MudText>
+                                            <MudText Typo="Typo.body2" Class="alert-desc">
+                                                Your request will be reviewed by our maintenance team within 24 hours. Priority is assigned based on urgency, safety impact, and operational importance.
+                                            </MudText>
+                                        </div>
+                                    </div>
+                                </MudAlert>
+                            </MudItem>
+                        </MudGrid>
+                    </MudForm>
+                </MudCardContent>
+
+                <MudCardActions Class="pa-6 pt-0">
+                    <MudButton Color="Color.Primary"
+                               Variant="Variant.Filled"
+                               Size="Size.Large"
+                               StartIcon="@Icons.Material.Filled.Send"
+                               OnClick="SubmitRequest"
+                               FullWidth="true"
+                               Class="submit-button">
+                        <MudText>Submit Repair Request</MudText>
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

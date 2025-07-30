@@ -1,0 +1,226 @@
+﻿@page "/adminhome"
+@inherits AdminHomeBase
+
+<link href="css/components/admin/AdminHome.css" rel="stylesheet" />
+
+<RoleGuard RequiredRole="Admin" />
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+    <MudText Typo="Typo.h3" Class="admin-dashboard-title mb-6">
+        Admin Dashboard
+    </MudText>
+
+    @if (isLoading)
+    {
+        <MudGrid>
+            @for (int i = 0; i < 5; i++)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="2">
+                    <MudCard Class="card-default card-border-00415A">
+                        <MudCardContent>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="80px" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid>
+          
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <MudCard Class="card-default card-border-00415A">
+                    <MudCardContent>
+                        <div class="stat-row">
+                            <MudIcon Icon="@Icons.Material.Filled.People" Class="card-icon card-icon-00415A" />
+                            <div style="text-align: right;">
+                                <MudText Typo="Typo.h4" Class="card-icon-00415A card-text-bold">@totalUsers</MudText>
+                                <MudText Typo="Typo.body2" Class="card-text-muted">Total Standard Users</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+   
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <MudCard Class="card-default card-border-2E7D8A">
+                    <MudCardContent>
+                        <div class="stat-row">
+                            <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Class="card-icon card-icon-2E7D8A" />
+                            <div style="text-align: right;">
+                                <MudText Typo="Typo.h4" Class="card-icon-2E7D8A card-text-bold">@adminUsers</MudText>
+                                <MudText Typo="Typo.body2" Class="card-text-muted">Admins</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <MudCard Class="card-default card-border-4A9BAE">
+                    <MudCardContent>
+                        <div class="stat-row">
+                            <MudIcon Icon="@Icons.Material.Filled.MeetingRoom" Class="card-icon card-icon-4A9BAE" />
+                            <div style="text-align: right;">
+                                <MudText Typo="Typo.h4" Class="card-icon-4A9BAE card-text-bold">@totalRooms</MudText>
+                                <MudText Typo="Typo.body2" Class="card-text-muted">Total Offices (Rooms)</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <MudCard Class="card-default card-border-66BAD2">
+                    <MudCardContent>
+                        <div class="stat-row">
+                            <MudIcon Icon="@Icons.Material.Filled.Devices" Class="card-icon card-icon-66BAD2" />
+                            <div style="text-align: right;">
+                                <MudText Typo="Typo.h4" Class="card-icon-66BAD2 card-text-bold">@totalDevices</MudText>
+                                <MudText Typo="Typo.body2" Class="card-text-muted">Total Devices</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+        
+            <MudItem xs="12" sm="6" md="4" lg="2">
+                <MudCard Class="card-default card-border-82D9F6">
+                    <MudCardContent>
+                        <div class="stat-row">
+                            <MudIcon Icon="@Icons.Material.Filled.Build" Class="card-icon card-icon-82D9F6" />
+                            <div style="text-align: right;">
+                                <MudText Typo="Typo.h4" Class="card-icon-82D9F6 card-text-bold">@totalRepairRequests</MudText>
+                                <MudText Typo="Typo.body2" Class="card-text-muted">Repair Requests</MudText>
+                            </div>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+
+        <MudText Typo="Typo.h5" Class="section-header mt-8 mb-4">Statistics Overview</MudText>
+
+        <MudGrid>
+         
+            <MudItem xs="12" md="4">
+                <MudCard Class="card-default card-border-00415A">
+                    <MudCardContent>
+                        <div class="card-header">
+                            <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Class="card-header-icon card-header-text-00415A" />
+                            <MudText Typo="Typo.h6" Class="card-header-text-00415A">Device Status</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">
+                                <div class="stat-circle circle-online"></div>
+                                <MudText Typo="Typo.body2">Online</MudText>
+                            </div>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@onlineDevices</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">
+                                <div class="stat-circle circle-maintenance"></div>
+                                <MudText Typo="Typo.body2">Maintenance</MudText>
+                            </div>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@maintenanceDevices</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">
+                                <div class="stat-circle circle-offline"></div>
+                                <MudText Typo="Typo.body2">Offline/Not Responding</MudText>
+                            </div>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@(offlineDevices + notRespondingDevices)</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+         
+            <MudItem xs="12" md="4">
+                <MudCard Class="card-default card-border-2E7D8A">
+                    <MudCardContent>
+                        <div class="card-header">
+                            <MudIcon Icon="@Icons.Material.Filled.PieChart" Class="card-header-icon card-header-text-2E7D8A" />
+                            <MudText Typo="Typo.h6" Class="card-header-text-2E7D8A">Repair Overview</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Pending Repairs:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@pendingRepairs</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">In Progress:</MudText>
+                            <MudText Typo="Typo.body2" Style="font-weight: bold; color: #FF9800;">@inProgressRepairs</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Completed:</MudText>
+                            <MudText Typo="Typo.body2" Style="font-weight: bold; color: #4CAF50;">@completedRepairs</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudCard Class="card-default card-border-4A9BAE">
+                    <MudCardContent>
+                        <div class="card-header">
+                            <MudIcon Icon="@Icons.Material.Filled.Assessment" Class="card-header-icon card-header-text-4A9BAE" />
+                            <MudText Typo="Typo.h6" Class="card-header-text-4A9BAE">System Summary</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Avg Devices per Room:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">
+                                @(totalRooms > 0 ? Math.Round((double)totalDevices / totalRooms, 1) : 0)
+                            </MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Active Rooms:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@totalRooms</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Total Devices:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@totalDevices</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+
+        <MudText Typo="Typo.h5" Class="section-header mt-6 mb-4">System Overview</MudText>
+
+        <MudGrid>
+
+            <MudItem xs="12" md="6" Class="spacing">
+                <MudCard Class="card-top-border">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="card-header-text-00415A mb-4">User Distribution</MudText>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Regular Users:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@(totalUsers - adminUsers)</MudText>
+                        </div>
+                        <div class="stat-row">
+                            <MudText Typo="Typo.body2">Admin Users:</MudText>
+                            <MudText Typo="Typo.body2" Class="card-text-bold">@adminUsers</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="10" md="6" Class="spacing">
+                <MudCard Class="card-top-border">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="card-header-text-00415A mb-4">System Status</MudText>
+                        <div class="system-status-row">
+                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="system-status-icon" Style="color: #4CAF50;" />
+                            <MudText Typo="Typo.body2">All systems operational</MudText>
+                        </div>
+                        <div class="system-status-row">
+                            <MudIcon Icon="@Icons.Material.Filled.Update" Class="system-status-icon" Style="color: #00415A;" />
+                            <MudText Typo="Typo.body2">Last updated: @DateTime.Now.ToString("MMM dd, yyyy HH:mm")</MudText>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>

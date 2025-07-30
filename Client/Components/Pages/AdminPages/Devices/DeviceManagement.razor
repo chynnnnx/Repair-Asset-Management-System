@@ -1,0 +1,147 @@
+﻿@page "/add-device"
+@inherits DeviceManagementBase
+
+<link href="css/components/admin/DeviceManagement.css" rel="stylesheet" />
+
+<RoleGuard RequiredRole="Admin">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-6">
+        <MudGrid Spacing="4">
+            <MudItem xs="12" lg="3">
+                <MudCard Elevation="4" Class="add-device-card">
+                    <MudCardHeader Class="add-device-card-header">
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6" Class="device-card-title">
+                                <MudIcon Icon="@Icons.Material.Filled.AddCircle" Class="mr-2 device-icon-color" />
+                                Add New Device
+                            </MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+
+                    <MudCardContent Class="pa-6">
+                        <MudStack Spacing="4">
+                            <MudTextField @bind-Value="newDevice.Tag"
+                                          Label="Device Name"
+                                          Variant="Variant.Outlined"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Filled.Computer"
+                                          AdornmentColor="Color.Primary"
+                                          FullWidth="true"
+                                          Class="primary-input" />
+
+                            <MudSelect T="int"
+                                       Label="Select Room"
+                                       @bind-Value="newDevice.RoomId"
+                                       Variant="Variant.Outlined"
+                                       Adornment="Adornment.Start"
+                                       AdornmentIcon="@Icons.Material.Filled.MeetingRoom"
+                                       AdornmentColor="Color.Primary"
+                                       FullWidth="true"
+                                       Class="primary-input">
+                                @if (rooms != null)
+                                {
+                                    @foreach (var room in rooms)
+                                    {
+                                        <MudSelectItem T="int" Value="@room.RoomId">@room.RoomName</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+
+                            <MudSelect T="DeviceStatus"
+                                       Label="Device Status"
+                                       @bind-Value="newDevice.Status"
+                                       Variant="Variant.Outlined"
+                                       Adornment="Adornment.Start"
+                                       AdornmentIcon="@Icons.Material.Filled.Tune"
+                                       AdornmentColor="Color.Primary"
+                                       FullWidth="true"
+                                       Class="primary-input">
+                                @foreach (var status in Enum.GetValues<DeviceStatus>())
+                                {
+                                    <MudSelectItem Value="@status">@GetStatusLabel(status)</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudStack>
+                    </MudCardContent>
+
+                    <MudCardActions Class="pa-6 pt-0">
+                        <MudButton OnClick="AddDevice"
+                                   Variant="Variant.Filled"
+                                   FullWidth="true"
+                                   Size="Size.Large"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Class="add-device-btn">
+                            Add Device
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" lg="9">
+                <DataCard TItem="DeviceDTO"
+                          Title=@($"Device Inventory ({devices.Count} devices)")
+                          Icon="@Icons.Material.Filled.List"
+                          Items="devices"
+                          SearchSelector="@(d => $"{d.DeviceID} {d.Tag ?? ""} {d.RoomName ?? ""} {d.Status.ToString()}")"
+                          SelectedItemsChanged="OnSelectionChanged">
+
+                    <Toolbar>
+                        <MudButton Disabled="!selectedDevices.Any()"
+                                   OnClick="DeleteSelectedDevices"
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Delete"
+                                   Class="delete-selected-btn">
+                            Delete Selected (@selectedDevices.Count)
+                        </MudButton>
+                    </Toolbar>
+
+                    <Columns>
+                        <SelectColumn T="DeviceDTO" />
+
+                        <PropertyColumn T="DeviceDTO" TProperty="int"
+                                        Property="x => x.DeviceID" Title="Device ID">
+                            <CellTemplate>
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Variant="Variant.Text"
+                                         Class="device-id-chip">
+                                    #@context.Item.DeviceID
+                                </MudChip>
+                            </CellTemplate>
+                        </PropertyColumn>
+
+                        <PropertyColumn T="DeviceDTO" TProperty="string"
+                                        Property="x => x.Tag" Title="Device Name" />
+
+                        <PropertyColumn T="DeviceDTO" TProperty="string"
+                                        Property="x => x.RoomName" Title="Room Name" />
+
+                        <TemplateColumn T="DeviceDTO" Title="Status">
+                            <CellTemplate Context="cellContext">
+                                <MudChip T="string"
+                                         Size="Size.Small"
+                                         Color="@GetStatusColor(cellContext.Item.Status)"
+                                         Class="status-chip">
+                                    <MudIcon Icon="@GetStatusIcon(cellContext.Item.Status)" Size="Size.Small" Class="mr-1" />
+                                    @GetStatusLabel(cellContext.Item.Status)
+                                </MudChip>
+                            </CellTemplate>
+                        </TemplateColumn>
+
+                        <TemplateColumn T="DeviceDTO" Title="Actions">
+                            <CellTemplate Context="cellContext">
+                              
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   OnClick="@(() => UpdateDialog(cellContext.Item))"
+                                                   Variant="Variant.Filled"
+                                                   Class="edit-icon-btn"
+                                                   Size="Size.Small" />
+                             
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+
+                </DataCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</RoleGuard>

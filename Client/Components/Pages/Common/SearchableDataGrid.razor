@@ -1,0 +1,40 @@
+﻿@typeparam TItem
+
+<MudTextField @bind-Value="SearchTerm"
+              Placeholder="Search..."
+              Adornment="Adornment.Start"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              Variant="Variant.Outlined"
+              Margin="Margin.Dense"
+              Class="mb-3" />
+
+<MudDataGrid T="TItem"
+             Items="FilteredItems"
+             MultiSelection="true"
+             Hover="true"
+             Bordered="true"
+             Dense="true"
+             Striped="true"
+             SelectedItemsChanged="SelectedItemsChanged">
+
+    <Columns>
+        @Columns
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="TItem" />
+    </PagerContent>
+</MudDataGrid>
+
+@code {
+    [Parameter] public List<TItem> Items { get; set; } = new();
+    [Parameter] public Func<TItem, string> SearchSelector { get; set; } = default!;
+    [Parameter] public EventCallback<HashSet<TItem>> SelectedItemsChanged { get; set; }
+    [Parameter] public RenderFragment? Columns { get; set; }
+
+    private string SearchTerm = "";
+
+    private IEnumerable<TItem> FilteredItems => string.IsNullOrWhiteSpace(SearchTerm)
+        ? Items
+        : Items.Where(x => SearchSelector(x).Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+}

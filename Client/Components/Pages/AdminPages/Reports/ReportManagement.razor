@@ -1,0 +1,338 @@
+﻿@page "/report-management"
+@inherits ReportManagementBase
+
+<link href="css/components/admin/ReportManagement.css" rel="stylesheet" />
+<RoleGuard RequiredRole="Admin">
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+    <MudPaper Class="pa-6 mb-6 report-paper" Elevation="2">
+        <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <div>
+                <MudText Typo="Typo.h4" Class="font-weight-bold mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.ManageAccounts" Class="mr-3" />
+                    Report Repair Management
+                </MudText>
+                <MudText Typo="Typo.body1" Class="opacity-90">
+                    Manage and track repair requests across all stages
+                </MudText>
+            </div>
+            <MudIcon Icon="@Icons.Material.Filled.Engineering" Size="Size.Large" Class="opacity-30" />
+        </MudStack>
+    </MudPaper>
+
+    <MudPaper Class="pa-4 mudpaper-rounded" Elevation="2">
+        <MudTabs Rounded="true"
+                 Centered="false"
+                 Elevation="0"
+                 Class="tab-background mb-4"
+                 SliderColor="Color.Primary">
+
+            <MudTabPanel Text="Pending"
+                         Icon="@Icons.Material.Filled.PendingActions"
+                         BadgeData="@pending.Count.ToString()"
+                         BadgeColor="Color.Error">
+                <div class="pa-4">
+                    @if (pending.Any())
+                    {
+                        <MudGrid>
+                            @foreach (var report in PagedPending)
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <MudCard Elevation="2" Class="card card-pending">
+                                        <MudCardContent Class="pa-4">
+                                            <MudStack Spacing="3">
+                                                <div>
+                                                    <MudText Typo="Typo.h6" Class="font-weight-bold mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Room" Size="Size.Small" Class="mr-2" />
+                                                        @report.RoomName
+                                                    </MudText>
+                                                    <MudChip T="string" Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.PendingActions">
+                                                        Pending
+                                                    </MudChip>
+                                                </div>
+
+                                                <MudDivider />
+
+                                                <div>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Report" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Issue:</strong> @report.IssueDescription
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Computer" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Device:</strong> @report.DeviceTag
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Reported:</strong> @report.ReportedDate.ToString("MMM dd, yyyy")
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-2" />
+                                                        <strong>ReportedBy:</strong> @report.ReportedByUserName
+                                                    </MudText>
+                                                </div>
+
+                                                <MudButton Variant="Variant.Filled"
+                                                           Color="Color.Info"
+                                                           Size="Size.Medium"
+                                                           FullWidth="true"
+                                                           StartIcon="@Icons.Material.Filled.PlayArrow"
+                                                           Class="rounded-button"
+                                                           OnClick="@(() => MarkAsInProgress(report))">
+                                                    Start Progress
+                                                </MudButton>
+                                            </MudStack>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+
+                        <div class="d-flex justify-center mt-6">
+                            <MudPagination Count="@TotalPagesPending"
+                                           @bind-Selected="CurrentPagePending"
+                                           Size="Size.Large"
+                                           Color="Color.Primary"
+                                           BoundaryCount="1"
+                                           MiddleCount="3" />
+                        </div>
+                    }
+                    else
+                    {
+                        <MudPaper Class="pa-8 text-center empty-message" Elevation="0">
+                            <MudIcon Icon="@Icons.Material.Filled.CheckCircleOutline" Size="Size.Large" Color="Color.Success" Class="mb-4" />
+                            <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mb-2">No Pending Reports</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">All reports have been processed!</MudText>
+                        </MudPaper>
+                    }
+                </div>
+            </MudTabPanel>
+
+            <MudTabPanel Text="In Progress"
+                         Icon="@Icons.Material.Filled.BuildCircle"
+                         BadgeData="@inProgress.Count.ToString()"
+                         BadgeColor="Color.Info">
+                <div class="pa-4">
+                    @if (inProgress.Any())
+                    {
+                        <MudGrid>
+                            @foreach (var report in PagedInProgress)
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <MudCard Elevation="2" Class="card card-in-progress">
+                                        <MudCardContent Class="pa-4">
+                                            <MudStack Spacing="3">
+                                                <div>
+                                                    <MudText Typo="Typo.h6" Class="font-weight-bold mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Room" Size="Size.Small" Class="mr-2" />
+                                                        @report.RoomName
+                                                    </MudText>
+                                                    <MudChip T="string" Size="Size.Small" Color="Color.Info" Icon="@Icons.Material.Filled.BuildCircle">
+                                                        In Progress
+                                                    </MudChip>
+                                                </div>
+
+                                                <MudDivider />
+
+                                                <div>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Report" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Issue:</strong> @report.IssueDescription
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Computer" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Device:</strong> @report.DeviceTag
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Reported:</strong> @report.ReportedDate.ToString("MMM dd, yyyy")
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-2" />
+                                                        <strong>ReportedBy:</strong> @report.ReportedByUserName
+                                                    </MudText>
+                                                </div>
+
+                                                <MudButton Variant="Variant.Filled"
+                                                           Color="Color.Primary"
+                                                           Size="Size.Medium"
+                                                           FullWidth="true"
+                                                           StartIcon="@Icons.Material.Filled.Edit"
+                                                           Class="rounded-button"
+                                                           OnClick="@(() => OpenUpdateDialog(report))">
+                                                    Update Status
+                                                </MudButton>
+                                            </MudStack>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+
+                        <div class="d-flex justify-center mt-6">
+                            <MudPagination Count="@TotalPagesInProgress"
+                                           @bind-Selected="CurrentPageInProgress"
+                                           Size="Size.Large"
+                                           Color="Color.Primary"
+                                           BoundaryCount="1"
+                                           MiddleCount="3" />
+                        </div>
+                    }
+                    else
+                    {
+                        <MudPaper Class="pa-8 text-center empty-message" Elevation="0">
+                            <MudIcon Icon="@Icons.Material.Filled.Engineering" Size="Size.Large" Color="Color.Info" Class="mb-4" />
+                            <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mb-2">No Reports In Progress</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">No repairs are currently being worked on.</MudText>
+                        </MudPaper>
+                    }
+                </div>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Fixed"
+                         Icon="@Icons.Material.Filled.CheckCircle"
+                         BadgeData="@fixedReports.Count.ToString()"
+                         BadgeColor="Color.Success">
+                <div class="pa-4">
+                    @if (fixedReports.Any())
+                    {
+                        <MudGrid>
+                            @foreach (var report in PagedFixed)
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <MudCard Elevation="2" Class="card card-fixed">
+                                        <MudCardContent Class="pa-4">
+                                            <MudStack Spacing="3">
+                                                <div>
+                                                    <MudText Typo="Typo.h6" Class="font-weight-bold mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Room" Size="Size.Small" Class="mr-2" />
+                                                        @report.RoomName
+                                                    </MudText>
+                                                    <MudChip T="string" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.CheckCircle">
+                                                        Fixed
+                                                    </MudChip>
+                                                </div>
+
+                                                <MudDivider />
+
+                                                <div>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Report" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Issue:</strong> @report.IssueDescription
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Computer" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Device:</strong> @report.DeviceTag
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.EventAvailable" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Fixed:</strong> @report.ResolvedDate?.ToString("MMM dd, yyyy")
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Notes" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Remarks:</strong> @(string.IsNullOrEmpty(report.Remarks) ? "—" : report.Remarks)
+                                                    </MudText>
+                                                </div>
+                                            </MudStack>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+
+                        <div class="d-flex justify-center mt-6">
+                            <MudPagination Count="@TotalPagesFixed"
+                                           @bind-Selected="CurrentPageFixed"
+                                           Size="Size.Large"
+                                           Color="Color.Primary"
+                                           BoundaryCount="1"
+                                           MiddleCount="3" />
+                        </div>
+                    }
+                    else
+                    {
+                        <MudPaper Class="pa-8 text-center empty-message" Elevation="0">
+                            <MudIcon Icon="@Icons.Material.Filled.Build" Size="Size.Large" Color="Color.Success" Class="mb-4" />
+                            <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mb-2">No Fixed Reports</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">No items have been fixed yet.</MudText>
+                        </MudPaper>
+                    }
+                </div>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Replaced"
+                         Icon="@Icons.Material.Filled.ChangeCircle"
+                         BadgeData="@replaced.Count.ToString()"
+                         BadgeColor="Color.Warning">
+                <div class="pa-4">
+                    @if (replaced.Any())
+                    {
+                        <MudGrid>
+                            @foreach (var report in PagedReplaced)
+                            {
+                                <MudItem xs="12" md="6" lg="4">
+                                    <MudCard Elevation="2" Class="card card-replaced">
+                                        <MudCardContent Class="pa-4">
+                                            <MudStack Spacing="3">
+                                                <div>
+                                                    <MudText Typo="Typo.h6" Class="font-weight-bold mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Room" Size="Size.Small" Class="mr-2" />
+                                                        @report.RoomName
+                                                    </MudText>
+                                                    <MudChip T="string" Size="Size.Small" Color="Color.Warning" Icon="@Icons.Material.Filled.ChangeCircle">
+                                                        Replaced
+                                                    </MudChip>
+                                                </div>
+
+                                                <MudDivider />
+
+                                                <div>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Report" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Issue:</strong> @report.IssueDescription
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" Class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Computer" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Device:</strong> @report.DeviceTag
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2" class="mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.EventAvailable" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Replaced:</strong> @report.ResolvedDate?.ToString("MMM dd, yyyy")
+                                                    </MudText>
+                                                    <MudText Typo="Typo.body2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Notes" Size="Size.Small" Class="mr-2" />
+                                                        <strong>Remarks:</strong> @(string.IsNullOrEmpty(report.Remarks) ? "—" : report.Remarks)
+                                                    </MudText>
+                                                </div>
+                                            </MudStack>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                        </MudGrid>
+
+                        <div class="d-flex justify-center mt-6">
+                            <MudPagination Count="@TotalPagesReplaced"
+                                           @bind-Selected="CurrentPageReplaced"
+                                           Size="Size.Large"
+                                           Color="Color.Primary"
+                                           BoundaryCount="1"
+                                           MiddleCount="3" />
+                        </div>
+                    }
+                    else
+                    {
+                        <MudPaper Class="pa-8 text-center empty-message" Elevation="0">
+                            <MudIcon Icon="@Icons.Material.Filled.SwapHoriz" Size="Size.Large" Color="Color.Warning" Class="mb-4" />
+                            <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mb-2">No Replaced Items</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">No items have been replaced yet.</MudText>
+                        </MudPaper>
+                    }
+                </div>
+            </MudTabPanel>
+        </MudTabs>
+    </MudPaper>
+
+    <div class="spacer-100"></div>
+</MudContainer>
+</RoleGuard>

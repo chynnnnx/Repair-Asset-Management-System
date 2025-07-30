@@ -1,0 +1,148 @@
+﻿@inherits UpdateDeviceDialogBase
+<link href="css/components/admin/DeviceManagement.css" rel="stylesheet" />
+
+<MudDialog Class="dialog-container">
+    <TitleContent>
+        <div class="dialog-header">
+            <MudIcon Icon="@Icons.Material.Filled.DevicesOther" Size="Size.Medium" Class="mr-3" />
+            <MudText Typo="Typo.h6" Class="dialog-header-title">
+                Update Device Details
+            </MudText>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        <div class="dialog-section">
+            <MudStack Spacing="4">
+                <MudPaper Elevation="1" Class="pa-4 device-paper">
+                    <div class="section-header">
+                        <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Small" Class="mr-2 icon-color-primary" />
+                        <MudText Typo="Typo.subtitle1" Class="section-header-text">
+                            Device Information
+                        </MudText>
+                    </div>
+
+                    <MudStack Spacing="3">
+                        <MudTextField @bind-Value="device.Tag"
+                                      Label="Device Name"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Class="primary-input"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Computer"
+                                      HelperText="Enter a unique name for this device"
+                                      @ref="deviceNameField"
+                                      Immediate="true" />
+
+                        <MudSelect T="int"
+                                   Label="Room Location"
+                                   @bind-Value="device.RoomId"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Dense"
+                                   Required="true"
+                                   Class="primary-input"
+                                   Adornment="Adornment.Start"
+                                   AdornmentIcon="@Icons.Material.Filled.Room"
+                                   HelperText="Select where this device is located">
+                            @if (rooms != null)
+                            {
+                                @foreach (var room in rooms)
+                                {
+                                    <MudSelectItem T="int" Value="@room.RoomId">
+                                        <div class="d-flex align-center">
+                                            <MudIcon Icon="@Icons.Material.Filled.MeetingRoom" Size="Size.Small" Class="mr-2" />
+                                            @room.RoomName
+                                        </div>
+                                    </MudSelectItem>
+                                }
+                            }
+                        </MudSelect>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Elevation="1" Class="pa-4 device-paper">
+                    <div class="section-header">
+                        <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Small" Class="mr-2 icon-color-primary" />
+                        <MudText Typo="Typo.subtitle1" Class="section-header-text">
+                            Device Status
+                        </MudText>
+                    </div>
+
+                    <MudSelect T="DeviceStatus"
+                               Label="Current Status"
+                               @bind-Value="device.Status"
+                               Variant="Variant.Outlined"
+                               Margin="Margin.Dense"
+                               Required="true"
+                               Class="primary-input"
+                              
+                               HelperText="Set the current operational status">
+                        @foreach (var status in Enum.GetValues<DeviceStatus>())
+                        {
+                            <MudSelectItem Value="@status">
+                                <div class="d-flex align-center">
+                                    <MudIcon Icon="@GetStatusIcon(status)" Size="Size.Small" Class="mr-2" Color="@GetStatusColor(status)" />
+                                    @status.ToString()
+                                </div>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudPaper>
+                <MudAlert Severity="@GetChangesSeverity()"
+                          Variant="Variant.Outlined"
+                          Class="summary-alert">
+                    <div class="alert-content">
+           
+                        <div>
+                            <MudText Typo="Typo.body2" Class="alert-title">
+                                @GetChangesTitle()
+                            </MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                                @GetChangesMessage()
+                            </MudText>
+                        </div>
+                    </div>
+                </MudAlert>
+            </MudStack>
+        </div>
+    </DialogContent>
+
+    <DialogActions>
+        <MudContainer>
+            <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="full-width">
+                <div class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Material.Filled.Tag" Size="Size.Small" Class="mr-1" Color="Color.Tertiary" />
+                    <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                        Device ID: #@device.DeviceID
+                    </MudText>
+                </div>
+
+                <MudStack Row Spacing="2">
+                    <MudButton Variant="Variant.Text"
+                               Color="Color.Default"
+                               OnClick="Cancel"
+                               StartIcon="@Icons.Material.Filled.Close"
+                               Class="cancel-button"
+                               Disabled="@isLoading">
+                        Cancel
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               OnClick="UpdateDevice"
+                               Disabled="@(isLoading || !HasChanges() || !IsFormValid())"
+                               StartIcon="@(isLoading ? Icons.Material.Filled.Loop : Icons.Material.Filled.Update)"
+                               Class="update-button">
+                        @if (isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2 update-progress" />
+                            <span>Updating...</span>
+                        }
+                        else
+                        {
+                            <span>Update Device</span>
+                        }
+                    </MudButton>
+                </MudStack>
+            </MudStack>
+        </MudContainer>
+    </DialogActions>
+</MudDialog>
