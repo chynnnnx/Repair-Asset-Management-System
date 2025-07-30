@@ -1,0 +1,140 @@
+﻿.admin-dashboard-title {
+    color: #00415A;
+    font-weight: bold;
+}
+
+.card-default {
+    background-color: #F4F4F4;
+    min-height: 120px;
+}
+
+.card-border-00415A {
+    border-left: 4px solid #00415A;
+}
+
+.card-border-2E7D8A {
+    border-left: 4px solid #2E7D8A;
+}
+
+.card-border-4A9BAE {
+    border-left: 4px solid #4A9BAE;
+}
+
+.card-border-66BAD2 {
+    border-left: 4px solid #66BAD2;
+}
+
+.card-border-82D9F6 {
+    border-left: 4px solid #82D9F6;
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+.card-icon-00415A {
+    color: #00415A;
+}
+
+.card-icon-2E7D8A {
+    color: #2E7D8A;
+}
+
+.card-icon-4A9BAE {
+    color: #4A9BAE;
+}
+
+.card-icon-66BAD2 {
+    color: #66BAD2;
+}
+
+.card-icon-82D9F6 {
+    color: #82D9F6;
+}
+
+.card-text-bold {
+    font-weight: bold;
+    margin: 0;
+}
+
+.card-text-muted {
+    color: #666;
+}
+
+.section-header {
+    color: #00415A;
+    font-weight: bold;
+}
+
+.stat-label {
+    display: flex;
+    align-items: center;
+}
+
+.stat-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.circle-online {
+    background-color: #4CAF50;
+}
+
+.circle-maintenance {
+    background-color: #FF9800;
+}
+
+.circle-offline {
+    background-color: #F44336;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-header-icon {
+    margin-right: 8px;
+    font-size: 1.5rem;
+}
+
+.card-header-text-00415A {
+    color: #00415A;
+}
+
+.card-header-text-2E7D8A {
+    color: #2E7D8A;
+}
+
+.card-header-text-4A9BAE {
+    color: #4A9BAE;
+}
+
+.card-top-border {
+    background-color: #F4F4F4;
+    border-top: 3px solid #00415A;
+}
+
+.system-status-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.system-status-icon {
+    margin-right: 8px;
+}
+.spacing {
+    margin-top: -12px; 
+}
+

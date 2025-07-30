@@ -1,0 +1,105 @@
+﻿/* rreportManagement.razor.css */
+
+/* styles for Main Report Management */
+.report-paper {
+    background: linear-gradient(135deg, #F4F4F4 0%, #F4F4F4 100%);
+    color: black;
+    border-radius: 16px;
+}
+
+.tab-background {
+    background-color: #F4F4F4;
+}
+
+.card {
+    border-radius: 12px;
+    height: 100%;
+}
+
+.card-pending {
+    border-left: 4px solid #ff6b6b;
+}
+
+.card-in-progress {
+    border-left: 4px solid #4facfe;
+}
+
+.card-fixed {
+    border-left: 4px solid #00b09b;
+}
+
+.card-replaced {
+    border-left: 4px solid #f093fb;
+}
+
+.empty-message {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+}
+
+.rounded-button {
+    border-radius: 8px;
+}
+
+.spacer-100 {
+    height: 100px;
+}
+
+/* styles for Report Summary */
+.header-style {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+<TemplateColumn T="RepairRequestDTO" Title="Remarks" HeaderClass="header-style" >
+
+.summary-paper {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rounded-input {
+    border-radius: 12px;
+}
+
+.export-button-group {
+    border-radius: 12px;
+}
+
+.button-rounded-left {
+    border-radius: 12px 0 0 12px;
+}
+
+.button-rounded-right {
+    border-radius: 0 12px 12px 0;
+}
+
+.data-grid-container {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.record-count-chip {
+    border-radius: 20px;
+}
+
+.repair-id-chip {
+    color: #00415a;
+    background-color: #F4F4F4;
+}
+
+.status-indicator-chip {
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.remarks-truncated {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.no-results-container {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+}

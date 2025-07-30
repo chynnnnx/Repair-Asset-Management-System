@@ -1,0 +1,174 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-background {
+    background: linear-gradient(135deg, #f8fafc 0%, #e8f1f4 100%);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+    .login-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 25% 25%, rgba(0, 65, 90, 0.05) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(42, 90, 107, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+.glassmorphic-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.2s ease;
+}
+
+    .glassmorphic-box:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+.glass-inner-wrapper {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 2.5rem;
+    height: 100%;
+}
+
+.login-title {
+    color: #00415a;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    font-size: 1.875rem;
+    letter-spacing: -0.025em;
+}
+
+.welcome-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+    .welcome-icon .mud-icon-root {
+        font-size: 3rem !important;
+        color: #00415a;
+    }
+
+.custom-textfield {
+    margin-bottom: 1rem;
+}
+
+    .custom-textfield .mud-input-filled {
+        background-color: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease;
+    }
+
+        .custom-textfield .mud-input-filled:hover {
+            background-color: #ffffff !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-textfield .mud-input-filled.mud-input-focused {
+            background-color: #ffffff !important;
+            border-color: #00415a !important;
+            box-shadow: 0 0 0 3px rgba(0, 65, 90, 0.1);
+        }
+
+    .custom-textfield .mud-input-adornment-start,
+    .custom-textfield .mud-input-adornment-end {
+        color: #2a5a6b !important;
+    }
+
+.custom-button {
+    background: linear-gradient(135deg, #00415a 0%, #2a5a6b 100%) !important;
+    color: white !important;
+    height: 48px;
+    font-weight: 600;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
+    border: none !important;
+}
+
+    .custom-button:hover {
+        background: linear-gradient(135deg, #2a5a6b 0%, #4a7a8b 100%) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 65, 90, 0.2), 0 2px 4px -1px rgba(0, 65, 90, 0.1) !important;
+        transform: translateY(-1px);
+    }
+
+    .custom-button:active {
+        transform: translateY(0);
+    }
+
+.register-text {
+    text-align: center;
+    color: #64748b;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+}
+
+.register-link {
+    color: #3b82f6 !important;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+    .register-link:hover {
+        color: #2563eb !important;
+        text-decoration: underline;
+    }
+
+.custom-alert {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: #dc2626 !important;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    z-index: 10;
+}
+
+
+* {
+    animation: none !important;
+}

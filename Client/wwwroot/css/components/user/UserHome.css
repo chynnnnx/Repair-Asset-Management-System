@@ -1,0 +1,164 @@
+﻿.dashboard-title {
+    color: #00415A;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    color: #00415A;
+    font-weight: bold;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.card {
+    background-color: #F4F4F4;
+    min-height: 120px;
+    height: 100%;
+}
+
+.card-loading {
+    background-color: #F4F4F4;
+    border-left: 4px solid #00415A;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card-text-right {
+    text-align: right;
+}
+
+.text-bold {
+    font-weight: bold;
+    margin: 0;
+}
+
+.text-muted {
+    color: #666;
+}
+
+.border-primary {
+  
+    border-left: 4px solid #00415A;
+}
+
+.border-warning {
+    border-left: 4px solid #FF9800;
+}
+
+.border-info {
+    border-left: 4px solid #4A9BAE;
+}
+
+.border-success {
+    border-left: 4px solid #4CAF50;
+}
+
+.border-purple {
+    border-left: 4px solid #9C27B0;
+}
+
+.border-grey {
+    border-left: 4px solid #607D8B;
+}
+
+.icon-primary {
+    color: #00415A;
+    font-size: 2rem;
+}
+
+.icon-warning {
+    color: #FF9800;
+    font-size: 2rem;
+}
+
+.icon-info {
+    color: #4A9BAE;
+    font-size: 2rem;
+}
+
+.icon-success {
+    color: #4CAF50;
+    font-size: 2rem;
+}
+
+.icon-purple {
+    color: #9C27B0;
+    font-size: 2rem;
+}
+
+.icon-grey {
+    color: #607D8B;
+    font-size: 2rem;
+}
+
+.text-primary {
+    color: #00415A;
+}
+
+.text-warning {
+    color: #FF9800;
+}
+
+.text-info {
+    color: #4A9BAE;
+}
+
+.text-success {
+    color: #4CAF50;
+}
+
+.text-purple {
+    color: #9C27B0;
+}
+
+.text-grey {
+    color: #607D8B;
+}
+
+.info-card {
+    background-color: #F4F4F4;
+    border-top: 3px solid #00415A;
+    height: 100%;
+}
+
+.card-heading {
+    color: #00415A;
+    margin-bottom: 16px;
+}
+
+.chip-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chip {
+    margin-right: 8px;
+    color: white;
+}
+
+.chip-pending {
+    background-color: #FF9800;
+}
+
+.chip-inprogress {
+    background-color: #2196F3;
+}
+
+.chip-fixed {
+    background-color: #4CAF50;
+}
+
+.chip-replaced {
+    background-color: red;
+}
+
+.mb-2 {
+    margin-bottom: 12px;
+}

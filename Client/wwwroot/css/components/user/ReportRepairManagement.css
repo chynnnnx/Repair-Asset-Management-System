@@ -1,0 +1,145 @@
+﻿
+.report-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.report-card {
+    border-radius: 24px;
+    background: #F4F4F4;
+    box-shadow: 0 15px 40px rgba(0, 65, 90, 0.15);
+}
+
+.report-header {
+    background: #F4F4F4;
+    border-radius: 24px 24px 0 0;
+    padding: 32px;
+}
+
+.icon-bubble {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 16px;
+    margin-right: 24px;
+    backdrop-filter: blur(10px);
+}
+
+.header-title {
+    color: #00415a;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    color: #00415a;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.section-header {
+    color: #00415a;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.input-paper {
+
+    border-radius: 16px;
+    padding: 6px;
+}
+
+.filled-input {
+    background: white;
+    border-radius: 12px;
+}
+
+.info-alert {
+    background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
+    border: 2px solid #bbdefb;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.alert-icon-wrapper {
+    background: linear-gradient(135deg, #00415a 0%, #005a7a 100%);
+    border-radius: 50%;
+    padding: 10px;
+    margin-right: 16px;
+}
+
+.alert-title {
+    color: #00415a;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.alert-desc {
+    color: #00415a;
+    margin-bottom: 4px;
+}
+
+.submit-button {
+    background: linear-gradient(135deg, #00415a 0%, #005a7a 100%);
+    border-radius: 16px;
+    height: 56px;
+    box-shadow: 0 6px 20px rgba(0, 65, 90, 0.4);
+    text-transform: none;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    color: white;
+    letter-spacing: 0.5px;
+}
+.icon-primary {
+    color: #00415A;
+    font-size: 2rem;
+}
+
+
+
+.submitted-container {
+    background: #F4F4F4;
+    box-shadow: 0 15px 40px rgba(0, 65, 90, 0.15);
+}
+
+.repair-id-chip {
+    color: #00415a;
+    background-color: #F4F4F4;
+    font-size: 12px;
+    padding: 2px 6px;
+    height: 20px;
+}
+
+
+.cell-layout {
+    display: flex;
+    align-items: center;
+    min-height: 24px;
+}
+
+.icon-small {
+    color: #00415a;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+
+.icon-remarks {
+    color: #00415a;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.cell-text {
+    font-size: 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.status-chip {
+    font-size: 12px;
+    height: 20px;
+    padding: 2px 6px;
+}
