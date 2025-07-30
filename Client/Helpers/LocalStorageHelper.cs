@@ -5,25 +5,7 @@ namespace Client.Helpers
 {
     public static class LocalStorageHelper
     {
-        public static async Task SavePCLoginSessionAsync(ILocalStorageService localStorage, string token, int userId, string tag, int roomId)
-        {
-            await localStorage.SetItemAsync(SessionKeys.AuthToken, token);
-            await localStorage.SetItemAsync(SessionKeys.SessionUserId, userId);
-            await localStorage.SetItemAsync(SessionKeys.Tag, tag);
-            await localStorage.SetItemAsync(SessionKeys.RoomId, roomId);
-            await localStorage.SetItemAsync(SessionKeys.IsPCLogin, true);
-        }
-
-
-        public static async Task ClearPCLoginSessionAsync(ILocalStorageService localStorage)
-        {
-            await localStorage.RemoveItemAsync(SessionKeys.AuthToken);
-            await localStorage.RemoveItemAsync(SessionKeys.SessionUserId);
-            await localStorage.RemoveItemAsync(SessionKeys.RoomId);
-            await localStorage.RemoveItemAsync(SessionKeys.Tag);
-            await localStorage.RemoveItemAsync(SessionKeys.IsPCLogin);
-        }
-
+      
         public static async Task SaveWebLoginSessionAsync(ILocalStorageService localStorage, LoginResultDTO login)
         {
             await localStorage.SetItemAsync(SessionKeys.AuthToken, login.Token);
