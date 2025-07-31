@@ -28,9 +28,6 @@ namespace projServer.Controllers
             if (deviceDto == null)
                 return BadRequest("Invalid request data.");
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
                 await _deviceService.AddDeviceAsync(deviceDto);
