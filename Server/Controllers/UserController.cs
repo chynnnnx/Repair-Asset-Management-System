@@ -62,9 +62,6 @@ namespace projServer.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUsers([FromBody] RegisterUserDTO userDTO)
         {
-            if (userDTO == null)
-                return BadRequest("Invalid user data.");
-
             bool success = await _authService.AddUserAsync(userDTO);
             if (!success)
                 return Conflict("User already exists or failed to add user.");
