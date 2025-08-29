@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
+using Client.ViewModels;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Client.Components.Dialogs.RoomOffices
 {
     public class UpdateRoomDialogBase : ComponentBase
     {
-        [Parameter] public RoomDTO room { get; set; } = new();
-        [Parameter] public List<RoomDTO> rooms { get; set; } = new();
+        [Parameter] public RoomViewModel Room { get; set; } = new();
+        [Parameter] public List<RoomViewModel> Rooms { get; set; } = new();
         [CascadingParameter] public IMudDialogInstance MudDialog { get; set; } = default!;
         [Inject] protected ISnackbar Snackbar { get; set; } = default!;
 
@@ -18,18 +18,18 @@ namespace Client.Components.Dialogs.RoomOffices
 
         protected override void OnInitialized()
         {
-            originalName = room.RoomName?.Trim();
+            originalName = Room.RoomName?.Trim();
         }
 
         protected bool HasChanges()
         {
-            var currentName = room.RoomName?.Trim();
+            var currentName = Room.RoomName?.Trim();
             return !string.Equals(currentName, originalName, StringComparison.OrdinalIgnoreCase);
         }
 
         protected Severity GetAlertSeverity()
         {
-            var currentName = room.RoomName?.Trim();
+            var currentName = Room.RoomName?.Trim();
 
             if (string.IsNullOrWhiteSpace(currentName))
                 return Severity.Warning;
@@ -37,8 +37,8 @@ namespace Client.Components.Dialogs.RoomOffices
             if (!HasChanges())
                 return Severity.Info;
 
-            bool nameExists = rooms.Any(r =>
-                r.RoomId != room.RoomId &&
+            bool nameExists = Rooms.Any(r =>
+                r.RoomId != Room.RoomId &&
                 r.RoomName.Equals(currentName, StringComparison.OrdinalIgnoreCase));
 
             return nameExists ? Severity.Error : Severity.Success;
@@ -46,7 +46,7 @@ namespace Client.Components.Dialogs.RoomOffices
 
         protected string GetStatusIcon()
         {
-            var currentName = room.RoomName?.Trim();
+            var currentName = Room.RoomName?.Trim();
 
             if (string.IsNullOrWhiteSpace(currentName))
                 return Icons.Material.Filled.Warning;
@@ -54,8 +54,8 @@ namespace Client.Components.Dialogs.RoomOffices
             if (!HasChanges())
                 return Icons.Material.Filled.Info;
 
-            bool nameExists = rooms.Any(r =>
-                r.RoomId != room.RoomId &&
+            bool nameExists = Rooms.Any(r =>
+                r.RoomId != Room.RoomId &&
                 r.RoomName.Equals(currentName, StringComparison.OrdinalIgnoreCase));
 
             return nameExists ? Icons.Material.Filled.Error : Icons.Material.Filled.CheckCircle;
@@ -63,7 +63,7 @@ namespace Client.Components.Dialogs.RoomOffices
 
         protected string GetStatusMessage()
         {
-            var currentName = room.RoomName?.Trim();
+            var currentName = Room.RoomName?.Trim();
 
             if (string.IsNullOrWhiteSpace(currentName))
                 return "Room name is required";
@@ -71,8 +71,8 @@ namespace Client.Components.Dialogs.RoomOffices
             if (!HasChanges())
                 return "No changes detected";
 
-            bool nameExists = rooms.Any(r =>
-                r.RoomId != room.RoomId &&
+            bool nameExists = Rooms.Any(r =>
+                r.RoomId != Room.RoomId &&
                 r.RoomName.Equals(currentName, StringComparison.OrdinalIgnoreCase));
 
             return nameExists ? "Room name already exists" : "Ready to save changes";
@@ -80,7 +80,7 @@ namespace Client.Components.Dialogs.RoomOffices
 
         public async Task Save()
         {
-            var newName = room.RoomName?.Trim();
+            var newName = Room.RoomName?.Trim();
 
             if (string.IsNullOrWhiteSpace(newName))
             {
@@ -96,8 +96,8 @@ namespace Client.Components.Dialogs.RoomOffices
                 return;
             }
 
-            bool nameExists = rooms.Any(r =>
-                r.RoomId != room.RoomId &&
+            bool nameExists = Rooms.Any(r =>
+                r.RoomId != Room.RoomId &&
                 r.RoomName.Equals(newName, StringComparison.OrdinalIgnoreCase));
 
             if (nameExists)
@@ -113,9 +113,9 @@ namespace Client.Components.Dialogs.RoomOffices
 
             try
             {
-                room.RoomName = newName;
+                Room.RoomName = newName;
                 Snackbar.Add($"Room '{newName}' has been successfully updated!", Severity.Success);
-                MudDialog.Close(DialogResult.Ok(room));
+                MudDialog.Close(DialogResult.Ok(Room));
             }
             catch (Exception ex)
             {
@@ -127,8 +127,5 @@ namespace Client.Components.Dialogs.RoomOffices
                 StateHasChanged();
             }
         }
-
-  
-
     }
 }
