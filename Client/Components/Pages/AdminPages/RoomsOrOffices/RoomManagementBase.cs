@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Components.Dialogs.RoomOffices;
 using Client.Components.Pages.Common;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.RoomsOrOffices
 {
@@ -15,9 +15,8 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
 
         protected string roomName = string.Empty;
 
-        protected List<RoomDTO> rooms = new();
-        protected HashSet<RoomDTO> selectedRooms = new();
-
+        protected List<RoomViewModel> rooms = new();
+        protected HashSet<RoomViewModel> selectedRooms = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -46,7 +45,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
                 return;
             }
 
-            var newRoom = new RoomDTO { RoomName = trimmedName };
+            var newRoom = new RoomViewModel { RoomName = trimmedName };
             var success = await RoomService.AddRoomAsync(newRoom);
 
             if (success)
@@ -61,17 +60,16 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             }
         }
 
-
-        protected void OnSelectionChanged(HashSet<RoomDTO> selected)
+        protected void OnSelectionChanged(HashSet<RoomViewModel> selected)
         {
             selectedRooms = selected;
         }
 
-        protected async Task Update(RoomDTO room)
+        protected async Task Update(RoomViewModel room)
         {
             var parameters = new DialogParameters
             {
-                ["room"] = new RoomDTO
+                ["room"] = new RoomViewModel
                 {
                     RoomId = room.RoomId,
                     RoomName = room.RoomName
@@ -82,13 +80,13 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             var options = new DialogOptions { CloseOnEscapeKey = true };
             var dialogReference = await DialogService.ShowAsync<UpdateRoomDialog>("Edit Room", parameters, options);
             var result = await dialogReference.Result;
-            if (!result.Canceled && result.Data is RoomDTO updatedRoom)
+            if (!result.Canceled && result.Data is RoomViewModel updatedRoom)
             {
-                var success = await RoomService.UpdateRoomAsync(updatedRoom); 
+                var success = await RoomService.UpdateRoomAsync(updatedRoom);
 
                 if (success)
                 {
-                    await LoadRooms(); 
+                    await LoadRooms();
                 }
                 else
                 {
@@ -98,16 +96,15 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
 
             StateHasChanged();
         }
-          
-        
-    protected async Task<bool> ConfirmDelete()
+
+        protected async Task<bool> ConfirmDelete()
         {
             var parameters = new DialogParameters
-    {
-        { "ContentText", "Are you sure you want to delete the selected room(s)?" },
-        { "ButtonText", "Delete" },
-        { "Color", Color.Error }
-    };
+            {
+                { "ContentText", "Are you sure you want to delete the selected room(s)?" },
+                { "ButtonText", "Delete" },
+                { "Color", Color.Error }
+            };
 
             var options = new DialogOptions
             {
@@ -121,6 +118,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
 
             return !result.Canceled;
         }
+
         protected async Task DeleteSelectedRooms()
         {
             if (!selectedRooms.Any())
@@ -132,7 +130,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             bool confirmed = await ConfirmDelete();
             if (!confirmed) return;
 
-            foreach (var room in selectedRooms.ToList()) 
+            foreach (var room in selectedRooms.ToList())
             {
                 var success = await RoomService.DeleteRoomAsync(room.RoomId);
                 if (success)
@@ -146,11 +144,8 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
                 }
             }
 
-            selectedRooms.Clear(); 
+            selectedRooms.Clear();
             StateHasChanged();
         }
     }
-
-
-    }
-
+}
