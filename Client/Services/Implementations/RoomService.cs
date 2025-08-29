@@ -1,33 +1,35 @@
-﻿using Client.Services.Interfaces;
+using Client.ViewModels;
 using Shared.DTOs;
+using Client.Services.Interfaces;
 using Blazored.LocalStorage;
-using Microsoft.Extensions.Logging;
 
 namespace Client.Services.Implementations
 {
     public class RoomService : BaseHttpService, IRoomService
     {
-        public RoomService(HttpClient http, ILocalStorageService localStorage, ILogger<RoomService> logger)
+        public RoomService(HttpClient http, ILocalStorageService localStorage)
             : base(http, localStorage, logger) { }
 
-        public async Task<List<RoomDTO>> GetAllRoomsAsync()
+        public async Task<List<RoomViewModel>> GetAllRoomsAsync()
         {
-            return await GetAsync<List<RoomDTO>>("api/Room") ?? new();
+            var dtos = await GetAsync<List<RoomDTO>>("api/Room") ?? new();
+            return dtos.Select(x => x.ToViewModel()).ToList();
         }
 
-        public async Task<bool> AddRoomAsync(RoomDTO roomDto)
+        public async Task<bool> AddRoomAsync(RoomViewModel room)
         {
-            return await PostAsync("api/Room", roomDto);
+            return await PostAsync("api/Room", room.ToDTO());
         }
 
-        public async Task<RoomDTO?> GetRoomByIdAsync(int id)
+        public async Task<RoomViewModel?> GetRoomByIdAsync(int id)
         {
-            return await GetAsync<RoomDTO>($"api/Room/{id}");
+            var dto = await GetAsync<RoomDTO>($"api/Room/{id}");
+            return dto?.ToViewModel();
         }
 
-        public async Task<bool> UpdateRoomAsync(RoomDTO roomDto)
+        public async Task<bool> UpdateRoomAsync(RoomViewModel room)
         {
-            return await PutAsync("api/Room", roomDto);
+            return await PutAsync("api/Room", room.ToDTO());
         }
 
         public async Task<bool> DeleteRoomAsync(int id)
