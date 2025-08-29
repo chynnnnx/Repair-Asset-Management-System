@@ -12,7 +12,7 @@ namespace Client.Components.Pages.UserPages.Assets
         [Inject] protected IRoomService RoomService { get; set; }
 
         public List<DeviceDTO> device = new();
-        public List<RoomDTO> rooms = new();
+       public List<RoomViewModel> rooms = new();
         protected override async Task OnInitializedAsync()
         {
             device = await DeviceService.GetAllDevicesAsync();
@@ -48,3 +48,4 @@ namespace Client.Components.Pages.UserPages.Assets
         };
     }
 }
+
