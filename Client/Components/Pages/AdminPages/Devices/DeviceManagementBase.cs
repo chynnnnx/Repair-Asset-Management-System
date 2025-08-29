@@ -15,7 +15,7 @@ namespace Client.Components.Pages.AdminPages.Devices
         [Inject] protected ISnackbar Snackbar { get; set; } = default!;
         [Inject] protected IRoomService RoomService { get; set; } = default!;
 
-        protected List<RoomDTO> rooms = new();
+        protected List<RoomViewModel> rooms = new();
         protected List<DeviceDTO> devices = new();
         protected HashSet<DeviceDTO> selectedDevices = new();
 
@@ -168,4 +168,5 @@ namespace Client.Components.Pages.AdminPages.Devices
             selectedDevices = selected;
         }
     }
+
 }
