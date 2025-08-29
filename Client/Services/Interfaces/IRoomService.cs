@@ -1,13 +1,13 @@
-﻿using Client.Services;
-using Shared.DTOs;
+using Client.ViewModels;
+
 namespace Client.Services.Interfaces
 {
     public interface IRoomService
     {
-        Task<List<RoomDTO>> GetAllRoomsAsync();
-        Task<bool> AddRoomAsync(RoomDTO roomDto);
-        Task<RoomDTO?> GetRoomByIdAsync(int id);
-        Task<bool> UpdateRoomAsync(RoomDTO roomDto);
+        Task<List<RoomViewModel>> GetAllRoomsAsync();
+        Task<bool> AddRoomAsync(RoomViewModel room);
+        Task<RoomViewModel?> GetRoomByIdAsync(int id);
+        Task<bool> UpdateRoomAsync(RoomViewModel room);
         Task<bool> DeleteRoomAsync(int id);
     }
 }
