@@ -1,5 +1,6 @@
-﻿@page "/add-room"
+@page "/add-room"
 @inherits RoomManagementBase
+
 
 <link href="css/components/admin/RoomManagement.css" rel="stylesheet" />
 <RoleGuard RequiredRole="Admin">
@@ -38,7 +39,7 @@
             </MudItem>
 
             <MudItem xs="12" md="9">
-                <DataCard TItem="RoomDTO"
+                <DataCard TItem="RoomViewModel"
                           Title=@($"Room List ({rooms.Count} rooms)")
                           Icon="@Icons.Material.Filled.List"
                           Items="rooms"
@@ -48,7 +49,7 @@
                         <MudButton Disabled="!selectedRooms.Any()"
                                    OnClick="DeleteSelectedRooms"
                                    Color="Color.Error"
-                                   Variant="Variant.Filled"
+                                   Variant="Variant.Filled"a
                                    StartIcon="@Icons.Material.Filled.Delete"
                                    Size="Size.Small">
                             Delete Selected (@selectedRooms.Count)
@@ -56,8 +57,8 @@
                     </Toolbar>
 
                     <Columns>
-                        <SelectColumn T="RoomDTO" />
-                        <PropertyColumn T="RoomDTO" TProperty="int" Property="x => x.RoomId" Title="Room ID">
+                        <SelectColumn T="RoomViewModel" />
+                        <PropertyColumn T="RoomViewModel" TProperty="int" Property="x => x.RoomId" Title="Room ID">
                             <CellTemplate>
                                 <MudChip T="string"
                                          Size="Size.Small"
@@ -68,7 +69,7 @@
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <PropertyColumn T="RoomDTO" TProperty="string" Property="x => x.RoomName" Title="Room Name">
+                        <PropertyColumn T="RoomViewModel" TProperty="string" Property="x => x.RoomName" Title="Room Name">
                             <CellTemplate>
                                 <div class="d-flex align-center">
                                     <MudIcon Icon="@Icons.Material.Filled.MeetingRoom"
@@ -79,7 +80,7 @@
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <TemplateColumn T="RoomDTO" Title="Edit">
+                        <TemplateColumn T="RoomViewModel" Title="Edit">
                             <CellTemplate Context="cellContext">
                                 <MudButton OnClick="@(() => Update(cellContext.Item))"
                                            Size="Size.Small"
@@ -91,6 +92,7 @@
                         </TemplateColumn>
                     </Columns>
                 </DataCard>
+
             </MudItem>
         </MudGrid>
     </MudContainer>
