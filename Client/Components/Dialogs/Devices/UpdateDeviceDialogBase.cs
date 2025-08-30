@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Client.Services.Interfaces;
 using Shared.DTOs;
 using Shared.Enums;
+using Client.ViewModels;
 
 namespace Client.Components.Dialogs.Devices
 {
     public class UpdateDeviceDialogBase : ComponentBase
     {
         [CascadingParameter] public IMudDialogInstance MudDialog { get; set; } = default!;
-        [Parameter] public DeviceDTO device { get; set; } = new();
-        [Parameter] public List<RoomDTO> rooms { get; set; } = new();
-        [Parameter] public List<DeviceDTO> devices { get; set; } = new();
+        [Parameter] public DeviceViewModel device { get; set; } = new();
+        [Parameter] public List<RoomViewModel> rooms { get; set; } = new();
+        [Parameter] public List<DeviceViewModel> devices { get; set; } = new();
         [Inject] public IDeviceService DeviceService { get; set; } = default!;
         [Inject] public ISnackbar Snackbar { get; set; } = default!;
 
