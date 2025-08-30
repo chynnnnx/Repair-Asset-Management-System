@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Components.Dialogs.Devices;
 using Shared.Enums;
 using Client.Components.Pages.Common;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.Devices
 {
@@ -16,10 +17,11 @@ namespace Client.Components.Pages.AdminPages.Devices
         [Inject] protected IRoomService RoomService { get; set; } = default!;
 
         protected List<RoomViewModel> rooms = new();
-        protected List<DeviceDTO> devices = new();
-        protected HashSet<DeviceDTO> selectedDevices = new();
 
-        protected DeviceDTO newDevice = new();
+        protected List<DeviceViewModel> devices = new();
+        protected HashSet<DeviceViewModel> selectedDevices = new();
+
+        protected DeviceViewModel newDevice = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -65,7 +67,7 @@ namespace Client.Components.Pages.AdminPages.Devices
             }
         }
 
-        protected async Task UpdateDialog(DeviceDTO device)
+        protected async Task UpdateDialog(DeviceViewModel device)
         {
             var parameters = new DialogParameters
             {
@@ -163,10 +165,9 @@ namespace Client.Components.Pages.AdminPages.Devices
             _ => Icons.Material.Filled.Help
         };
 
-        protected void OnSelectionChanged(HashSet<DeviceDTO> selected)
+        protected void OnSelectionChanged(HashSet<DeviceViewModel> selected)
         {
             selectedDevices = selected;
         }
     }
-
 }
