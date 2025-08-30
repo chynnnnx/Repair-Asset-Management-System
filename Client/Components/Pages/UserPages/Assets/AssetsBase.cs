@@ -1,25 +1,26 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Client.Services.Interfaces;
-using Shared.DTOs;
-using MudBlazor;
+using Client.ViewModels; 
 using Shared.Enums;
+using MudBlazor;
+using Shared.DTOs;
+using System.Linq;
 
 namespace Client.Components.Pages.UserPages.Assets
 {
-    public class AssetsBase: ComponentBase
+    public class AssetsBase : ComponentBase
     {
         [Inject] protected IDeviceService DeviceService { get; set; }
         [Inject] protected IRoomService RoomService { get; set; }
 
-        public List<DeviceDTO> device = new();
-       public List<RoomViewModel> rooms = new();
+        public List<DeviceViewModel> device = new();   
+        public List<RoomViewModel> rooms = new();
+
         protected override async Task OnInitializedAsync()
         {
             device = await DeviceService.GetAllDevicesAsync();
-            rooms = await RoomService.GetAllRoomsAsync();
-
+            rooms = await RoomService.GetAllRoomsAsync(); 
         }
-
         protected string GetStatusLabel(DeviceStatus status) => status switch
         {
             DeviceStatus.Online => "Online",
@@ -48,4 +49,3 @@ namespace Client.Components.Pages.UserPages.Assets
         };
     }
 }
-
