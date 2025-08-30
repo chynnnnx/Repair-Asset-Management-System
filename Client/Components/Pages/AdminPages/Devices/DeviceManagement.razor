@@ -1,4 +1,4 @@
-﻿@page "/add-device"
+@page "/add-device"
 @inherits DeviceManagementBase
 
 <link href="css/components/admin/DeviceManagement.css" rel="stylesheet" />
@@ -76,7 +76,7 @@
                 </MudCard>
             </MudItem>
             <MudItem xs="12" lg="9">
-                <DataCard TItem="DeviceDTO"
+                <DataCard TItem="DeviceViewModel"
                           Title=@($"Device Inventory ({devices.Count} devices)")
                           Icon="@Icons.Material.Filled.List"
                           Items="devices"
@@ -95,27 +95,27 @@
                     </Toolbar>
 
                     <Columns>
-                        <SelectColumn T="DeviceDTO" />
+                        <SelectColumn T="DeviceViewModel" />
 
-                        <PropertyColumn T="DeviceDTO" TProperty="int"
+                        <PropertyColumn T="DeviceViewModel" TProperty="int"
                                         Property="x => x.DeviceID" Title="Device ID">
                             <CellTemplate>
                                 <MudChip T="string"
                                          Size="Size.Small"
                                          Variant="Variant.Text"
-                                         Class="device-id-chip">
+                                        Color = "Color.Error">
                                     #@context.Item.DeviceID
                                 </MudChip>
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <PropertyColumn T="DeviceDTO" TProperty="string"
+                        <PropertyColumn T="DeviceViewModel" TProperty="string"
                                         Property="x => x.Tag" Title="Device Name" />
 
-                        <PropertyColumn T="DeviceDTO" TProperty="string"
+                        <PropertyColumn T="DeviceViewModel" TProperty="string"
                                         Property="x => x.RoomName" Title="Room Name" />
 
-                        <TemplateColumn T="DeviceDTO" Title="Status">
+                        <TemplateColumn T="DeviceViewModel" Title="Status">
                             <CellTemplate Context="cellContext">
                                 <MudChip T="string"
                                          Size="Size.Small"
@@ -127,7 +127,7 @@
                             </CellTemplate>
                         </TemplateColumn>
 
-                        <TemplateColumn T="DeviceDTO" Title="Actions">
+                        <TemplateColumn T="DeviceViewModel" Title="Actions">
                             <CellTemplate Context="cellContext">
                               
                                     <MudIconButton Icon="@Icons.Material.Filled.Edit"
