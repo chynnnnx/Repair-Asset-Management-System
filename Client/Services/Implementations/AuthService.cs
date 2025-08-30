@@ -1,14 +1,11 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
 using Shared.DTOs.Auth;
 using Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Json;
 using Client.Security;
 using Client.Helpers;
-using Microsoft.Extensions.Logging;
 using Shared.DTOs;
-using Client.Components.Dialogs;
-using MudBlazor;
+using Client.ViewModels;
 namespace Client.Services.Implementations
 {
     public class AuthService : BaseHttpService, IAuthService
@@ -59,9 +56,10 @@ namespace Client.Services.Implementations
         }
 
 
-        public async Task<bool> AddUserAsync(RegisterUserDTO userDto)
+        public async Task<bool> AddUserAsync(UserViewModel userVm)
         {
-            var response = await _http.PostAsJsonAsync("api/auth", userDto);
+            var dto = userVm.ToDTO();
+            var response = await _http.PostAsJsonAsync("api/auth", dto);
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -69,22 +67,23 @@ namespace Client.Services.Implementations
             var error = await response.Content.ReadAsStringAsync();
             throw new Exception(error);
         }
-      
 
-        public async Task <bool> UpdateUserInfo(UserDTO userDto)
+        public async Task<bool> UpdateUserInfo(UserViewModel userVm)
         {
-            return await PutAsync("api/auth", userDto);
-          
+            return await PutAsync("api/auth", userVm.ToDTO());
         }
-        
-        public async Task <bool> DeleteUser(int userId)
-        {
+
+        public async Task<bool> DeleteUser(int userId)
+        { 
             return await DeleteAsync($"api/auth/{userId}");
         }
-     public async Task<List<UserDTO>> GetAllUsers()
+
+        public async Task<List<UserViewModel>> GetAllUsers()
         {
-            return await GetAsync<List<UserDTO>>("api/auth/users") ?? new();
+            var dtos = await GetAsync<List<UserDTO>>("api/auth/users") ?? new();
+            return dtos.Select(x => x.ToViewModel()).ToList();
         }
+
 
     }
 }
