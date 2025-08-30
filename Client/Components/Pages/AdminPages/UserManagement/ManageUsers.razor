@@ -1,11 +1,11 @@
-﻿@page "/manage-users"
+@page "/manage-users"
 @inherits ManageUserBase
 
 <RoleGuard RequiredRole="Admin">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
         <MudGrid>
             <MudItem xs="12">
-                <DataCard TItem="UserDTO"
+                <DataCard TItem="UserViewModel"
                           Title=@($"Users List ({users.Count} users)")
                           Icon="@Icons.Material.Filled.People"
                           Items="users"
@@ -33,8 +33,8 @@
                     </Toolbar>
 
                     <Columns>
-                        <SelectColumn T="UserDTO" />
-                        <PropertyColumn T="UserDTO" TProperty="int" Property="x => x.UserID" Title="User ID">
+                        <SelectColumn T="UserViewModel" />
+                        <PropertyColumn T="UserViewModel" TProperty="int" Property="x => x.UserID" Title="User ID">
                             <CellTemplate>
                                 <MudChip T="string"
                                          Size="Size.Small"
@@ -44,7 +44,7 @@
                                 </MudChip>
                             </CellTemplate>
                         </PropertyColumn>
-                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.FirstName" Title="First Name">
+                        <PropertyColumn T="UserViewModel" TProperty="string" Property="x => x.FirstName" Title="First Name">
                             <CellTemplate>
                                 <div class="d-flex align-center">
                                     <MudIcon Icon="@Icons.Material.Filled.Person"
@@ -55,11 +55,11 @@
                                 </div>
                             </CellTemplate>
                         </PropertyColumn>
-                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.LastName" Title="Last Name" />
-                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.MiddleName" Title="Middle Name" />
-                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.Gender" Title="Gender" />
-                        <PropertyColumn T="UserDTO" TProperty="string" Property="x => x.Email" Title="Email" />
-                        <TemplateColumn T="UserDTO" Title="Role">
+                        <PropertyColumn T="UserViewModel" TProperty="string" Property="x => x.LastName" Title="Last Name" />
+                        <PropertyColumn T="UserViewModel" TProperty="string" Property="x => x.MiddleName" Title="Middle Name" />
+                        <PropertyColumn T="UserViewModel" TProperty="string" Property="x => x.Gender" Title="Gender" />
+                        <PropertyColumn T="UserViewModel" TProperty="string" Property="x => x.Email" Title="Email" />
+                        <TemplateColumn T="UserViewModel" Title="Role">
                             <CellTemplate Context="cellContext">
                                 <MudChip T="string"
                                          Size="Size.Small"
@@ -69,7 +69,7 @@
                                 </MudChip>
                             </CellTemplate>
                         </TemplateColumn>
-                        <TemplateColumn T="UserDTO" Title="Edit">
+                        <TemplateColumn T="UserViewModel" Title="Edit">
                             <CellTemplate Context="cellContext">
                                 <MudButton OnClick="@(() => Update(cellContext.Item))"
                                            Size="Size.Small"
