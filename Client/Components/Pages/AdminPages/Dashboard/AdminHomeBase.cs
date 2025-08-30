@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Client.Services.Interfaces;
 using Shared.DTOs;
 using MudBlazor;
 using Shared.Enums;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.Dashboard
 {
@@ -20,8 +21,8 @@ namespace Client.Components.Pages.AdminPages.Dashboard
         protected int totalRepairRequests = 0;
         protected bool isLoading = true;
 
-        protected List<UserDTO> recentUsers = new();
-        protected List<RepairRequestDTO> recentRepairRequests = new();
+        protected List<UserViewModel> recentUsers = new();
+        protected List<RepairRequestViewModel> recentRepairRequests = new();
 
         protected int onlineDevices = 0;
         protected int offlineDevices = 0;
