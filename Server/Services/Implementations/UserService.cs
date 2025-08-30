@@ -117,20 +117,23 @@ namespace projServer.Services.Implementations
         public async Task<bool> UpdateUserInfo(UserDTO userDTO)
         {
             try
-            {
-                var existingUser = await _userRepository.GetByIdAsync(userDTO.UserID);
-                if (existingUser == null)
-                    return false;
-
-                var userEntity = _mapper.Map<UserEntity>(userDTO);
-                await _userRepository.UpdateAsync(userEntity);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to update user info: {Email}", userDTO.Email);
-                return false;
-            }
+             {
+                 var existingUser = await _userRepository.GetByIdAsync(userDTO.UserID);
+                 if (existingUser == null)
+                     return false;
+            
+                 existingUser.FirstName = userDTO.FirstName;
+                 existingUser.LastName = userDTO.LastName;
+                 existingUser.Email = userDTO.Email;
+                 existingUser.Role = userDTO.Role.ToString();
+            
+                 return await _userRepository.UpdateAsync(existingUser);
+             }
+             catch (Exception ex)
+             {
+                 _logger.LogError(ex, "Failed to update user info: {Email}", userDTO.Email);
+                 return false;
+             }
         }
 
         public async Task<bool> DeleteUser(int userId)
@@ -153,3 +156,4 @@ namespace projServer.Services.Implementations
 
     }
 }
+
