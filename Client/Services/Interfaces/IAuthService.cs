@@ -1,5 +1,5 @@
-﻿using Shared.DTOs.Auth;
-using Shared.DTOs;
+using Shared.DTOs.Auth;
+using Client.ViewModels;
 namespace Client.Services.Interfaces
 {
     public interface IAuthService
@@ -7,10 +7,10 @@ namespace Client.Services.Interfaces
         Task<LoginResultDTO?> LoginAsync(LoginDTO loginDto);
         Task LogoutAsync();
         Task<string?> RegisterAccount(RegisterUserDTO registerDto);
-        Task<List<UserDTO>> GetAllUsers();
-        Task<bool> AddUserAsync(RegisterUserDTO userDto);
-        Task<bool> UpdateUserInfo(UserDTO userDto);
-            Task<bool> DeleteUser(int userId);
+        Task<List<UserViewModel>> GetAllUsers();
+        Task<bool> AddUserAsync(UserViewModel userVm);
+        Task<bool> UpdateUserInfo(UserViewModel userVm);
+        Task<bool> DeleteUser(int userId);
     
 
     }
