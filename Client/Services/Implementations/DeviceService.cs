@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Shared.DTOs;
 using Client.Services.Interfaces;
 using Blazored.LocalStorage;
-using Microsoft.Extensions.Logging;
+using Client.ViewModels;
 
 namespace Client.Services.Implementations
 {
@@ -20,22 +20,22 @@ namespace Client.Services.Implementations
             _jsonOptions = jsonOptions;
         }
 
-        public async Task<List<DeviceDTO>> GetAllDevicesAsync()
+        public async Task<List<DeviceViewModel>> GetAllDevicesAsync()
         {
-            var stream = await _http.GetStreamAsync("api/Device");
-            return await JsonSerializer.DeserializeAsync<List<DeviceDTO>>(stream, _jsonOptions) ?? new();
+            var dtos = await GetAsync<List<DeviceDTO>>("api/Device") ?? new();
+            return dtos.Select(x => x.ToViewModel()).ToList();
         }
 
-        public async Task<bool> AddDeviceAsync(DeviceDTO deviceDto)
+        public async Task<bool> AddDeviceAsync(DeviceViewModel device)
         {
-            return await PostAsync("api/Device", deviceDto);
+            return await PostAsync("api/Device", device.ToDTO());
         }
 
      
 
-        public async Task<bool> UpdateDeviceAsync(DeviceDTO deviceDto)
+        public async Task<bool> UpdateDeviceAsync(DeviceViewModel device)
         {
-            return await PutAsync("api/Device", deviceDto);
+            return await PutAsync("api/Device", device.ToDTO());
         }
 
         public async Task<bool> DeleteDeviceAsync(int deviceId)
