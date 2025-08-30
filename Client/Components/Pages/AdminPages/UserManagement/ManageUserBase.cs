@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Shared.DTOs;
 using Client.Services.Interfaces;
@@ -6,6 +6,7 @@ using Client.Components.Dialogs.UserManagement;
 using Client.Components.Pages.Common;
 using Shared.Enums;
 using System.Diagnostics;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.UserManagement
 {
@@ -15,8 +16,8 @@ namespace Client.Components.Pages.AdminPages.UserManagement
         [Inject] protected IDialogService DialogService { get; set; } = default!;
         [Inject] protected ISnackbar Snackbar { get; set; } = default!;
 
-        protected List<UserDTO> users = new();
-        protected HashSet<UserDTO> selectedUser= new();
+        protected List<UserViewModel> users = new();
+        protected HashSet<UserViewModel> selectedUser= new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,7 +27,7 @@ namespace Client.Components.Pages.AdminPages.UserManagement
         {
             users = await userService.GetAllUsers();
         }
-        protected void OnSelectionChanged(HashSet<UserDTO> selected)
+        protected void OnSelectionChanged(HashSet<UserViewModel> selected)
         {
             selectedUser= selected;
         }
@@ -98,7 +99,7 @@ namespace Client.Components.Pages.AdminPages.UserManagement
             return !result.Canceled;
         }
 
-        protected async Task Update(UserDTO user)
+        protected async Task Update(UserViewModel user)
         {
            
                 var parameters = new DialogParameters
@@ -113,7 +114,7 @@ namespace Client.Components.Pages.AdminPages.UserManagement
 
                 var result = await dialogReference.Result;
 
-                if (!result.Canceled && result.Data is UserDTO updatedUser)
+                if (!result.Canceled && result.Data is UserViewModel updatedUser)
                 {
                     var success = await userService.UpdateUserInfo(updatedUser);
                     if (success)
