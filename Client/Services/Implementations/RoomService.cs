@@ -7,8 +7,8 @@ namespace Client.Services.Implementations
 {
     public class RoomService : BaseHttpService, IRoomService
     {
-        public RoomService(HttpClient http, ILocalStorageService localStorage)
-            : base(http, localStorage, logger) { }
+       public RoomService(HttpClient http, ILocalStorageService localStorage, ILogger<RoomService> logger)
+      : base(http, localStorage, logger) { }
 
         public async Task<List<RoomViewModel>> GetAllRoomsAsync()
         {
@@ -38,3 +38,4 @@ namespace Client.Services.Implementations
         }
     }
 }
+
