@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Shared.DTOs;
 using Client.Services.Interfaces;
 using Microsoft.JSInterop;
 using Shared.Helpers;
 using Shared.Enums;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.Reports
 {
@@ -13,6 +14,7 @@ namespace Client.Components.Pages.AdminPages.Reports
         [Inject] protected IRepairRequestService RequestService { get; set; }
         [Inject] protected ISnackbar Snackbar { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
+        protected List<RepairRequestViewModel> Reports { get; set; } = new();
 
         public int _selectedMonth = DateTime.Now.Month;
         public int _selectedYear = DateTime.Now.Year;
@@ -60,7 +62,7 @@ namespace Client.Components.Pages.AdminPages.Reports
             }
         }
 
-        protected List<RepairRequestDTO> Reports { get; set; } = new();
+     
         protected DateTime SelectedDate
         {
             get => new(_selectedYear, _selectedMonth, 1);
