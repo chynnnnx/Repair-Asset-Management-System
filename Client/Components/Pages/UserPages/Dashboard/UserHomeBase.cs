@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Client.Services.Interfaces;
 using Shared.DTOs;
 using MudBlazor;
 using System.Security.Claims;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.UserPages.Dashboard
 {
@@ -22,7 +23,7 @@ namespace Client.Components.Pages.UserPages.Dashboard
         protected int totalDevices = 0;
         protected bool isLoading = true;
 
-        protected List<RepairRequestDTO> userRepairRequests = new();
+        protected List<RepairRequestViewModel> userRepairRequests = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -58,13 +59,11 @@ namespace Client.Components.Pages.UserPages.Dashboard
                 isLoading = true;
                 StateHasChanged();
 
-           
                 var devicesTask = DeviceService.GetAllDevicesAsync();
-
                 var roomsTask = RoomService.GetAllRoomsAsync();
                 var userRequestsTask = currentUserId > 0
                     ? RepairRequestService.GetRequestByUserIdAsync(currentUserId)
-                    : Task.FromResult<IEnumerable<RepairRequestDTO>>(new List<RepairRequestDTO>());
+                    : Task.FromResult(new List<RepairRequestViewModel>());
 
                 await Task.WhenAll(roomsTask, userRequestsTask, devicesTask);
 
