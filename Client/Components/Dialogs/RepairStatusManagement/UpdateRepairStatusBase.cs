@@ -70,7 +70,7 @@ namespace Client.Components.Dialogs.RepairStatusManagement
                 {
                     Report.ResolvedDate = TimeHelper.PHToUtc(displayResolvedDate.Value);
                 }
-
+                await Task.Delay(2000);
                 MudDialog.Close(DialogResult.Ok(Report));
             }
             catch (Exception)
@@ -83,3 +83,4 @@ namespace Client.Components.Dialogs.RepairStatusManagement
         protected void Cancel() => MudDialog.Cancel();
     }
 }
+
