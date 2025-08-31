@@ -1,4 +1,4 @@
-﻿@page "/report-repair"
+@page "/report-repair"
 @inherits ReportRepairRequestBase
 
 
@@ -118,15 +118,15 @@
                 </MudCardContent>
 
                 <MudCardActions Class="pa-6 pt-0">
-                    <MudButton Color="Color.Primary"
+                    <MudButton OnClick="SubmitRequest"
                                Variant="Variant.Filled"
-                               Size="Size.Large"
+                               Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.Send"
-                               OnClick="SubmitRequest"
-                               FullWidth="true"
-                               Class="submit-button">
-                        <MudText>Submit Repair Request</MudText>
+                               Disabled="@isSubmitting"
+                               Loading="@isSubmitting">
+                        @(isSubmitting ? "Submitting..." : "Submit Request")
                     </MudButton>
+
                 </MudCardActions>
             </MudCard>
         </MudItem>
