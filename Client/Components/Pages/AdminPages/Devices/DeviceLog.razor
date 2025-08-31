@@ -1,4 +1,4 @@
-﻿@page "/devicelogs"
+@page "/devicelogs"
 @inject IDeviceLogService DeviceLogService
 
 <link href="css/components/admin/DeviceManagement.css" rel="stylesheet" />
@@ -7,13 +7,13 @@
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
     <MudGrid>
         <MudItem xs="12">
-            <DataCard TItem="DeviceLogDTO"
+            <DataCard TItem="DeviceLogViewModel"
                       Title=@($"Device Logs ({logs.Count} logs)")
                       Icon="@Icons.Material.Filled.History"
                       Items="logs"
                       SearchSelector="log => log.Note ?? string.Empty">
                 <Columns>
-                    <PropertyColumn T="DeviceLogDTO" TProperty="int" Property="x => x.LogId" Title="Log ID">
+                    <PropertyColumn T="DeviceLogViewModel" TProperty="int" Property="x => x.LogId" Title="Log ID">
                         <CellTemplate>
                             <MudChip T="string"
                                      Size="Size.Small"
@@ -24,7 +24,7 @@
                         </CellTemplate>
                     </PropertyColumn>
 
-                    <PropertyColumn T="DeviceLogDTO" TProperty="int" Property="x => x.DeviceID" Title="Device ID">
+                    <PropertyColumn T="DeviceLogViewModel" TProperty="int" Property="x => x.DeviceID" Title="Device ID">
                         <CellTemplate>
                             <div class="log-cell">
                                 <MudIcon Icon="@Icons.Material.Filled.Devices"
@@ -37,7 +37,7 @@
                         </CellTemplate>
                     </PropertyColumn>
 
-                    <PropertyColumn T="DeviceLogDTO" TProperty="string" Property="x => x.ActionByName" Title="Action By">
+                    <PropertyColumn T="DeviceLogViewModel" TProperty="string" Property="x => x.ActionByName" Title="Action By">
                         <CellTemplate>
                             <div class="log-cell">
                                 <MudIcon Icon="@Icons.Material.Filled.Person"
@@ -52,7 +52,7 @@
                         </CellTemplate>
                     </PropertyColumn>
 
-                    <PropertyColumn T="DeviceLogDTO" TProperty="string" Property="x => x.Note" Title="Note">
+                    <PropertyColumn T="DeviceLogViewModel" TProperty="string" Property="x => x.Note" Title="Note">
                         <CellTemplate>
                             <div class="log-cell">
                                 <MudIcon Icon="@Icons.Material.Filled.Notes"
@@ -67,7 +67,7 @@
                         </CellTemplate>
                     </PropertyColumn>
 
-                    <TemplateColumn T="DeviceLogDTO" Title="Logged At">
+                    <TemplateColumn T="DeviceLogViewModel" Title="Logged At">
                         <CellTemplate Context="cellContext">
                             <div class="log-cell">
                                 <MudIcon Icon="@Icons.Material.Filled.Schedule"
@@ -86,7 +86,7 @@
 </MudContainer>
 
 @code {
-    private List<DeviceLogDTO> logs = new();
+    private List<DeviceLogViewModel> logs = new();
 
     protected override async Task OnInitializedAsync()
     {
