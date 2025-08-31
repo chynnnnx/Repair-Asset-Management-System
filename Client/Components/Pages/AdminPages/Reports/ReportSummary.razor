@@ -1,4 +1,4 @@
-﻿@page "/report-summary"
+@page "/report-summary"
 @inherits ReportSummaryBase
 
 <link href="css/components/admin/ReportManagement.css" rel="stylesheet" />
@@ -63,7 +63,7 @@
 
             @if (Reports.Any())
             {
-                <MudDataGrid T="RepairRequestDTO"
+                <MudDataGrid T="RepairRequestViewModel"
                              Items="Reports"
                              Dense="false"
                              Hover="true"
@@ -72,7 +72,7 @@
                              Elevation="0"
                              Class="data-grid-container">
                     <Columns>
-                        <PropertyColumn T="RepairRequestDTO" TProperty="int"
+                        <PropertyColumn T="RepairRequestViewModel" TProperty="int"
                                         Property="x => x.RepairId"
                                         Title="ID"
                                         HeaderStyle="header-style">
@@ -86,22 +86,22 @@
                             </CellTemplate>
                         </PropertyColumn>
 
-                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                        <PropertyColumn T="RepairRequestViewModel" TProperty="string"
                                         Property="x => x.DeviceTag"
                                         Title="Device"
                                         HeaderStyle="header-style;" />
 
-                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                        <PropertyColumn T="RepairRequestViewModel" TProperty="string"
                                         Property="x => x.RoomName"
                                         Title="Location"
                                         HeaderStyle="header-style" />
 
-                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                        <PropertyColumn T="RepairRequestViewModel" TProperty="string"
                                         Property="x => x.ReportedDatePH"
                                         Title="Reported"
                                         HeaderStyle="header-style" />
 
-                        <TemplateColumn T="RepairRequestDTO" Title="Status" HeaderStyle="header-style">
+                        <TemplateColumn T="RepairRequestViewModel" Title="Status" HeaderStyle="header-style">
                             <CellTemplate Context="cellContext">
                                 <MudChip T="string"
                                          Size="Size.Medium"
@@ -113,12 +113,12 @@
                             </CellTemplate>
                         </TemplateColumn>
 
-                        <PropertyColumn T="RepairRequestDTO" TProperty="string"
+                        <PropertyColumn T="RepairRequestViewModel" TProperty="string"
                                         Property="x => x.ResolvedDatePH"
                                         Title="Resolved"
                                         HeaderStyle="header-style" />
 
-                        <TemplateColumn T="RepairRequestDTO" Title="Remarks" HeaderStyle="header-style">
+                        <TemplateColumn T="RepairRequestViewModel" Title="Remarks" HeaderStyle="header-style">
                             <CellTemplate Context="cellContext">
                                 <MudText Typo="Typo.body2" Class="remarks-truncated">
                                     @(string.IsNullOrEmpty(cellContext.Item.Remarks) ? "—" : cellContext.Item.Remarks)
@@ -128,7 +128,7 @@
                     </Columns>
 
                     <PagerContent>
-                        <MudDataGridPager T="RepairRequestDTO"
+                        <MudDataGridPager T="RepairRequestViewModel"
                                           PageSizeOptions="new int[]{10, 25, 50,100}"
                                           InfoFormat="{first_item}-{last_item} of {all_items}"
                                           Class="pager-content" />
