@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Components.Dialogs.UserManagement;
 using Client.Components.Pages.Common;
@@ -18,6 +17,7 @@ namespace Client.Components.Pages.AdminPages.UserManagement
 
         protected List<UserViewModel> users = new();
         protected HashSet<UserViewModel> selectedUser= new();
+        protected bool isLoading = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -59,22 +59,30 @@ namespace Client.Components.Pages.AdminPages.UserManagement
             bool confirmed = await ConfirmDelete();
             if (!confirmed) return;
 
-            foreach (var user in selectedUser.ToList())
+            isLoading = true;
+            try
             {
-                var success = await userService.DeleteUser(user.UserID);
-                if (success)
+                foreach (var user in selectedUser.ToList())
                 {
-                    Snackbar.Add($"Deleted User: {user.FirstName}", Severity.Success);
-                    users.Remove(user);
+                    var success = await userService.DeleteUser(user.UserID);
+                    if (success)
+                    {
+                        Snackbar.Add($"Deleted User: {user.FirstName}", Severity.Success);
+                        users.Remove(user);
+                    }
+                    else
+                    {
+                        Snackbar.Add($"Failed to delete User: {user.FirstName}", Severity.Error);
+                    }
                 }
-                else
-                {
-                    Snackbar.Add($"Failed to delete User: {user.FirstName}", Severity.Error);
-                }
-            }
 
-            selectedUser.Clear();
-            StateHasChanged();
+                selectedUser.Clear();
+                StateHasChanged();
+            }
+            finally
+            {
+                isLoading = false;
+            }
         }
 
         protected async Task<bool> ConfirmDelete()
