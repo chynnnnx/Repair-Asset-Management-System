@@ -1,5 +1,6 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
 using Client.Services.Interfaces;
+using Client.ViewModels;
 using Microsoft.Extensions.Logging;
 using Shared.DTOs;
 
@@ -12,9 +13,11 @@ namespace Client.Services.Implementations
 
         }
 
-        public async Task <List<DeviceLogDTO>> GetAllLogs()
+        public async Task <List<DeviceLogViewModel>> GetAllLogs()
         {
-            return await GetAsync<List<DeviceLogDTO>>("api/DeviceLog") ?? new();
+            var dtos = await GetAsync<List<DeviceLogDTO>>("api/DeviceLog") ?? new();
+            return dtos.Select(x => x.ToViewModel()).ToList();
+
         }
 
     }
