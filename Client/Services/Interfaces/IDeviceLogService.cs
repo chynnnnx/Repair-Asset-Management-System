@@ -1,9 +1,9 @@
-﻿using Shared.DTOs;
+using Client.ViewModels;
 
 namespace Client.Services.Interfaces
 {
     public interface IDeviceLogService
     {
-        Task<List<DeviceLogDTO>> GetAllLogs();
+        Task<List<DeviceLogViewModel>> GetAllLogs();
     }
 }
