@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Shared.DTOs;
+using Microsoft.AspNetCore.Components;
 using Shared.Enums;
 using Client.Services.Interfaces;
 using MudBlazor;
 using Client.Components.Dialogs.RepairStatusManagement;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.AdminPages.Reports
 {
@@ -12,14 +12,12 @@ namespace Client.Components.Pages.AdminPages.Reports
         [Inject] public ISnackbar Snackbar { get; set; } = default!;
         [Inject] public IRepairRequestService RequestService { get; set; }
         [Inject] protected IDialogService DialogService { get; set; } = default!;
-        protected List<RepairRequestDTO> allReports = new();
-        protected List<RepairRequestDTO> pending = new();
-        protected List<RepairRequestDTO> inProgress = new();
-        protected List<RepairRequestDTO> fixedReports = new();
-        protected List<RepairRequestDTO> replaced = new();
+        protected List<RepairRequestViewModel> allReports = new();
+        protected List<RepairRequestViewModel> pending = new();
+        protected List<RepairRequestViewModel> inProgress = new();
+        protected List<RepairRequestViewModel> fixedReports = new();
+        protected List<RepairRequestViewModel> replaced = new();
        
-
-
         protected bool hasPending, hasInProgress, hasFixed, hasReplaced;
 
         protected const int PageSize = 6;
@@ -34,16 +32,16 @@ namespace Client.Components.Pages.AdminPages.Reports
         protected int TotalPagesFixed => (int)Math.Ceiling((double)fixedReports.Count / PageSize);
         protected int TotalPagesReplaced => (int)Math.Ceiling((double)replaced.Count / PageSize);
 
-        protected IEnumerable<RepairRequestDTO> PagedPending =>
+        protected IEnumerable<RepairRequestViewModel> PagedPending =>
             pending.Skip((CurrentPagePending - 1) * PageSize).Take(PageSize);
 
-        protected IEnumerable<RepairRequestDTO> PagedInProgress =>
+        protected IEnumerable<RepairRequestViewModel> PagedInProgress =>
             inProgress.Skip((CurrentPageInProgress - 1) * PageSize).Take(PageSize);
 
-        protected IEnumerable<RepairRequestDTO> PagedFixed =>
+        protected IEnumerable<RepairRequestViewModel> PagedFixed =>
             fixedReports.Skip((CurrentPageFixed - 1) * PageSize).Take(PageSize);
 
-        protected IEnumerable<RepairRequestDTO> PagedReplaced =>
+        protected IEnumerable<RepairRequestViewModel> PagedReplaced =>
             replaced.Skip((CurrentPageReplaced - 1) * PageSize).Take(PageSize);
 
         protected override async Task OnInitializedAsync()
@@ -60,13 +58,23 @@ namespace Client.Components.Pages.AdminPages.Reports
                 .OrderByDescending(r => r.ReportedDate)
                 .ToList();
 
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
             fixedReports = allReports
-                .Where(r => r.Status == RepairStatus.Fixed)
+                .Where(r => r.Status == RepairStatus.Fixed && 
+                           r.ResolvedDate.HasValue &&
+                           r.ResolvedDate.Value.Month == currentMonth &&
+                           r.ResolvedDate.Value.Year == currentYear)
                 .OrderByDescending(r => r.ResolvedDate ?? r.ReportedDate)
                 .ToList();
 
+        
             replaced = allReports
-                .Where(r => r.Status == RepairStatus.Replaced)
+                .Where(r => r.Status == RepairStatus.Replaced && 
+                           r.ResolvedDate.HasValue &&
+                           r.ResolvedDate.Value.Month == currentMonth &&
+                           r.ResolvedDate.Value.Year == currentYear)
                 .OrderByDescending(r => r.ResolvedDate ?? r.ReportedDate)
                 .ToList();
 
@@ -76,15 +84,14 @@ namespace Client.Components.Pages.AdminPages.Reports
             hasReplaced = replaced.Any();
         }
 
-        protected async Task MarkAsInProgress(RepairRequestDTO report)
+        protected async Task MarkAsInProgress(RepairRequestViewModel report)
         {
             report.Status = RepairStatus.InProgress;
             await RequestService.UpdateRepairRequestAsync(report);
             await RefreshData();
         }
 
-
-        protected async Task OpenUpdateDialog(RepairRequestDTO report)
+        protected async Task OpenUpdateDialog(RepairRequestViewModel report)
         {
             var parameters = new DialogParameters { ["Report"] = report };
             var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -92,13 +99,12 @@ namespace Client.Components.Pages.AdminPages.Reports
             var dialog = DialogService.Show<UpdateRepairStatusDialog>("Update Status", parameters, options);
             var result = await dialog.Result;
 
-            if (!result.Canceled && result.Data is RepairRequestDTO updatedReport)
+            if (!result.Canceled && result.Data is RepairRequestViewModel updatedReport)
             {
                 Snackbar.Add($"Report marked as {updatedReport.Status}", Severity.Success);
                 await RequestService.UpdateRepairRequestAsync(updatedReport);
                 await RefreshData();
             }
-
         }
 
         private async Task RefreshData()
@@ -107,8 +113,24 @@ namespace Client.Components.Pages.AdminPages.Reports
 
             pending = allReports.Where(r => r.Status == RepairStatus.Pending).ToList();
             inProgress = allReports.Where(r => r.Status == RepairStatus.InProgress).ToList();
-            fixedReports = allReports.Where(r => r.Status == RepairStatus.Fixed).ToList();
-            replaced = allReports.Where(r => r.Status == RepairStatus.Replaced).ToList();
+            
+      
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+
+            fixedReports = allReports
+                .Where(r => r.Status == RepairStatus.Fixed && 
+                           r.ResolvedDate.HasValue &&
+                           r.ResolvedDate.Value.Month == currentMonth &&
+                           r.ResolvedDate.Value.Year == currentYear)
+                .ToList();
+
+            replaced = allReports
+                .Where(r => r.Status == RepairStatus.Replaced && 
+                           r.ResolvedDate.HasValue &&
+                           r.ResolvedDate.Value.Month == currentMonth &&
+                           r.ResolvedDate.Value.Year == currentYear)
+                .ToList();
 
             hasPending = pending.Any();
             hasInProgress = inProgress.Any();
@@ -118,5 +140,4 @@ namespace Client.Components.Pages.AdminPages.Reports
             StateHasChanged();
         }
     }
-
-}
+}   
