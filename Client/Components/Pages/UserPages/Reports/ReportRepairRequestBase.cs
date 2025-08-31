@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Helpers;
 using Blazored.LocalStorage;
 using Shared.Enums;
+using Client.ViewModels;
 
 namespace Client.Components.Pages.UserPages.Reports
 {
@@ -17,12 +17,12 @@ namespace Client.Components.Pages.UserPages.Reports
         [Inject] protected ISnackbar Snackbar { get; set; }
 
 
-        protected List<RepairRequestDTO> request = new();
+        protected List<RepairRequestViewModel> request = new();
 
 
         protected MudForm _form;
-        protected RepairRequestDTO _repairRequest = new();
-        protected List<DeviceDTO> _devices = new();
+        protected RepairRequestViewModel _repairRequest = new();
+        protected List<DeviceViewModel> _devices = new();
         protected string _selectedRoom = string.Empty;
 
         protected override async Task OnInitializedAsync()
