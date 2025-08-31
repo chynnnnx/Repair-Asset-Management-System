@@ -118,13 +118,18 @@
                 </MudCardContent>
 
                 <MudCardActions Class="pa-6 pt-0">
-                    <MudButton OnClick="SubmitRequest"
+                    <MudButton Color="Color.Primary"
                                Variant="Variant.Filled"
-                               Color="Color.Primary"
+                               Size="Size.Large"
                                StartIcon="@Icons.Material.Filled.Send"
+                               OnClick="SubmitRequest"
+                               FullWidth="true"
+                               Loading="@isSubmitting"
                                Disabled="@isSubmitting"
-                               Loading="@isSubmitting">
-                        @(isSubmitting ? "Submitting..." : "Submit Request")
+                               Class="submit-button">
+                        <MudText>
+                            @(isSubmitting ? "Submitting..." : "Submit Repair Request")
+                        </MudText>
                     </MudButton>
 
                 </MudCardActions>
@@ -132,3 +137,4 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
+
