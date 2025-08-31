@@ -69,10 +69,13 @@
                                    FullWidth="true"
                                    Size="Size.Large"
                                    StartIcon="@Icons.Material.Filled.Add"
+                                   Loading="@isLoading"
+                                   Disabled="@isLoading"
                                    Class="add-device-btn">
-                            Add Device
+                            @(isLoading ? "Adding..." : "Add Device")
                         </MudButton>
                     </MudCardActions>
+
                 </MudCard>
             </MudItem>
             <MudItem xs="12" lg="9">
@@ -84,13 +87,14 @@
                           SelectedItemsChanged="OnSelectionChanged">
 
                     <Toolbar>
-                        <MudButton Disabled="!selectedDevices.Any()"
+                        <MudButton Disabled="!selectedDevices.Any() || isLoading"
                                    OnClick="DeleteSelectedDevices"
                                    Variant="Variant.Outlined"
                                    Color="Color.Error"
                                    StartIcon="@Icons.Material.Filled.Delete"
+                                   Loading="@isLoading"
                                    Class="delete-selected-btn">
-                            Delete Selected (@selectedDevices.Count)
+                            @(isLoading ? "Deleting..." : $"Delete Selected ({selectedDevices.Count})")
                         </MudButton>
                     </Toolbar>
 
