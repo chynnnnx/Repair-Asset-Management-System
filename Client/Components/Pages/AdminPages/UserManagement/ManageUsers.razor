@@ -21,14 +21,16 @@
                                        Size="Size.Small">
                                 Add Admin / User
                             </MudButton>
-                            <MudButton Disabled="!selectedUser.Any()"
+                            <MudButton Disabled="!selectedUser.Any() || isLoading"
                                        OnClick="DeleteSelectedUsers"
                                        Color="Color.Error"
                                        Variant="Variant.Filled"
                                        StartIcon="@Icons.Material.Filled.Delete"
-                                       Size="Size.Small">
-                                Delete Selected (@selectedUser.Count)
+                                       Size="Size.Small"
+                                       Loading="@isLoading">
+                                @(isLoading ? "Deleting..." : $"Delete Selected ({selectedUser.Count})")
                             </MudButton>
+
                         </MudStack>
                     </Toolbar>
 
