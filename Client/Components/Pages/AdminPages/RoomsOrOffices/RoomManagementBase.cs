@@ -18,6 +18,8 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
         protected List<RoomViewModel> rooms = new();
         protected HashSet<RoomViewModel> selectedRooms = new();
 
+        protected bool isLoading = false;
+
         protected override async Task OnInitializedAsync()
         {
             await LoadRooms();
@@ -37,7 +39,6 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             }
 
             var trimmedName = roomName.Trim();
-
             bool exists = rooms.Any(r => r.RoomName.Equals(trimmedName, StringComparison.OrdinalIgnoreCase));
             if (exists)
             {
@@ -45,8 +46,15 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
                 return;
             }
 
+            isLoading = true;
+            StateHasChanged();
+
+            await Task.Delay(1500); 
+
             var newRoom = new RoomViewModel { RoomName = trimmedName };
             var success = await RoomService.AddRoomAsync(newRoom);
+
+            isLoading = false;
 
             if (success)
             {
@@ -58,6 +66,8 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             {
                 Snackbar.Add("Failed to add room.", Severity.Error);
             }
+
+            StateHasChanged();
         }
 
         protected void OnSelectionChanged(HashSet<RoomViewModel> selected)
@@ -130,6 +140,11 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             bool confirmed = await ConfirmDelete();
             if (!confirmed) return;
 
+            isLoading = true;
+            StateHasChanged();
+
+            await Task.Delay(1500);
+
             foreach (var room in selectedRooms.ToList())
             {
                 var success = await RoomService.DeleteRoomAsync(room.RoomId);
@@ -144,6 +159,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
                 }
             }
 
+            isLoading = false;
             selectedRooms.Clear();
             StateHasChanged();
         }
