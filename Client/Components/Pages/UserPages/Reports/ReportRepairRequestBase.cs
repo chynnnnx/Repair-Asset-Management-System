@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Helpers;
 using Blazored.LocalStorage;
@@ -45,15 +44,19 @@ namespace Client.Components.Pages.UserPages.Reports
 
         protected async Task SubmitRequest()
         {
-            var userId = await LocalStorage.GetItemAsync<int>(SessionKeys.SessionUserId);
-            _repairRequest.ReportedByUserId = userId;
-
             await _form.Validate();
             if (_form.IsValid)
             {
                 isSubmitting = true;
+                StateHasChanged(); // para agad mag-reflect yung loading spinner
+
                 try
                 {
+                    var userId = await LocalStorage.GetItemAsync<int>(SessionKeys.SessionUserId);
+                    _repairRequest.ReportedByUserId = userId;
+
+                    await Task.Delay(2000);
+
                     bool success = await RepairRequestService.AddRepairRequestAsync(_repairRequest);
                     if (success)
                     {
@@ -69,6 +72,7 @@ namespace Client.Components.Pages.UserPages.Reports
                 finally
                 {
                     isSubmitting = false;
+                    StateHasChanged();
                 }
             }
         }
