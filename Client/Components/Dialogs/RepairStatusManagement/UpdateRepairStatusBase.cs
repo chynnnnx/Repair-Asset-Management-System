@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+using Client.ViewModels;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Shared.Enums;
 using Shared.Helpers;
 
@@ -9,7 +9,7 @@ namespace Client.Components.Dialogs.RepairStatusManagement
     public class UpdateRepairStatusBase : ComponentBase
     {
         [CascadingParameter] protected IMudDialogInstance MudDialog { get; set; } = default!;
-        [Parameter] public RepairRequestDTO Report { get; set; } = new();
+        [Parameter] public RepairRequestViewModel Report { get; set; } = new();
 
         protected DateTime? displayResolvedDate;
         protected bool isLoading = false;
