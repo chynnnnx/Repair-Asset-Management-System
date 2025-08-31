@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Components.Dialogs.Devices;
 using Shared.Enums;
@@ -22,6 +21,8 @@ namespace Client.Components.Pages.AdminPages.Devices
         protected HashSet<DeviceViewModel> selectedDevices = new();
 
         protected DeviceViewModel newDevice = new();
+        protected bool isLoading = false;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -46,8 +47,9 @@ namespace Client.Components.Pages.AdminPages.Devices
                 Snackbar.Add(string.IsNullOrWhiteSpace(newDevice.Tag) ? "Device name is required." : "Please select a room.", Severity.Warning);
                 return;
             }
+
             bool exists = devices.Any(d =>
-             d.Tag.Equals(newDevice.Tag.Trim(), StringComparison.OrdinalIgnoreCase));
+                d.Tag.Equals(newDevice.Tag.Trim(), StringComparison.OrdinalIgnoreCase));
 
             if (exists)
             {
@@ -55,17 +57,26 @@ namespace Client.Components.Pages.AdminPages.Devices
                 return;
             }
 
-            if (await DeviceService.AddDeviceAsync(newDevice))
+            isLoading = true;
+            try
             {
-                Snackbar.Add("Device added successfully!", Severity.Success);
-                newDevice = new();
-                await LoadDevices();
+                if (await DeviceService.AddDeviceAsync(newDevice))
+                {
+                    Snackbar.Add("Device added successfully!", Severity.Success);
+                    newDevice = new();
+                    await LoadDevices();
+                }
+                else
+                {
+                    Snackbar.Add("Failed to add device.", Severity.Error);
+                }
             }
-            else
+            finally
             {
-                Snackbar.Add("Failed to add device.", Severity.Error);
+                isLoading = false;
             }
         }
+
 
         protected async Task UpdateDialog(DeviceViewModel device)
         {
@@ -120,23 +131,32 @@ namespace Client.Components.Pages.AdminPages.Devices
             bool confirmed = await ConfirmDelete();
             if (!confirmed) return;
 
-            foreach (var device in selectedDevices.ToList())
+            isLoading = true;
+            try
             {
-                var success = await DeviceService.DeleteDeviceAsync(device.DeviceID);
-                if (success)
+                foreach (var device in selectedDevices.ToList())
                 {
-                    Snackbar.Add($"Deleted Device: {device.Tag}", Severity.Success);
-                    devices.Remove(device);
+                    var success = await DeviceService.DeleteDeviceAsync(device.DeviceID);
+                    if (success)
+                    {
+                        Snackbar.Add($"Deleted Device: {device.Tag}", Severity.Success);
+                        devices.Remove(device);
+                    }
+                    else
+                    {
+                        Snackbar.Add($"Failed to delete Device: {device.Tag}", Severity.Error);
+                    }
                 }
-                else
-                {
-                    Snackbar.Add($"Failed to delete Device: {device.Tag}", Severity.Error);
-                }
-            }
 
-            selectedDevices.Clear();
-            StateHasChanged();
+                selectedDevices.Clear();
+                StateHasChanged();
+            }
+            finally
+            {
+                isLoading = false;
+            }
         }
+
 
         protected string GetStatusLabel(DeviceStatus status) => status switch
         {
