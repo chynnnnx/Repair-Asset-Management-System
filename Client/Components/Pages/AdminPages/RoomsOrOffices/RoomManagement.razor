@@ -1,6 +1,6 @@
 @page "/add-room"
 @inherits RoomManagementBase
-
+@using Client.ViewModels
 
 <link href="css/components/admin/RoomManagement.css" rel="stylesheet" />
 <RoleGuard RequiredRole="Admin">
@@ -31,10 +31,13 @@
                                    FullWidth="true"
                                    StartIcon="@Icons.Material.Filled.Add"
                                    Size="Size.Small"
+                                   Loading="@isLoading"
+                                   Disabled="@isLoading"
                                    Class="add-room-button">
-                            Add Room
+                            @(isLoading ? "Adding..." : "Add Room")
                         </MudButton>
                     </MudCardActions>
+
                 </MudCard>
             </MudItem>
 
@@ -46,15 +49,17 @@
                           SearchSelector="room => room.RoomName ?? string.Empty"
                           SelectedItemsChanged="OnSelectionChanged">
                     <Toolbar>
-                        <MudButton Disabled="!selectedRooms.Any()"
+                        <MudButton Disabled="!selectedRooms.Any() || isLoading"
                                    OnClick="DeleteSelectedRooms"
                                    Color="Color.Error"
-                                   Variant="Variant.Filled"a
+                                   Variant="Variant.Filled"
                                    StartIcon="@Icons.Material.Filled.Delete"
-                                   Size="Size.Small">
-                            Delete Selected (@selectedRooms.Count)
+                                   Size="Size.Small"
+                                   Loading="@isLoading">
+                            @(isLoading ? "Deleting..." : $"Delete Selected ({selectedRooms.Count})")
                         </MudButton>
                     </Toolbar>
+
 
                     <Columns>
                         <SelectColumn T="RoomViewModel" />
