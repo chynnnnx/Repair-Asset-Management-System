@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Helpers;
 using Blazored.LocalStorage;
@@ -16,6 +17,7 @@ namespace Client.Components.Pages.UserPages.Reports
         [Inject] protected IDeviceService DeviceService { get; set; }
         [Inject] protected ISnackbar Snackbar { get; set; }
 
+        protected bool isSubmitting = false;
 
         protected List<RepairRequestViewModel> request = new();
 
@@ -40,26 +42,33 @@ namespace Client.Components.Pages.UserPages.Reports
             await InvokeAsync(StateHasChanged);
         }
 
+
         protected async Task SubmitRequest()
         {
             var userId = await LocalStorage.GetItemAsync<int>(SessionKeys.SessionUserId);
             _repairRequest.ReportedByUserId = userId;
 
-        
-
             await _form.Validate();
             if (_form.IsValid)
             {
-                bool success = await RepairRequestService.AddRepairRequestAsync(_repairRequest);
-                if (success)
+                isSubmitting = true;
+                try
                 {
-                    Snackbar.Add("Repair request submitted successfully!", Severity.Success);
-                    _repairRequest = new();
-                    _selectedRoom = "";
+                    bool success = await RepairRequestService.AddRepairRequestAsync(_repairRequest);
+                    if (success)
+                    {
+                        Snackbar.Add("Repair request submitted successfully!", Severity.Success);
+                        _repairRequest = new();
+                        _selectedRoom = "";
+                    }
+                    else
+                    {
+                        Snackbar.Add("Failed to submit request. Try again.", Severity.Error);
+                    }
                 }
-                else
+                finally
                 {
-                    Snackbar.Add("Failed to submit request. Try again.", Severity.Error);
+                    isSubmitting = false;
                 }
             }
         }
