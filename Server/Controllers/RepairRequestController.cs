@@ -6,16 +6,25 @@ using Shared.DTOs;
 
 namespace projServer.Controllers
 {
+    /// <summary>
+    /// handles repair request operations like adding, updating,
+    /// deleting, retrieving, and exporting reports
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class RepairRequestController : ControllerBase
     {
         private readonly IRepairRequestService _repairRequestService;
+
         public RepairRequestController(IRepairRequestService repairRequestService)
         {
             _repairRequestService = repairRequestService;
         }
 
+        /// <summary>
+        /// adds a new repair request (user only)
+        /// </summary>
         [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> AddRepairRequest([FromBody] RepairRequestDTO repairRequestDTO)
@@ -25,12 +34,14 @@ namespace projServer.Controllers
 
             var success = await _repairRequestService.AddRepairRequest(repairRequestDTO);
             if (success)
-                return Ok(new { message = "Added successfully" });
+                return Ok(new { message = "added successfully" });
 
-            return StatusCode(500, new { message = "Failed to add repair request" });
+            return StatusCode(500, new { message = "failed to add repair request" });
         }
 
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// updates an existing repair request
+        /// </summary>
         [HttpPut]
         public async Task<IActionResult> UpdateRepairRequest([FromBody] RepairRequestDTO repairRequestDTO)
         {
@@ -39,30 +50,39 @@ namespace projServer.Controllers
 
             var success = await _repairRequestService.UpdateRepairRequest(repairRequestDTO);
             if (success)
-                return Ok(new { message = "Updated successfully" });
+                return Ok(new { message = "updated successfully" });
 
-            return NotFound(new { message = "Repair request not found" });
+            return NotFound(new { message = "repair request not found" });
         }
 
+        /// <summary>
+        /// deletes a repair request by id
+        /// </summary>
         [Authorize(Roles = "User,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRepairRequest(int id)
         {
             var success = await _repairRequestService.DeleteRepairRequest(id);
             if (success)
-                return Ok(new { message = "Deleted successfully" });
+                return Ok(new { message = "deleted successfully" });
 
-            return NotFound(new { message = $"No request found with ID {id}" });
+            return NotFound(new { message = $"no request found with id {id}" });
         }
 
+        /// <summary>
+        /// gets all repair requests with device details
+        /// </summary>
         [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetAllRequestsWithDeviceAsync()
         {
             var requests = await _repairRequestService.GetAllRequestsWithDeviceAsync();
             return Ok(requests);
-
         }
+
+        /// <summary>
+        /// gets all repair requests for a specific user
+        /// </summary>
         [Authorize(Roles = "User,Admin")]
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetRequestsByUserId(int userId)
@@ -70,24 +90,28 @@ namespace projServer.Controllers
             var requests = await _repairRequestService.GetRequestByUserId(userId);
 
             if (!requests.Any())
-                return NotFound("No repair requests found for this user.");
+                return NotFound("no repair requests found for this user");
 
             return Ok(requests);
         }
 
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// gets summary of fixed and replaced devices for a month and year
+        /// </summary>
         [HttpGet("summary")]
         public async Task<ActionResult<IEnumerable<RepairRequestDTO>>> GetFixedAndReplacedSummary([FromQuery] int month, [FromQuery] int year)
         {
             var summary = await _repairRequestService.GetFixedAndReplacedByMonth(month, year);
 
             if (!summary.Any())
-                return NotFound("No fixed or replaced reports found for this month and year.");
+                return NotFound("no fixed or replaced reports found for this month and year");
 
             return Ok(summary);
         }
 
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// exports monthly report as pdf
+        /// </summary>
         [HttpGet("export/pdf")]
         public async Task<IActionResult> ExportPdf([FromQuery] int month, [FromQuery] int year)
         {
@@ -96,7 +120,9 @@ namespace projServer.Controllers
             return File(file, "application/pdf", filename);
         }
 
-        [Authorize(Roles = "Admin")]
+        /// <summary>
+        /// exports monthly report as excel
+        /// </summary>
         [HttpGet("export/excel")]
         public async Task<IActionResult> ExportExcel([FromQuery] int month, [FromQuery] int year)
         {
@@ -106,7 +132,5 @@ namespace projServer.Controllers
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 filename);
         }
-
-
     }
 }
