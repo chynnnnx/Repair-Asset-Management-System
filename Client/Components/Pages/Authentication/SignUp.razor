@@ -4,163 +4,185 @@
 
 <link href="css/signup.css" rel="stylesheet" />
 
+<MudAppBar Elevation="2" Style="background-color:#00415a; color:white;">
+    <MudText Typo="Typo.h6">Create Account - RAMS</MudText>
+    <MudSpacer />
+
+    <MudButton Variant="Variant.Text"
+               Color="Color.Inherit"
+               Href="/help"
+               Style="text-transform:none;">
+        Help
+    </MudButton>
+
+    <MudButton Variant="Variant.Text"
+               Color="Color.Inherit"
+               Href="/about"
+               Style="text-transform:none;">
+        About
+    </MudButton>
+</MudAppBar>
 <div class="register-background">
-    <MudPaper Class="register-container" Elevation="0">
-        <div style="padding: 2.5rem;">
-            <div class="register-header">
-                <MudIcon Icon="Icons.Material.Filled.PersonAdd" Class="register-icon" />
-                <MudText Typo="Typo.h4" Class="register-title">
-                    Create Account
-                </MudText>
-                <MudText Typo="Typo.body2" Class="register-subtitle">
-                    Fill in your details to get started
-                </MudText>
-            </div>
-
-            <MudStepper @bind-ActiveStep="@activeStep" Linear="true" Elevation="0" Class="rounded-md" HeaderTextView="HeaderTextView.All">
-
-                <MudStep Title="Personal Info" Completed="@Step1Completed" Icon="Icons.Material.Filled.Person">
-                    <div style="padding: 1rem 0;">
-                        <MudText Typo="Typo.h6" Class="step-header">
-                            Personal Details
+    <MudGrid Justify="Justify.Center" Style="padding: 2rem 0 1rem 0;">
+        <MudItem xs="12" sm="10" md="8" lg="6">
+            <MudPaper Class="register-container" Elevation="0">
+                <div style="padding: 1rem 1.5rem;">
+                    <div class="register-header" style="margin-bottom: 0.75rem;">
+                        <MudIcon Icon="Icons.Material.Filled.PersonAdd" Class="register-icon" Style="font-size: 2rem;" />
+                        <MudText Typo="Typo.h5" Class="register-title" Style="margin: 0.5rem 0 0.25rem 0;">
+                            Create Account
                         </MudText>
+                        <MudText Typo="Typo.body2" Class="register-subtitle" Style="margin-bottom: 0;">
+                            Fill in your details to get started
+                        </MudText>
+                    </div>
 
-                        <MudGrid Spacing="2">
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Variant="Variant.Outlined"
-                                              @bind-Value="registerUser.FirstName"
-                                              Label="First Name"
-                                              Required="true"
-                                              Class="custom-textfield" />
-                            </MudItem>
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Variant="Variant.Outlined"
-                                              @bind-Value="registerUser.LastName"
-                                              Label="Last Name"
-                                              Required="true"
-                                              Class="custom-textfield" />
-                            </MudItem>
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Variant="Variant.Outlined"
-                                              @bind-Value="registerUser.MiddleName"
-                                              Label="Middle Name"
-                                              Class="custom-textfield" />
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudText Typo="Typo.body2" Class="mb-2" Style="color: #00415a; font-weight: 600;">
-                                    Gender *
+                    <MudStepper @bind-ActiveStep="@activeStep" Linear="true" Elevation="0" Class="rounded-md" HeaderTextView="HeaderTextView.All">
+
+                        <MudStep Title="Personal Info" Completed="@Step1Completed" Icon="Icons.Material.Filled.Person">
+                            <div style="padding: 0;">
+                                <MudText Typo="Typo.body1" Class="step-header" Style="margin-bottom: 0.75rem; font-weight: 600;">
+                                    Personal Details
                                 </MudText>
-                                <MudToggleGroup @bind-Value="registerUser.Gender" T="string" MultiSelection="false" Rounded="true" Class="custom-toggle-group">
-                                    <MudToggleItem Value="@("Male")" Text="Male" />
-                                    <MudToggleItem Value="@("Female")" Text="Female" />
-                                    <MudToggleItem Value="@("Other")" Text="Other" />
-                                </MudToggleGroup>
-                            </MudItem>
-                        </MudGrid>
+
+                                <MudGrid Spacing="1">
+                                    <MudItem xs="12" sm="6">
+                                        <MudTextField Variant="Variant.Outlined"
+                                                      @bind-Value="registerUser.FirstName"
+                                                      Label="First Name"
+                                                      Required="true"
+                                                      Class="custom-textfield" />
+                                    </MudItem>
+                                    <MudItem xs="12" sm="6">
+                                        <MudTextField Variant="Variant.Outlined"
+                                                      @bind-Value="registerUser.LastName"
+                                                      Label="Last Name"
+                                                      Required="true"
+                                                      Class="custom-textfield" />
+                                    </MudItem>
+                                    <MudItem xs="12" sm="6">
+                                        <MudTextField Variant="Variant.Outlined"
+                                                      @bind-Value="registerUser.MiddleName"
+                                                      Label="Middle Name"
+                                                      Class="custom-textfield" />
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <MudText Typo="Typo.body2" Class="mb-2" Style="color: #00415a; font-weight: 600;">
+                                            Gender *
+                                        </MudText>
+                                        <MudToggleGroup @bind-Value="registerUser.Gender" T="string" MultiSelection="false" Rounded="true" Class="custom-toggle-group">
+                                            <MudToggleItem Value="@("Male")" Text="Male" />
+                                            <MudToggleItem Value="@("Female")" Text="Female" />
+                                            <MudToggleItem Value="@("Other")" Text="Other" />
+                                        </MudToggleGroup>
+                                    </MudItem>
+                                </MudGrid>
+                            </div>
+                        </MudStep>
+
+                        <MudStep Title="Account Info" Completed="@Step2Completed" Icon="Icons.Material.Filled.ContactMail">
+                            <div style="padding: 0;">
+                                <MudText Typo="Typo.body1" Class="step-header" Style="margin-bottom: 0.75rem; font-weight: 600;">
+                                    Account Credentials
+                                </MudText>
+
+                                <MudGrid Spacing="1">
+                                    <MudItem xs="12">
+                                        <MudTextField Variant="Variant.Outlined"
+                                                      @bind-Value="registerUser.Email"
+                                                      Label="Email Address"
+                                                      Required="true"
+                                                      Type="email"
+                                                      Class="custom-textfield"
+                                                      Adornment="Adornment.Start"
+                                                      AdornmentIcon="Icons.Material.Filled.Email" />
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <MudTextField Variant="Variant.Outlined"
+                                                      @bind-Value="registerUser.PasswordHash"
+                                                      Label="Password"
+                                                      Required="true"
+                                                      InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                                                      Adornment="Adornment.End"
+                                                      AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                                                      OnAdornmentClick="@TogglePasswordVisibility"
+                                                      Class="custom-textfield" />
+                                    </MudItem>
+                                </MudGrid>
+                            </div>
+                        </MudStep>
+
+                        <MudStep Title="Review" Icon="Icons.Material.Filled.CheckCircle">
+                            <div style="padding: 0;">
+                                <MudText Typo="Typo.body1" Class="step-header" Style="margin-bottom: 0.75rem; font-weight: 600;">
+                                    Review Information
+                                </MudText>
+
+                                <MudPaper Class="review-card pa-2 mb-2" Elevation="0">
+                                    <MudGrid Spacing="1">
+                                        <MudItem xs="6">
+                                            <MudText Typo="Typo.caption" Class="review-label">
+                                                NAME
+                                            </MudText>
+                                            <MudText Typo="Typo.body2" Class="review-value">
+                                                @registerUser.FirstName @registerUser.LastName @registerUser.MiddleName
+                                            </MudText>
+                                        </MudItem>
+                                        <MudItem xs="6">
+                                            <MudText Typo="Typo.caption" Class="review-label">
+                                                GENDER
+                                            </MudText>
+                                            <MudText Typo="Typo.body2" Class="review-value">
+                                                @registerUser.Gender
+                                            </MudText>
+                                        </MudItem>
+                                        <MudItem xs="12">
+                                            <MudText Typo="Typo.caption" Class="review-label">
+                                                EMAIL
+                                            </MudText>
+                                            <MudText Typo="Typo.body2" Class="review-value">
+                                                @registerUser.Email
+                                            </MudText>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudPaper>
+
+                                <div class="terms-section">
+                                    <MudCheckBox @bind-Value="isTermsAccepted" Color="Color.Primary">
+                                        I agree to the
+                                        <MudLink Href="/weather" Target="_blank" Class="terms-link">
+                                            Terms and Conditions
+                                        </MudLink>
+                                    </MudCheckBox>
+                                </div>
+
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Success"
+                                           Disabled="false"
+                                           OnClick="SubmitRegistration"
+                                           Size="Size.Large"
+                                           FullWidth="true"
+                                           StartIcon="Icons.Material.Filled.Check"
+                                           Class="register-button">
+                                    Complete Registration
+                                </MudButton>
+                            </div>
+                        </MudStep>
+
+                    </MudStepper>
+
+                    <MudText Typo="Typo.caption" Align="Align.Center" Class="signin-text">
+                        Already have an account? <MudLink Href="/" Class="signin-link">Sign in here</MudLink>
+                    </MudText>
+                </div>
+
+                @if (isLoading)
+                {
+                    <div class="loading-overlay">
+                        <LoadingSpinner />
                     </div>
-                </MudStep>
-
-                <MudStep Title="Account Info" Completed="@Step2Completed" Icon="Icons.Material.Filled.ContactMail">
-                    <div style="padding: 1rem 0;">
-                        <MudText Typo="Typo.h6" Class="step-header">
-                            Account Credentials
-                        </MudText>
-
-                        <MudGrid Spacing="2">
-                            <MudItem xs="12">
-                                <MudTextField Variant="Variant.Outlined"
-                                              @bind-Value="registerUser.Email"
-                                              Label="Email Address"
-                                              Required="true"
-                                              Type="email"
-                                              Class="custom-textfield"
-                                              Adornment="Adornment.Start"
-                                              AdornmentIcon="Icons.Material.Filled.Email" />
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudTextField Variant="Variant.Outlined"
-                                              @bind-Value="registerUser.PasswordHash"
-                                              Label="Password"
-                                              Required="true"
-                                              InputType="@(_showPassword ? InputType.Text : InputType.Password)"
-                                              Adornment="Adornment.End"
-                                              AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
-                                              OnAdornmentClick="@TogglePasswordVisibility"
-                                              Class="custom-textfield" />
-                            </MudItem>
-                        </MudGrid>
-                    </div>
-                </MudStep>
-
-                <MudStep Title="Review" Icon="Icons.Material.Filled.CheckCircle">
-                    <div style="padding: 1rem 0;">
-                        <MudText Typo="Typo.h6" Class="step-header">
-                            Review Information
-                        </MudText>
-
-                        <MudPaper Class="review-card pa-3 mb-3" Elevation="0">
-                            <MudGrid Spacing="1">
-                                <MudItem xs="6">
-                                    <MudText Typo="Typo.caption" Class="review-label">
-                                        NAME
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Class="review-value">
-                                        @registerUser.FirstName @registerUser.LastName @registerUser.MiddleName
-                                    </MudText>
-                                </MudItem>
-                                <MudItem xs="6">
-                                    <MudText Typo="Typo.caption" Class="review-label">
-                                        GENDER
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Class="review-value">
-                                        @registerUser.Gender
-                                    </MudText>
-                                </MudItem>
-                                <MudItem xs="12">
-                                    <MudText Typo="Typo.caption" Class="review-label">
-                                        EMAIL
-                                    </MudText>
-                                    <MudText Typo="Typo.body2" Class="review-value">
-                                        @registerUser.Email
-                                    </MudText>
-                                </MudItem>
-                            </MudGrid>
-                        </MudPaper>
-
-                        <div class="terms-section">
-                            <MudCheckBox @bind-Value="isTermsAccepted" Color="Color.Primary">
-                                I agree to the
-                                <MudLink Href="/weather" Target="_blank" Class="terms-link">
-                                    Terms and Conditions
-                                </MudLink>
-                            </MudCheckBox>
-                        </div>
-
-                        <MudButton Variant="Variant.Filled"
-                                   Color="Color.Success"
-                                   Disabled="false"
-                                   OnClick="SubmitRegistration"
-                                   Size="Size.Large"
-                                   FullWidth="true"
-                                   StartIcon="Icons.Material.Filled.Check"
-                                   Class="register-button">
-                            Complete Registration
-                        </MudButton>
-                    </div>
-                </MudStep>
-
-            </MudStepper>
-
-            <MudText Typo="Typo.caption" Align="Align.Center" Class="signin-text">
-                Already have an account? <MudLink Href="/" Class="signin-link">Sign in here</MudLink>
-            </MudText>
-        </div>
-
-        @if (isLoading)
-        {
-            <div class="loading-overlay">
-                <LoadingSpinner />
-            </div>
-        }
-    </MudPaper>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
 </div>

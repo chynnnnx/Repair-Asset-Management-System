@@ -4,6 +4,33 @@
 
 <link href="css/site.css" rel="stylesheet" />
 
+<MudAppBar Elevation="2" Style="background-color:#00415a; color:white;">
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudText Typo="Typo.h6">Repair Asset Management System Login</MudText>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudText Typo="Typo.body2">RAMS Login</MudText>
+    </MudHidden>
+    <MudSpacer />
+
+    <MudButton Variant="Variant.Text"
+               Color="Color.Inherit"
+               Href="/help"
+               Style="text-transform:none;">
+        Help
+    </MudButton>
+
+    <MudButton Variant="Variant.Text"
+               Color="Color.Inherit"
+               Href="/about"
+               Style="text-transform:none;">
+        About
+    </MudButton>
+</MudAppBar>
+
+<Loader Visible="@isLoading" />
+
 <div class="login-background">
     <div class="floating-shapes">
         <div class="shape"></div>
@@ -54,13 +81,6 @@
                 <MudLink Href="/register-account" Class="register-link ml-1">Register here</MudLink>
             </MudText>
 
-            @if (isLoading)
-            {
-                <div class="loading-overlay">
-                    <LoadingSpinner />
-                </div>
-            }
         </div>
     </MudPaper>
 </div>
-

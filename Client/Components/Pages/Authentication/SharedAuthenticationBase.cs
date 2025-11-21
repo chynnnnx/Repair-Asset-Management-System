@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Client.Components.Pages.Authentication
 {
-    public partial class SignUpBase : ComponentBase
+    public partial class SharedAuthenticationBase : ComponentBase
     {
         [Inject] protected IAuthService AuthService { get; set; } = null!;
         [Inject] protected NavigationManager Navigation { get; set; } = null!;
