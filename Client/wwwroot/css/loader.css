@@ -1,0 +1,50 @@
+﻿.jimu-primary-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 13.6px;
+    height: 32px;
+    margin-left: -6.8px; /* half width */
+    margin-top: -16px; /* half height */
+    background: #076fe5;
+    animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+    text-indent: -9999em;
+}
+
+    .jimu-primary-loading:before,
+    .jimu-primary-loading:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 13.6px;
+        height: 32px;
+        background: #076fe5;
+        animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+    }
+
+    .jimu-primary-loading:before {
+        left: -19.992px;
+    }
+
+    .jimu-primary-loading:after {
+        left: 19.992px;
+        animation-delay: 0.32s !important;
+    }
+
+.jimu-primary-loading {
+    animation-delay: 0.16s !important;
+}
+
+@keyframes loading-keys-app-loading {
+    0%, 80%, 100% {
+        opacity: .75;
+        box-shadow: 0 0 #076fe5;
+        height: 32px;
+    }
+
+    40% {
+        opacity: 1;
+        box-shadow: 0 -8px #076fe5;
+        height: 40px;
+    }
+}
