@@ -1,0 +1,15 @@
+﻿<link href="css/loader.css" rel="stylesheet" />
+
+<MudOverlay Visible="@Visible">
+    <MudPaper Class="d-flex justify-center align-center"
+              Elevation="0"
+              Style="background-color: rgba(0,0,0,0.3); box-shadow: none; width:100%; height:100%; position:relative;">
+        <div class="jimu-primary-loading"></div>
+    </MudPaper>
+</MudOverlay>
+
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; }
+}
