@@ -1,4 +1,5 @@
-﻿using Shared.Enums;
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+using Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace projServer.Entities
@@ -8,7 +9,9 @@ namespace projServer.Entities
         [Key]
         public int DeviceID { get; set; }
         public string Tag { get; set; } = string.Empty;
-        public DeviceStatus Status { get; set; } = DeviceStatus.Online;
+        public string Type { get; set; } = string.Empty;
+
+        public DeviceStatus Status { get; set; } = DeviceStatus.Offline;
         public int RoomId { get; set; }
         public RoomEntity? Room { get; set; }
         public ICollection<RepairRequestEntity>? RepairRequests { get; set; }
