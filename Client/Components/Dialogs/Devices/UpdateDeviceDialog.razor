@@ -34,6 +34,16 @@
                                       HelperText="Enter a unique name for this device"
                                       @ref="deviceNameField"
                                       Immediate="true" />
+                        <MudTextField @bind-Value="device.Type"
+                                      Label="Device Type"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      Required="true"
+                                      Class="primary-input"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Category"
+                                      HelperText="Enter the type of device"
+                                      Immediate="true" />
 
                         <MudSelect T="int"
                                    Label="Room Location"
@@ -51,7 +61,7 @@
                                 {
                                     <MudSelectItem T="int" Value="@room.RoomId">
                                         <div class="d-flex align-center">
-                                            <MudIcon Icon="@Icons.Material.Filled.MeetingRoom" Size="Size.Small" Class="mr-2" />
+                                           
                                             @room.RoomName
                                         </div>
                                     </MudSelectItem>
