@@ -1,10 +1,10 @@
-﻿@page "/adminhome"
+@page "/adminhome"
 @inherits AdminHomeBase
 
 <link href="css/components/admin/AdminHome.css" rel="stylesheet" />
 
 <RoleGuard RequiredRole="Admin" />
-<MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4" Style="padding-bottom: 80px;">
     <MudText Typo="Typo.h3" Class="admin-dashboard-title mb-6">
         Admin Dashboard
     </MudText>
@@ -27,7 +27,7 @@
     else
     {
         <MudGrid>
-          
+
             <MudItem xs="12" sm="6" md="4" lg="2">
                 <MudCard Class="card-default card-border-00415A">
                     <MudCardContent>
@@ -42,7 +42,7 @@
                 </MudCard>
             </MudItem>
 
-   
+
             <MudItem xs="12" sm="6" md="4" lg="2">
                 <MudCard Class="card-default card-border-2E7D8A">
                     <MudCardContent>
@@ -85,7 +85,7 @@
                 </MudCard>
             </MudItem>
 
-        
+
             <MudItem xs="12" sm="6" md="4" lg="2">
                 <MudCard Class="card-default card-border-82D9F6">
                     <MudCardContent>
@@ -104,7 +104,7 @@
         <MudText Typo="Typo.h5" Class="section-header mt-8 mb-4">Statistics Overview</MudText>
 
         <MudGrid>
-         
+
             <MudItem xs="12" md="4">
                 <MudCard Class="card-default card-border-00415A">
                     <MudCardContent>
@@ -137,7 +137,7 @@
                 </MudCard>
             </MudItem>
 
-         
+
             <MudItem xs="12" md="4">
                 <MudCard Class="card-default card-border-2E7D8A">
                     <MudCardContent>
@@ -189,9 +189,8 @@
 
         <MudText Typo="Typo.h5" Class="section-header mt-6 mb-4">System Overview</MudText>
 
-        <MudGrid>
-
-            <MudItem xs="12" md="6" Class="spacing">
+        <MudGrid Style="margin-bottom: 40px;">
+            <MudItem xs="12" md="6">
                 <MudCard Class="card-top-border">
                     <MudCardContent>
                         <MudText Typo="Typo.h6" Class="card-header-text-00415A mb-4">User Distribution</MudText>
@@ -206,7 +205,7 @@
                     </MudCardContent>
                 </MudCard>
             </MudItem>
-            <MudItem xs="10" md="6" Class="spacing">
+            <MudItem xs="12" md="6">
                 <MudCard Class="card-top-border">
                     <MudCardContent>
                         <MudText Typo="Typo.h6" Class="card-header-text-00415A mb-4">System Status</MudText>
