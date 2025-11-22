@@ -1,4 +1,4 @@
-﻿@page "/register-account"
+@page "/register-account"
 @layout EmptyLayout
 @inherits SharedAuthenticationBase
 
@@ -10,14 +10,14 @@
 
     <MudButton Variant="Variant.Text"
                Color="Color.Inherit"
-               Href="/help"
+               OnClick="@ShowHelpDialog"
                Style="text-transform:none;">
         Help
     </MudButton>
 
     <MudButton Variant="Variant.Text"
                Color="Color.Inherit"
-               Href="/about"
+               OnClick="@ShowAboutDialog"
                Style="text-transform:none;">
         About
     </MudButton>
@@ -46,17 +46,18 @@
                                 </MudText>
 
                                 <MudGrid Spacing="1">
+                                   
                                     <MudItem xs="12" sm="6">
                                         <MudTextField Variant="Variant.Outlined"
-                                                      @bind-Value="registerUser.FirstName"
-                                                      Label="First Name"
+                                                      @bind-Value="registerUser.LastName"
+                                                      Label="Last Name"
                                                       Required="true"
                                                       Class="custom-textfield" />
                                     </MudItem>
                                     <MudItem xs="12" sm="6">
                                         <MudTextField Variant="Variant.Outlined"
-                                                      @bind-Value="registerUser.LastName"
-                                                      Label="Last Name"
+                                                      @bind-Value="registerUser.FirstName"
+                                                      Label="First Name"
                                                       Required="true"
                                                       Class="custom-textfield" />
                                     </MudItem>
@@ -150,12 +151,11 @@
                                 <div class="terms-section">
                                     <MudCheckBox @bind-Value="isTermsAccepted" Color="Color.Primary">
                                         I agree to the
-                                        <MudLink Href="/weather" Target="_blank" Class="terms-link">
+                                        <MudLink OnClick="@ShowTermsAndConditionsDialog" Style="cursor: pointer;" Class="terms-link">
                                             Terms and Conditions
                                         </MudLink>
                                     </MudCheckBox>
                                 </div>
-
                                 <MudButton Variant="Variant.Filled"
                                            Color="Color.Success"
                                            Disabled="false"
