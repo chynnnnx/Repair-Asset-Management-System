@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @layout EmptyLayout
 @inherits SharedAuthenticationBase
 
@@ -16,14 +16,14 @@
 
     <MudButton Variant="Variant.Text"
                Color="Color.Inherit"
-               Href="/help"
+               OnClick="@ShowHelpDialog"
                Style="text-transform:none;">
         Help
     </MudButton>
 
     <MudButton Variant="Variant.Text"
                Color="Color.Inherit"
-               Href="/about"
+               OnClick="@ShowAboutDialog"
                Style="text-transform:none;">
         About
     </MudButton>
