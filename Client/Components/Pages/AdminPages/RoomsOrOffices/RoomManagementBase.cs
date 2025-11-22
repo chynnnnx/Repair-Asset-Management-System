@@ -13,7 +13,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
         [Inject] protected IDialogService DialogService { get; set; } = default!;
         [Inject] protected ISnackbar Snackbar { get; set; } = default!;
 
-        protected string roomName = string.Empty;
+        protected RoomViewModel newRoom = new RoomViewModel();
 
         protected List<RoomViewModel> rooms = new();
         protected HashSet<RoomViewModel> selectedRooms = new();
@@ -32,13 +32,13 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
 
         protected async Task AddRoom()
         {
-            if (string.IsNullOrWhiteSpace(roomName))
+            if (string.IsNullOrWhiteSpace(newRoom.RoomName))
             {
                 Snackbar.Add("Room name is required.", Severity.Warning);
                 return;
             }
 
-            var trimmedName = roomName.Trim();
+            var trimmedName = newRoom.RoomName.Trim();
             bool exists = rooms.Any(r => r.RoomName.Equals(trimmedName, StringComparison.OrdinalIgnoreCase));
             if (exists)
             {
@@ -49,9 +49,9 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             isLoading = true;
             StateHasChanged();
 
-            await Task.Delay(1500); 
+            await Task.Delay(1500);
 
-            var newRoom = new RoomViewModel { RoomName = trimmedName };
+            newRoom.RoomName = trimmedName;
             var success = await RoomService.AddRoomAsync(newRoom);
 
             isLoading = false;
@@ -59,7 +59,7 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             if (success)
             {
                 Snackbar.Add("Room added successfully!", Severity.Success);
-                roomName = string.Empty;
+                newRoom = new RoomViewModel();
                 await LoadRooms();
             }
             else
