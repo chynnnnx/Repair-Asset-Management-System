@@ -37,6 +37,28 @@
                                   @ref="roomNameField"
                                   Immediate="true"
                                   OnKeyPress="@( (KeyboardEventArgs e) => { if (e.Key == "Enter") Save(); })" />
+                    <MudTextField @bind-Value="Room.Location"
+                                  Label="Location"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Class="room-input"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Place"
+                                  HelperText="Enter the location of this room"
+                                  Immediate="true"
+                                  OnKeyPress="@( (KeyboardEventArgs e) => { if (e.Key == "Enter") Save(); })" />
+
+                    <MudNumericField @bind-Value="Room.Capacity"
+                                     Label="Capacity"
+                                     Variant="Variant.Outlined"
+                                     Margin="Margin.Dense"
+                                     Class="room-input"
+                                     Adornment="Adornment.Start"
+                                     AdornmentIcon="@Icons.Material.Filled.People"
+                                     HelperText="Enter the maximum number of occupants"
+                                     Immediate="true"
+                                     OnKeyPress="@( (KeyboardEventArgs e) => { if (e.Key == "Enter") Save(); })" />
+
                 </MudPaper>
 
                 <MudAlert Severity="@GetAlertSeverity()"
