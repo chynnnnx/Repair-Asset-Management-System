@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Client.ViewModels;
 using Microsoft.AspNetCore.Components.Web;
-
+using Client.Services.Interfaces;
 namespace Client.Components.Dialogs.RoomOffices
 {
     public class UpdateRoomDialogBase : ComponentBase
     {
+        [Inject] protected IRoomService RoomService { get; set; } = default!;
+
         [Parameter] public RoomViewModel Room { get; set; } = new();
         [Parameter] public List<RoomViewModel> Rooms { get; set; } = new();
         [CascadingParameter] public IMudDialogInstance MudDialog { get; set; } = default!;
@@ -15,16 +17,24 @@ namespace Client.Components.Dialogs.RoomOffices
         protected string? originalName;
         protected bool isLoading = false;
         protected MudTextField<string> roomNameField = default!;
+        protected string? originalLocation;
+        protected int originalCapacity;
 
         protected override void OnInitialized()
         {
             originalName = Room.RoomName?.Trim();
+            originalLocation = Room.Location?.Trim();
+            originalCapacity = Room.Capacity;
         }
+
+     
 
         protected bool HasChanges()
         {
-            var currentName = Room.RoomName?.Trim();
-            return !string.Equals(currentName, originalName, StringComparison.OrdinalIgnoreCase);
+
+            return Room.RoomName?.Trim() != originalName
+                   || Room.Location?.Trim() != originalLocation
+                   || Room.Capacity != originalCapacity;
         }
 
         protected Severity GetAlertSeverity()
@@ -80,16 +90,14 @@ namespace Client.Components.Dialogs.RoomOffices
 
         public async Task Save()
         {
-            var newName = Room.RoomName?.Trim();
-
-            if (string.IsNullOrWhiteSpace(newName))
+            if (string.IsNullOrWhiteSpace(Room.RoomName))
             {
                 Snackbar.Add("Room name is required.", Severity.Warning);
                 await roomNameField.FocusAsync();
                 return;
             }
 
-            if (newName == originalName)
+            if (!HasChanges())
             {
                 Snackbar.Add("No changes made.", Severity.Info);
                 MudDialog.Cancel();
@@ -98,7 +106,7 @@ namespace Client.Components.Dialogs.RoomOffices
 
             bool nameExists = Rooms.Any(r =>
                 r.RoomId != Room.RoomId &&
-                r.RoomName.Equals(newName, StringComparison.OrdinalIgnoreCase));
+                r.RoomName.Equals(Room.RoomName?.Trim(), StringComparison.OrdinalIgnoreCase));
 
             if (nameExists)
             {
@@ -113,9 +121,16 @@ namespace Client.Components.Dialogs.RoomOffices
 
             try
             {
-                Room.RoomName = newName;
-                Snackbar.Add($"Room '{newName}' has been successfully updated!", Severity.Success);
-                MudDialog.Close(DialogResult.Ok(Room));
+                var success = await RoomService.UpdateRoomAsync(Room); 
+                if (success)
+                {
+                    Snackbar.Add($"Room '{Room.RoomName}' has been successfully updated!", Severity.Success);
+                    MudDialog.Close(DialogResult.Ok(Room));
+                }
+                else
+                {
+                    Snackbar.Add("Failed to update room.", Severity.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -127,5 +142,6 @@ namespace Client.Components.Dialogs.RoomOffices
                 StateHasChanged();
             }
         }
+
     }
 }
