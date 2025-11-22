@@ -17,13 +17,26 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent Class="pa-2">
-                        <MudTextField @bind-Value="roomName"
+                        <MudTextField @bind-Value="newRoom.RoomName"
                                       Label="Room Name"
                                       Variant="Variant.Outlined"
                                       Adornment="Adornment.Start"
                                       AdornmentIcon="@Icons.Material.Filled.MeetingRoom"
                                       Class="mb-3 room-input"
                                       Size="Size.Small" />
+
+                        <MudTextField @bind-Value="newRoom.Location"
+                                      Label="Location"
+                                      Variant="Variant.Outlined"
+                                      Class="mb-3 room-input"
+                                      Size="Size.Small" />
+
+                        <MudNumericField @bind-Value="newRoom.Capacity"
+                                         Label="Capacity"
+                                         Variant="Variant.Outlined"
+                                         Class="mb-3 room-input"
+                                         Size="Size.Small" />
+
                     </MudCardContent>
                     <MudCardActions Class="pa-2">
                         <MudButton OnClick="AddRoom"
@@ -81,6 +94,22 @@
                                              Size="Size.Small"
                                              Class="mr-2 room-icon" />
                                     <MudText>@context.Item.RoomName</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn T="RoomViewModel" TProperty="string" Property="x => x.Location" Title="Location">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                  
+                                    <MudText>@context.Item.Location</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn T="RoomViewModel" TProperty="int" Property="x => x.Capacity" Title="Capacity">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    
+                                    <MudText>@context.Item.Capacity</MudText>
                                 </div>
                             </CellTemplate>
                         </PropertyColumn>
