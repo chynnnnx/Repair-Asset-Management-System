@@ -1,0 +1,96 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <MudIcon Icon="@Icons.Material.Filled.Info"
+                     Style="font-size: 4rem; color: #00415a;" />
+        </div>
+
+        <MudText Typo="Typo.h4" Align="Align.Center"
+                 Style="color: #00415a; margin-bottom: 20px; font-weight: 600;">
+            About RAMS
+        </MudText>
+
+        <MudText Typo="Typo.body1" Style="margin-bottom: 20px; line-height: 1.8;">
+            The <strong>Repair Asset Management System (RAMS)</strong> is a platform designed to simplify the management of office devices, rooms, and repair requests.
+        </MudText>
+
+        <MudDivider Style="margin: 20px 0;" />
+
+        <MudText Typo="Typo.h6" Style="color: #00415a; margin-bottom: 15px; font-weight: 600;">
+            Key Features
+        </MudText>
+
+        <div style="margin-bottom: 15px;">
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.Devices"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Device Management
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Track and monitor all office devices with real-time status updates
+                    </MudText>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.Build"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Repair Requests
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Submit and track repair requests with ease
+                    </MudText>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.MeetingRoom"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Room Organization
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Organize devices by rooms and locations for better visibility
+                    </MudText>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.Dashboard"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Admin Dashboard
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Comprehensive dashboard for system monitoring
+                    </MudText>
+                </div>
+            </div>
+        </div>
+
+        <MudDivider Style="margin: 20px 0;" />
+
+        <MudText Typo="Typo.caption" Align="Align.Center" Style="color: #999;">
+            © 2025 Repair Asset Management System. All rights reserved.
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Default" Variant="Variant.Text" OnClick="Close"
+                   Style="color: #666;">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    void Close() => MudDialog.Close();
+}

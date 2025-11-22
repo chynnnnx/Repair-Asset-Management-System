@@ -1,0 +1,112 @@
+﻿<MudDialog>
+    <DialogContent>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <MudIcon Icon="@Icons.Material.Filled.HelpOutline"
+                     Style="font-size: 4rem; color: #00415a;" />
+        </div>
+
+        <MudText Typo="Typo.h4" Align="Align.Center"
+                 Style="color: #00415a; margin-bottom: 20px; font-weight: 600;">
+            Help & Support
+        </MudText>
+
+        <MudText Typo="Typo.body1" Style="margin-bottom: 20px; line-height: 1.8;">
+            Welcome to the RAMS Help Center. Here you'll find guides and tips to help you navigate the system effectively.
+        </MudText>
+
+        <MudDivider Style="margin: 20px 0;" />
+
+        <MudText Typo="Typo.h6" Style="color: #00415a; margin-bottom: 15px; font-weight: 600;">
+            Getting Started
+        </MudText>
+
+        <div style="margin-bottom: 20px;">
+            <MudText Typo="Typo.body2" Style="margin-bottom: 10px; line-height: 1.6;">
+                <strong>1. Viewing Devices:</strong> Browse available devices and check their status and assigned rooms.
+            </MudText>
+            <MudText Typo="Typo.body2" Style="margin-bottom: 10px; line-height: 1.6;">
+                <strong>2. Submitting Repair Requests:</strong> Navigate to Repair Requests → Click "Add New" → Select device → Describe the issue → Submit.
+            </MudText>
+            <MudText Typo="Typo.body2" Style="margin-bottom: 10px; line-height: 1.6;">
+                <strong>3. Tracking Your Requests:</strong> View your submitted repair requests and filter by status to track their progress.
+            </MudText>
+        </div>
+
+
+        <MudDivider Style="margin: 20px 0;" />
+
+        <MudText Typo="Typo.h6" Style="color: #00415a; margin-bottom: 15px; font-weight: 600;">
+            Common Tasks
+        </MudText>
+
+        <div style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.BuildCircle"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Submitting a Repair Request
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Go to Repair Requests, select a device, describe the issue, and then submit.
+                    </MudText>
+
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                <MudIcon Icon="@Icons.Material.Filled.Update"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Tracking Your Requests
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        View your submitted repair requests and filter by status to track their progress
+                    </MudText>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: start;">
+                <MudIcon Icon="@Icons.Material.Filled.Search"
+                         Style="color: #00415a; margin-right: 12px; font-size: 1.5rem; margin-top: 2px;" />
+                <div>
+                    <MudText Typo="Typo.subtitle2" Style="font-weight: 600; margin-bottom: 3px;">
+                        Searching & Filtering
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #666;">
+                        Use the search bar and filters to quickly find specific devices or requests
+                    </MudText>
+                </div>
+            </div>
+        </div>
+
+        <MudDivider Style="margin: 20px 0;" />
+
+        <MudText Typo="Typo.h6" Style="color: #00415a; margin-bottom: 15px; font-weight: 600;">
+            Need More Help?
+        </MudText>
+
+        <MudText Typo="Typo.body2" Style="margin-bottom: 15px; line-height: 1.6;">
+            If you encounter any issues or have questions not covered here, please contact your system administrator or IT support team.
+        </MudText>
+
+        <MudAlert Severity="Severity.Info" Style="margin-bottom: 15px;">
+            <strong>Pro Tip:</strong> Use keyboard shortcuts and quick filters to navigate RAMS more efficiently!
+        </MudAlert>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Default" Variant="Variant.Text" OnClick="Close"
+                   Style="color: #666;">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    void Close() => MudDialog.Close();
+}
