@@ -120,10 +120,10 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
             {
                 Position = DialogPosition.TopCenter,
                 CloseOnEscapeKey = true,
-                CloseButton = true
+                CloseButton = false
             };
 
-            var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Confirm Deletion", parameters, options);
+            var dialog = await DialogService.ShowAsync<ConfirmationDialog>("", parameters, options);
             var result = await dialog.Result;
 
             return !result.Canceled;
@@ -165,3 +165,4 @@ namespace Client.Components.Pages.AdminPages.RoomsOrOffices
         }
     }
 }
+
