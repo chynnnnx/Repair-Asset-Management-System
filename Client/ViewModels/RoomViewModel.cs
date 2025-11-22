@@ -1,4 +1,4 @@
-﻿using Shared.DTOs;
+using Shared.DTOs;
 
 namespace Client.ViewModels
 {
@@ -7,6 +7,8 @@ namespace Client.ViewModels
     {
         public int RoomId { get; set; }
         public string RoomName { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public int Capacity { get; set; }
     }
 
     public static class RoomMappings
@@ -15,15 +17,20 @@ namespace Client.ViewModels
             new RoomViewModel
             {
                 RoomId = dto.RoomId,
-                RoomName = dto.RoomName
+                RoomName = dto.RoomName,
+                Location = dto.Location,   
+                Capacity = dto.Capacity    
             };
 
         public static RoomDTO ToDTO(this RoomViewModel vm) =>
             new RoomDTO
             {
                 RoomId = vm.RoomId,
-                RoomName = vm.RoomName
+                RoomName = vm.RoomName,
+                Location = vm.Location,   
+                Capacity = vm.Capacity    
             };
     }
+
 
 }
