@@ -12,9 +12,11 @@ namespace Shared.DTOs
     {
         public int DeviceID { get; set; }
         public string Tag { get; set; } = string.Empty;
+          public string Type { get; set; } = string.Empty;
         public DeviceStatus Status { get; set; } = DeviceStatus.Offline;
          public int RoomId { get; set; }
         public string RoomName { get; set; } = "N/A";
 
     }
 }
+
