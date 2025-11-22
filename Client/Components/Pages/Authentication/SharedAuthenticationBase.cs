@@ -1,4 +1,4 @@
-﻿using Blazored.LocalStorage;
+using Blazored.LocalStorage;
 using Client.Helpers;
 using Client.Security;
 using Client.Services.Interfaces;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using Shared.DTOs.Auth; 
 using System.Threading.Tasks;
+using Client.Components.Dialogs;
 
 namespace Client.Components.Pages.Authentication
 {
@@ -17,6 +18,7 @@ namespace Client.Components.Pages.Authentication
         [Inject] protected ILocalStorageService LocalStorage { get; set; } = null!;
         [Inject] protected AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
         [Inject] protected ISnackbar Snackbar { get; set; } = null!;
+        [Inject] protected IDialogService DialogService { get; set; } = null!;
 
         protected int activeStep = 0;
         protected RegisterUserDTO registerUser = new();
@@ -28,6 +30,7 @@ namespace Client.Components.Pages.Authentication
         protected string _password;
         protected string _error;
       
+
         protected void TogglePasswordVisibility()
         {
             _showPassword = !_showPassword;
@@ -41,6 +44,39 @@ namespace Client.Components.Pages.Authentication
         protected bool Step2Completed =>
             !string.IsNullOrWhiteSpace(registerUser.Email) &&
             !string.IsNullOrWhiteSpace(registerUser.PasswordHash);
+        protected async Task ShowAboutDialog()
+        {
+            var options = new DialogOptions()
+            {
+                CloseButton = false,
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+            };
+
+            await DialogService.ShowAsync<About>("", options: options);
+        }
+        protected async Task ShowHelpDialog()
+        {
+            var options = new DialogOptions()
+            {
+                CloseButton = false,
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+            };
+
+            await DialogService.ShowAsync<Help>("", options: options);
+        }
+        protected async Task ShowTermsAndConditionsDialog()
+        {
+            var options = new DialogOptions()
+            {
+                CloseButton = false,
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+            };
+
+            await DialogService.ShowAsync<TermsAndCondition>("", options: options);
+        }
 
         protected async Task SubmitRegistration()
         {
@@ -60,7 +96,6 @@ namespace Client.Components.Pages.Authentication
 
             try
             {
-                await Task.Delay(2000);
                 var error = await AuthService.RegisterAccount(registerUser);
                 if (error == null)
                 {
