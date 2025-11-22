@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Shared.DTOs;
 using Client.Services.Interfaces;
 using Client.Components.Dialogs.Devices;
 using Shared.Enums;
