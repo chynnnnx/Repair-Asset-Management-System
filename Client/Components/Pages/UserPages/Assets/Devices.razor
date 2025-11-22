@@ -33,6 +33,14 @@
                                 </div>
                             </CellTemplate>
                         </PropertyColumn>
+                        <PropertyColumn T="DeviceViewModel" TProperty="string" Property="x => x.Type" Title="Device Type">
+                            <CellTemplate>
+                                <div class="d-flex align-center">
+                                    
+                                    <MudText>@context.Item.Type</MudText>
+                                </div>
+                            </CellTemplate>
+                        </PropertyColumn>
                         <TemplateColumn T="DeviceViewModel" Title="Status">
                             <CellTemplate Context="cellContext">
                                 <div class="d-flex align-center">
@@ -48,6 +56,7 @@
                                 </div>
                             </CellTemplate>
                         </TemplateColumn>
+
                         <PropertyColumn T="DeviceViewModel" TProperty="string" Property="x => x.RoomName" Title="Room Name">
                             <CellTemplate>
                                 <div class="d-flex align-center">
