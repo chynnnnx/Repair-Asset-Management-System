@@ -27,6 +27,13 @@
                                           AdornmentColor="Color.Primary"
                                           FullWidth="true"
                                           Class="primary-input" />
+                            <MudTextField @bind-Value="newDevice.Type"
+                                          Label="Device Type"
+                                          Variant="Variant.Outlined"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Filled.Settings"
+                                          FullWidth="true"
+                                          Class="primary-input" />
 
                             <MudSelect T="int"
                                        Label="Select Room"
@@ -115,7 +122,8 @@
 
                         <PropertyColumn T="DeviceViewModel" TProperty="string"
                                         Property="x => x.Tag" Title="Device Name" />
-
+                        <PropertyColumn T="DeviceViewModel" TProperty="string"
+                                        Property="x => x.Type" Title="Device Type" />
                         <PropertyColumn T="DeviceViewModel" TProperty="string"
                                         Property="x => x.RoomName" Title="Room Name" />
 
