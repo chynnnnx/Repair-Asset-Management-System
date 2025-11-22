@@ -12,7 +12,7 @@ namespace projServer.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+   
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService _deviceService;
@@ -33,6 +33,7 @@ namespace projServer.Controllers
         /// </summary>
         /// <param name="deviceDto">device details (name, type, status, etc.)</param>
         /// <returns>200 ok if success, 400 badrequest if validation fails.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddDevice([FromBody] DeviceDTO deviceDto)
         {
@@ -66,6 +67,7 @@ namespace projServer.Controllers
         /// 200 ok if updated,  
         /// 404 notfound if device does not exist.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateDevice([FromBody] DeviceDTO deviceDto)
         {
@@ -84,6 +86,7 @@ namespace projServer.Controllers
         /// </summary>
         /// <param name="id">the unique id of the device.</param>
         /// <returns>200 ok if deleted, 400 badrequest if failed.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDevice(int id)
         {
