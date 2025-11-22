@@ -22,12 +22,16 @@ namespace Client.Components.Dialogs.Devices
         private string? originalTag;
         private int originalRoomId;
         private DeviceStatus originalStatus;
+        private string? originalType;
+
 
         protected override void OnInitialized()
         {
             originalTag = device.Tag?.Trim();
             originalRoomId = device.RoomId;
             originalStatus = device.Status;
+            originalType = device.Type?.Trim();
+
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -42,9 +46,11 @@ namespace Client.Components.Dialogs.Devices
         protected bool HasChanges()
         {
             var currentName = device.Tag?.Trim();
+            var currentType = device.Type?.Trim();
             return !(currentName == originalTag &&
                      device.RoomId == originalRoomId &&
-                     device.Status == originalStatus);
+                     device.Status == originalStatus &&
+                     currentType == originalType);
         }
 
         protected bool IsFormValid()
@@ -104,6 +110,7 @@ namespace Client.Components.Dialogs.Devices
             if (device.Tag?.Trim() != originalTag) changes.Add("name");
             if (device.RoomId != originalRoomId) changes.Add("room");
             if (device.Status != originalStatus) changes.Add("status");
+            if (device.Type?.Trim() != originalType) changes.Add("type");
 
             return $"Changes detected in: {string.Join(", ", changes)}";
         }
